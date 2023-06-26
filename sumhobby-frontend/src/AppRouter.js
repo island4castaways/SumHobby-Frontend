@@ -22,7 +22,8 @@ function AppRouter() {
       <Router> {/* BrowserRouter 대신 Router로 수정 */}
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/class" element={<Class />} /> {/* 경로 수정 */}
+          <Route path="/class" element={<Class />} /> 
+          <Route path="/review" element={<Home />} /> {/* 경로 수정 필요 */}
         </Routes>
       </Router> {/* BrowserRouter 대신 Router로 수정 */}
       <Box mt={5}>

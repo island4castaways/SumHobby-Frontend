@@ -1,18 +1,24 @@
 import React, { useState } from "react";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, Button } from "@mui/material";
+import ClassDetail from "./ClassDetail";
 
 const Class = () => {
-  const [activeMenu, setActiveMenu] = useState(null); // 상태값 추가
+  const [activeMenu, setActiveMenu] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   const handleMenuChange = (menu) => {
     if (activeMenu === menu) {
-      setActiveMenu(null); // 이미 선택된 메뉴를 다시 클릭하면 메뉴 닫기
+    
     } else {
-      setActiveMenu(menu); // 선택한 메뉴 열기
+      setActiveMenu(menu);
     }
+    setSelectedItem(null); // 메뉴 변경 시 선택한 아이템 초기화
   };
 
-  // activeMenu에 따라 필터링된 데이터 사용
+  const handleItemSelect = (item) => {
+    setSelectedItem(item);
+  };
+
   const activeMenuData = activeMenu
     ? itemData.filter((item) => item.menu === activeMenu)
     : [];
@@ -21,29 +27,37 @@ const Class = () => {
     <div className="Class">
       <header className="Class-header">내 강의실</header>
       <div className="toggle-menu">
-        <button
+        <Button
           className={activeMenu === "cooking" ? "active" : ""}
           onClick={() => handleMenuChange("cooking")}
+          color="primary"
         >
           요리
-        </button>
-        <button
+        </Button>
+        <Button
           className={activeMenu === "exercise" ? "active" : ""}
           onClick={() => handleMenuChange("exercise")}
         >
           운동
-        </button>
-        <button
+        </Button>
+        <Button
           className={activeMenu === "crafts" ? "active" : ""}
           onClick={() => handleMenuChange("crafts")}
         >
           공예
-        </button>
+        </Button>
       </div>
-      {activeMenu && (
+      {activeMenu && !selectedItem && (
         <div className="class-list">
           {activeMenuData.map((item, index) => (
-            <Grid container spacing={2} className="class-item" key={index} marginTop={3}>
+            <Grid
+              container
+              spacing={2}
+              className="class-item"
+              key={index}
+              marginTop={3}
+              onClick={() => handleItemSelect(item)} // 강의 아이템 클릭 시 handleItemSelect 함수 호출
+            >
               <Grid item xs={6}>
                 <div className="image-container">
                   <img
@@ -59,14 +73,11 @@ const Class = () => {
                 <div className="info-container">
                   <div className="info-row">
                     <Typography component="span" className="lecture-name">
-                      제목: {item.title}
+                      {item.title}
                     </Typography>
                   </div>
                   <div className="info-row">
-                    <Typography
-                      component="span"
-                      className="instructor-name"
-                    >
+                    <Typography component="span" className="instructor-name">
                       강사: {item.instructorName}
                     </Typography>
                   </div>
@@ -77,7 +88,7 @@ const Class = () => {
                   </div>
                   <div className="info-row">
                     <Typography component="span" className="class-intro">
-                      내용: {item.classIntro}
+                      소개: {item.classIntro}
                     </Typography>
                   </div>
                 </div>
@@ -86,14 +97,18 @@ const Class = () => {
           ))}
         </div>
       )}
+      {selectedItem && (
+        <ClassDetail item={selectedItem} /> // 선택한 강의 아이템이 있을 경우 ClassDetail 컴포넌트 렌더링
+      )}
     </div>
   );
 };
 
+
 const itemData = [
   {
     img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
+    title: '햄버거 만들기',
     menu: 'cooking', // 메뉴 추가
     classIntro: '맛있겠지?',
     rating:5
