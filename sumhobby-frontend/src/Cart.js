@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Typography, Button } from '@mui/material';
+import { Container, Typography, Button, Checkbox } from '@mui/material';
+import { CheckBox } from '@mui/icons-material';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -7,6 +8,7 @@ const Cart = () => {
   const addItem = () => {
     // 임의의 항목 데이터 생성 (이 부분은 실제 데이터로 대체해야 합니다)
     const item = {
+      add: true,
       name: '상품명',
       price: 10000,
       image: '상품이미지URL',
@@ -32,6 +34,7 @@ const Cart = () => {
         ) : (
           cartItems.map((item, index) => (
             <div key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+              <input type="checkbox" value={item.add}/>
               <img src={item.image} alt={item.name} sx={{ width: '50px', height: '50px', marginRight: '10px' }} />
               <Typography variant="body1">{item.name}</Typography>
             </div>
