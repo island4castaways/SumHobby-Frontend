@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Br
 import App from './App';
 import Home from './Home';
 import Class from './Class';
+import AddReview from './AddReview';
 
 function Copyright() {
   return (
@@ -24,6 +25,7 @@ function AppRouter() {
           <Route path="/" element={<App />} />
           <Route path="/class" element={<Class />} /> 
           <Route path="/review" element={<Home />} /> {/* 경로 수정 필요 */}
+          <Route path="/addreview" element={<AddReview />} /> 
         </Routes>
       </Router> {/* BrowserRouter 대신 Router로 수정 */}
       <Box mt={5}>

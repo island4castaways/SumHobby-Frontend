@@ -111,21 +111,24 @@ const itemData = [
     title: '햄버거 만들기',
     menu: 'cooking', // 메뉴 추가
     classIntro: '맛있겠지?',
-    rating:5
+    rating:5,
+    instructorName:'김나유'
   },
   {
     img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
     title: 'Breakfast',
     menu: 'cooking', // 메뉴 추가
     classIntro: '와다다다',
-    rating:3.5
+    rating:3.5,
+    instructorName:'이연복'
   },
   {
     img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
     title: 'Burger',
     menu: 'exercise', // 메뉴 추가
     classIntro:'ddfd',
-    rating:2.0
+    rating:2.0,
+    instructorName:'김계란'
   },
   {
     img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',

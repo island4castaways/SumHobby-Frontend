@@ -36,8 +36,22 @@ const ClassDetail = ({ item }) => {
         <Link to="/review" variant="body2" className="App-link">
           View Review
         </Link>
+        <p/>
+        <Link
+            to={{
+              pathname: "/addreview",
+              state: {
+                title: item.title,
+                instructorName: item.instructorName
+              }
+            }}
+            variant="body2"
+            className="App-link"
+          >
+            리뷰 작성하기
+        </Link>
       </div>
-      <Grid container spacing={2} justifyContent="center">
+      <Grid container spacing={2} justifyContent="center" marginTop={2}>
         <Grid item xs={6}>
           <Button
             type="submit"
