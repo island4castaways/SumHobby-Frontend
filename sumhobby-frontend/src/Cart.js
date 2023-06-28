@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Typography, Button, Checkbox } from '@mui/material';
-import { CheckBox } from '@mui/icons-material';
+import { Container, Typography, Button, Checkbox, Paper, List, ListItem } from '@mui/material';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -32,13 +31,22 @@ const Cart = () => {
         {cartItems.length === 0 ? (
           <Typography variant="body1">장바구니에 항목이 없습니다.</Typography>
         ) : (
-          cartItems.map((item, index) => (
-            <div key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-              <input type="checkbox" value={item.add}/>
-              <img src={item.image} alt={item.name} sx={{ width: '50px', height: '50px', marginRight: '10px' }} />
-              <Typography variant="body1">{item.name}</Typography>
-            </div>
-          ))
+          <Paper>
+            <List>
+              {cartItems.map((item, index) => (
+                <ListItem>
+                  <Checkbox checked={item.add} />
+                  <div key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                  <img src={item.image} alt={item.name} sx={{ width: '50px', height: '50px', marginRight: '10px' }} />
+                  <Typography variant="body1">{item.name}</Typography>
+                  <Typography variant="body1">{item.price}</Typography>
+                </div>
+                </ListItem>
+              ))
+              }
+            </List>
+          </Paper>
+
         )}
       </div>
       <div sx={{ marginTop: '20px' }}>
