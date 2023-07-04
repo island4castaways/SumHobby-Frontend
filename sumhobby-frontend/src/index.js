@@ -7,9 +7,7 @@ import AppRouter from './AppRouter';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <AppRouter />
-  </React.StrictMode>
+    <AppRouter tab="home"/>
 );
 
 // If you want to start measuring performance in your app, pass a function
