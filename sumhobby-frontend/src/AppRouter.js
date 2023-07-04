@@ -1,10 +1,11 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // BrowserRouter 별칭으로 가져오기
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import App from './App';
 import Home from './Home';
 import Class from './Class';
+import ClassDetail from './ClassDetail';
 import AddReview from './AddReview';
 
 function Copyright() {
@@ -20,14 +21,15 @@ function Copyright() {
 function AppRouter() {
   return (
     <div>
-      <Router> {/* BrowserRouter 대신 Router로 수정 */}
+      <Router>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/class" element={<Class />} /> 
-          <Route path="/review" element={<Home />} /> {/* 경로 수정 필요 */}
-          <Route path="/addreview" element={<AddReview />} /> 
+          <Route path="/class" element={<Class />} />
+          <Route path="/class/:title" element={<ClassDetail />} />
+          <Route path="/review" element={<AddReview />} />
+          <Route path="/addreview" element={<AddReview />} />
         </Routes>
-      </Router> {/* BrowserRouter 대신 Router로 수정 */}
+      </Router>
       <Box mt={5}>
         <Copyright />
       </Box>

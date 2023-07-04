@@ -1,14 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
 import ClassDetail from "./ClassDetail";
+import "./Class.css";
 
 const Class = () => {
   const [activeMenu, setActiveMenu] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [classData, setClassData] = useState([]);
+
+  // const fetchClassData = async () => {
+  //   try{
+  //     const response = await fetch("/classes");
+  //     const data = await response.json();
+      
+  //     setClassData(data);
+  //   }catch(error){
+  //     console.log(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchClassData();
+  // },[]);
 
   const handleMenuChange = (menu) => {
     if (activeMenu === menu) {
-    
+      setActiveMenu(null);
     } else {
       setActiveMenu(menu);
     }
@@ -19,8 +36,8 @@ const Class = () => {
     setSelectedItem(item);
   };
 
-  const activeMenuData = activeMenu
-    ? itemData.filter((item) => item.menu === activeMenu)
+  const itemData = activeMenu
+    ? classData.filter((item) => item.menu === activeMenu)
     : [];
 
   return (
@@ -49,14 +66,16 @@ const Class = () => {
       </div>
       {activeMenu && !selectedItem && (
         <div className="class-list">
-          {activeMenuData.map((item, index) => (
+          {classData
+          .filter((item) => item.menu === activeMenu)
+          .map((item, index) => (
             <Grid
               container
               spacing={2}
               className="class-item"
               key={index}
               marginTop={3}
-              onClick={() => handleItemSelect(item)} // 강의 아이템 클릭 시 handleItemSelect 함수 호출
+              onClick={() => handleItemSelect(item)}
             >
               <Grid item xs={6}>
                 <div className="image-container">
@@ -97,9 +116,7 @@ const Class = () => {
           ))}
         </div>
       )}
-      {selectedItem && (
-        <ClassDetail item={selectedItem} /> // 선택한 강의 아이템이 있을 경우 ClassDetail 컴포넌트 렌더링
-      )}
+      {selectedItem && <ClassDetail item={selectedItem} />}
     </div>
   );
 };

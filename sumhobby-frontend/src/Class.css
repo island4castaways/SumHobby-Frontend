@@ -1,0 +1,75 @@
+/* Class.css */
+
+/* Container */
+.Class {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px auto; /* Adjust margin as needed for spacing */
+    max-width: 800px; /* Limit the width of the component */
+  }
+  
+  /* Header */
+  .Class-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Toggle Menu */
+  .toggle-menu {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .toggle-menu button {
+    margin: 0 5px;
+  }
+  
+  /* Class List */
+  .class-list {
+    width: 100%;
+  }
+  
+  /* Class Item */
+  .class-item {
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 10px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .class-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .image-container {
+    text-align: center;
+  }
+  
+  .class-thumbnail {
+    max-width: 300px;
+    max-height: 150px;
+    object-fit: cover;
+  }
+  
+  .info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 150px;
+    padding-left: 10px;
+  }
+  
+  .info-row {
+    margin-bottom: 5px;
+  }
+  
+  /* Class Detail */
+  .ClassDetail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
