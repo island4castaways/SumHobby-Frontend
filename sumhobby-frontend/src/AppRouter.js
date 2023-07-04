@@ -3,6 +3,7 @@ import React from 'react';
 import { BrowserRouter, Routes,Route } from "react-router-dom";
 import { Typography, Box } from "@mui/material";
 import "./index.css";
+import App from './App';
 
 function Copyright(){
     return(
@@ -20,6 +21,7 @@ function AppRouter(){
         <div>
             <BrowserRouter>
             <Routes>
+            <Route path="/" element={<App />}/>
             <Route path="cart" element={<Cart/>}/>
             </Routes>
             </BrowserRouter>
