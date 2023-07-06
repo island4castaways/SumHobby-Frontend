@@ -47,7 +47,7 @@ function AdminLogin() {
                 </Grid>
             </form>
         </Container>
-    )
-}
+    );
+};
 
 export default AdminLogin;
