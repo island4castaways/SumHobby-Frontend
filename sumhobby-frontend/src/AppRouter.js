@@ -4,6 +4,8 @@ import { Box, Typography } from "@mui/material";
 import AdminLogin from "./admin/AdminLogin";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AdminMenu from "./admin/AdminMenu";
+import Cart from './Cart';
+import App from './App';
 
 function Copyright() {
     return (
@@ -20,8 +22,10 @@ function AppRouter() {
         <div>
             <BrowserRouter>
                 <Routes>
+                    <Route path="/" element={<App />}/>
                     <Route path="/admin" element={<AdminLogin />} />
                     <Route path="/admin/menu" element={<AdminMenu />} />
+                    <Route path="cart" element={<Cart/>}/>
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>
