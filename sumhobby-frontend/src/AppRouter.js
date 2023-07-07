@@ -4,6 +4,8 @@ import { BrowserRouter, Routes,Route } from "react-router-dom";
 import { Typography, Box } from "@mui/material";
 import "./index.css";
 import App from './App';
+import Checkout from './pages/Checkout.tsx';
+
 
 function Copyright(){
     return(
@@ -23,6 +25,7 @@ function AppRouter(){
             <Routes>
             <Route path="/" element={<App />}/>
             <Route path="cart" element={<Cart/>}/>
+            <Route path="checkout" element={<Checkout/>}/>
             </Routes>
             </BrowserRouter>
             <Box mt = {5}>
