@@ -4,7 +4,6 @@ import { adminClasses, adminInquiries, adminOrders, adminUsers, adminlogout } fr
 
 function AdminMenu() {
 
-
     return (
         <div className="AdminMenu">
             <Paper>
@@ -14,7 +13,7 @@ function AdminMenu() {
                     </h2>
                 </Grid>
                 <Grid>
-                    <Button onCLick={adminUsers}>
+                    <Button onClick={adminUsers}>
                         사용자 관리
                     </Button>
                 </Grid>
