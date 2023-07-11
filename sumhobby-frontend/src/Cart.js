@@ -12,10 +12,13 @@ import {
 } from '@mui/material';
 import { DeleteOutlined } from '@mui/icons-material';
 import { call } from './service/ApiService';
+import { Link, useNavigate, useNavigationType } from 'react-router-dom';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     call("/cart","GET",null)
@@ -50,6 +53,15 @@ const Cart = () => {
 
     setCartItems(updatedCartItems);
     setTotal(newTotalPrice);
+  };
+
+  const goCheckout = () =>{
+    navigate('/checkout',
+     {
+      state: {
+        total: total,
+      },
+    });
   };
 
   return (
@@ -91,7 +103,7 @@ const Cart = () => {
       </div>
       <div>
         Total: {total}
-        <Button>결제하기</Button>
+        <Button onClick={goCheckout}>결제하기</Button>
       </div>
     </Container>
   );

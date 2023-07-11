@@ -3,8 +3,9 @@ import { loadPaymentWidget, PaymentWidgetInstance } from "@tosspayments/payment-
 import { nanoid } from "nanoid"
 
 import "../App.css"
+import { useLocation } from "react-router-dom"
 
-const clientKey = "test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq"
+const clientKey = "test_ck_5GePWvyJnrKnv4pgnx7VgLzN97Eo"
 const customerKey = "test_sk_4vZnjEJeQVxXaL051vbVPmOoBN0k"
 
 export default function Checkout() {
@@ -12,7 +13,10 @@ export default function Checkout() {
   const paymentMethodsWidgetRef = useRef<ReturnType<
     PaymentWidgetInstance["renderPaymentMethods"]
   > | null>(null)
-  const [price, setPrice] = useState(50_000)
+  const location = useLocation();
+  const amount = location.state;
+  console.log(amount.total)
+  const [price, setPrice] = useState(amount.total);
 
   useEffect(() => {
     (async () => {
@@ -57,12 +61,11 @@ export default function Checkout() {
       <button
         onClick={async () =>{
           const paymentWidget = paymentWidgetRef.current
-
           try{
             await paymentWidget?.requestPayment({
             orderId: nanoid(),
             orderName: "토스 티셔츠 외 2건",
-            customerName: "김토스",
+            customerName: "이게될까",
             customerEmail: "customer123@gmail.com",
             successUrl: `http://localhost:1010/checkout/success`,
             failUrl: `http://localhost:1010/checkout/fail`,

@@ -5,6 +5,8 @@ import { Typography, Box } from "@mui/material";
 import "./index.css";
 import App from './App';
 import Checkout from './pages/Checkout.tsx';
+import { SuccessPage } from './pages/Success.tsx';
+import { FailPage } from './pages/Fail.tsx';
 
 
 function Copyright(){
@@ -26,6 +28,8 @@ function AppRouter(){
             <Route path="/" element={<App />}/>
             <Route path="cart" element={<Cart/>}/>
             <Route path="checkout" element={<Checkout/>}/>
+            <Route path="success" element={<SuccessPage/>}/>
+            <Route path="fail" element={<FailPage/>}/>
             </Routes>
             </BrowserRouter>
             <Box mt = {5}>
