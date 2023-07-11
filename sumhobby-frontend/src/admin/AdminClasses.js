@@ -1,26 +1,40 @@
 import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminClasses() {
-    const [classes, setClasses] = useState([]);
+    const location = useLocation();
+    const admin = location.state.admin;
+    if(admin.role !== "관리자") {
+        window.location.href = "/";
+    };
 
+    const [classes, setClasses] = useState([]);
     useEffect(() => {
         call("/admin/classes", "GET", null).then((response) => (
             setClasses(response.data)
         ));
     }, []);
 
+    const navigate = useNavigate();
+    const adminLectures = (classDTO) => {
+        return (
+            navigate("/admin/lectures", {
+                state: {
+                    admin: admin,
+                    classDTO: classDTO,
+                }
+            })
+        )
+    };
+
     return (
         <Paper>
-            <h2>사용자 관리</h2>
+            <h2>강의실 관리</h2>
+            <Button onClick={() => {window.location.href="/admin/createClass"}}>새 강의실</Button>
             <Table>
                 <TableHead>
-                    <TableRow>
-                        <TableCell>
-                            <Button onClick={() => {}}>새 강의실</Button>
-                        </TableCell>
-                    </TableRow>
                     <TableRow>
                         <TableCell>Num</TableCell>
                         <TableCell>Name</TableCell>
@@ -31,6 +45,7 @@ function AdminClasses() {
                         <TableCell>Uploaded</TableCell>
                         <TableCell>LastUpdated</TableCell>
                         <TableCell>수정</TableCell>
+                        <TableCell>Lecture</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -46,6 +61,9 @@ function AdminClasses() {
                             <TableCell>{classroom.classLastDate}</TableCell>
                             <TableCell>
                                 <Button onClick={() => {}}>수정</Button>
+                            </TableCell>
+                            <TableCell>
+                                <Button onClick={() => {adminLectures(classroom)}}>Lecture</Button>
                             </TableCell>
                         </TableRow>
                     ))}

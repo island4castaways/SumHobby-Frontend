@@ -1,13 +1,12 @@
 import './App.css';
-import {call} from "./service/ApiService"
+import { call } from "./service/ApiService"
 import { useEffect, useState } from 'react';
 
 function App() {
-
   const [item, setItem] = useState([]);
 
   useEffect(() => {
-    call("/cart/testcart","GET",null)
+    call("/cart/testcart", "GET", null)
     .then((response) => setItem(response.data));
   }, []);
   

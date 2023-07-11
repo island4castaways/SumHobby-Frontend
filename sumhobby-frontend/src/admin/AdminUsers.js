@@ -1,30 +1,26 @@
 import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
+import { useLocation } from "react-router-dom";
 
 function AdminUsers() {
-    const [users, setUsers] = useState([]);
+    const location = useLocation();
+    const admin = location.state.admin;
+    if(admin.role !== "관리자") {
+        window.location.href = "/";
+    };
 
+    const [users, setUsers] = useState([]);
     useEffect(() => {
         call("/admin/users", "GET", null).then((response) => (
             setUsers(response.data)
         ));
     }, []);
 
-    const isTeacher = (teacher) => {
-        if(teacher === 0) {
-            return "해당 없음"
-        } else if(teacher === 1) {
-            return "강사 신청 상태"
-        } else if(teacher === 2) {
-            return "강사 승인 완료"
-        }
-    }
-
-    const teacherButton = (teacher) => {
-        if(teacher === 0 || teacher === 1) {
+    const teacherButton = (role) => {
+        if(role === "일반" || role === "강사 신청") {
             return "승인"
-        } else if(teacher === 2) {
+        } else if(role === "강사") {
             return "승인 취소"
         }
     }
@@ -38,6 +34,7 @@ function AdminUsers() {
     return (
         <Paper>
             <h2>사용자 관리</h2>
+            <h4>{admin.userName} 로그인</h4>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -56,11 +53,9 @@ function AdminUsers() {
                             <TableCell>{user.userName}</TableCell>
                             <TableCell>{user.phone}</TableCell>
                             <TableCell>{user.email}</TableCell>
+                            <TableCell>{user.role}</TableCell>
                             <TableCell>
-                                {isTeacher(user.teacher)}
-                            </TableCell>
-                            <TableCell>
-                                <Button onClick={() => changeTeacher(user)}>{teacherButton(user.teacher)}</Button>
+                                <Button onClick={() => changeTeacher(user)}>{teacherButton(user.role)}</Button>
                             </TableCell>
                         </TableRow>
                     ))}
