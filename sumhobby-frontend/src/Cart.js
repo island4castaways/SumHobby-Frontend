@@ -56,6 +56,9 @@ const Cart = () => {
   };
 
   const goCheckout = () =>{
+    
+    
+    
     navigate('/checkout',
      {
       state: {

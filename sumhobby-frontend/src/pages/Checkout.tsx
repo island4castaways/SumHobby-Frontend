@@ -4,6 +4,7 @@ import { nanoid } from "nanoid"
 
 import "../App.css"
 import { useLocation } from "react-router-dom"
+import { call } from "../service/ApiService"
 
 const clientKey = "test_ck_5GePWvyJnrKnv4pgnx7VgLzN97Eo"
 const customerKey = "test_sk_4vZnjEJeQVxXaL051vbVPmOoBN0k"
@@ -67,9 +68,10 @@ export default function Checkout() {
             orderName: "토스 티셔츠 외 2건",
             customerName: "이게될까",
             customerEmail: "customer123@gmail.com",
-            successUrl: `http://localhost:1010/checkout/success`,
-            failUrl: `http://localhost:1010/checkout/fail`,
-          })}catch(err){
+            successUrl: `http://localhost:3000/success`,
+            failUrl: `http://localhost:3000/fail`,
+            })
+          }catch(err){
             console.log(err)
           }
         }}>
