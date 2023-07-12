@@ -25,11 +25,12 @@ function Copyright() {
     );
 }
 
-function AppRouter () {
+function AppRouter() {
     return (
         <div>
             <BrowserRouter>
                 <Routes>
+
                     <Route path="/" element={<App />} />
                     <Route path="login" element={<Login />} />
                     <Route path="signup" element={<SignUp />} />
@@ -40,7 +41,7 @@ function AppRouter () {
                     <Route path="changeinfo" element={<ChangeInfo />} />
                     <Route path="faq" element={<FAQ />} />
                     <Route path="inquiryboard" element={<InquiryBoardList />} />
-                    <Route path="purchase" element={<PurchaseList/>}/>
+                    <Route path="purchase" element={<PurchaseList />} />
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>

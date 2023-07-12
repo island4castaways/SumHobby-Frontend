@@ -8,15 +8,14 @@ const FindId = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
-        const useremail = data.get("useremail");
+        const email = data.get("email");
         //ApiService의 signin 메서드를 사용해서 로그인... 
         signin({
-            useremail: useremail
+            email: email
         })
     };
 
     return (
-        // <p> 아이디 찾기 페이지 </p>
         <Container component="main" maxWidth="xs" style={{ marginTop: "8%" }}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -34,10 +33,10 @@ const FindId = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            id="useremail"
+                            id="email"
                             label="이메일"
-                            name="useremail"
-                            autoComplete="useremail"
+                            name="email"
+                            autoComplete="email"
                         />
                     </Grid>
                     <Grid item xs={12}>

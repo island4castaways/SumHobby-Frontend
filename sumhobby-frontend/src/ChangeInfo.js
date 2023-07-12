@@ -1,19 +1,19 @@
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { signup } from "./service/ApiService";
+import { modify} from "./service/ApiService";
 
 function ChangeInfo() {
     const handleSubmit = (event) => {
         event.preventDefault();
         // 오브젝트에서 form에 저장된 데이터를 맴의 형태로 변환
         const data = new FormData(event.target);
-        const userid = data.get("userid");
+        const userId = data.get("userId");
         const password = data.get("password");
-        const username = data.get("username");
-        const useremail = data.get("useremail");
+        const userName = data.get("userName");
+        const email = data.get("email");
         const phone = data.get("phone");
-        signup({ userid: userid, password: password, username: username, useremail: useremail, phone: phone }).then(
+        modify({ userId: userId, password: password, userName: userName, email: email, phone: phone }).then(
             (response) => {
                 //계정 생성 성공시 login 페이지로 리다이렉트
                 window.location.href = "/login";
@@ -33,11 +33,11 @@ function ChangeInfo() {
                     <Grid item xs={12}>
                         <TextField
                             autoComplete="fname"
-                            name="userid"
+                            name="userId"
                             variant="outlined"
                             required
                             fullWidth
-                            id="userid"
+                            id="userId"
                             label="아이디"
                             autoFocus
                         />
@@ -47,10 +47,10 @@ function ChangeInfo() {
                             variant="outlined"
                             required
                             fullWidth
-                            name="username"
+                            name="userName"
                             label="이름"
-                            type="username"
-                            id="username"
+                            type="userName"
+                            id="userName"
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -81,10 +81,10 @@ function ChangeInfo() {
                             variant="outlined"
                             required
                             fullWidth
-                            name="useremail"
+                            name="email"
                             label="이메일"
-                            type="useremail"
-                            id="useremail"
+                            type="email"
+                            id="email"
                         />
                     </Grid>
                     <Grid item xs={12}>

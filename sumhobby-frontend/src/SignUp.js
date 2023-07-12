@@ -33,7 +33,7 @@ function SignUp() {
                     <Grid item xs={12}>
                         <TextField
                             autoComplete="fname"
-                            name="userid"
+                            name="userId"
                             variant="outlined"
                             required
                             fullWidth
@@ -83,7 +83,7 @@ function SignUp() {
                             name="email"
                             label="이메일"
                             type="email"
-                            id="useremail"
+                            id="email"
                         />
                     </Grid>
                     <Grid item xs={12}>

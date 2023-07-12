@@ -1,10 +1,15 @@
 import logo from './logo.svg';
 import './App.css';
-import Cart from './Cart';
+import { call } from './service/ApiService';
+import { useState } from 'react';
 
 function App() {
+  const [items, setItems] = useState([]);
+  const addItem = (item) => {
+    call("/update","POST", item)
+    .then((Response)=> setItems(Response.data))
+  }
 
-  
   return (
     <div className="App">
       <header className="App-header">

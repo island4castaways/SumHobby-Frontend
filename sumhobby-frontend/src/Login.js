@@ -4,7 +4,7 @@ import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { CenterFocusStrong } from "@mui/icons-material";
 
-function Login() {
+function Login(_userDTO) {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
@@ -16,6 +16,7 @@ function Login() {
             password: password
         })
     };
+
 
     return (
         <Container component="main" maxWidth="xs" style={{ marginTop: "8%" }}>
