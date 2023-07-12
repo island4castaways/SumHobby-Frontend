@@ -1,22 +1,30 @@
 import React, { useState } from "react";
-import { Button, Container, Grid, TextField, Typography, Link } from "@mui/material";
-import "./AddReview.css";
+import { Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { useLocation, useNavigate , Link} from "react-router-dom";
+import { BsStarFill, BsStarHalf } from "react-icons/bs";
+import { call } from "./service/ApiService";
 
 function StarBox({ selected, onClick }) {
   return (
     <span className={`star ${selected ? "selected" : ""}`} onClick={onClick}>
-      ★
+      {selected ? (
+        <BsStarFill size="13" color="#BB1628" />
+      ) : (
+        <BsStarFill size="13" color="#E3E3E3" />
+      )}
     </span>
   );
 }
 
-function BackgroundStar() {
-  return <span className="star">★</span>;
-}
+const AddReview = () => {
+  const [review, setReview] = useState([]);
+  const [rating, setRating] = useState(0.0);
+  const [reviewContent, setReviewContent] = useState("");
+  
+  const navigate = useNavigate();
 
-function AddReview({ title, instructorName }) {
-  const [review, setReview] = useState("");
-  const [rating, setRating] = useState(0);
+  const location = useLocation();
+  const item = location.state;
 
   const handleRatingChange = (value) => {
     const decimalRating = value - 0.5; // Calculate rating with decimal points
@@ -27,11 +35,24 @@ function AddReview({ title, instructorName }) {
     handleRatingChange(value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission logic
-    console.log(review);
+    
+      // Prepare the review data
+      const reviewData = {
+        className: item.title,
+        userId: item.instructorName,
+        revContent: reviewContent,
+        revRate: rating,
+      };
+
+      createReview(reviewData);
   };
+
+  const createReview = (reviewData) => {
+      call("/review/addreview", "POST", reviewData)
+      .then((response) => setReview(response.data));
+  }
 
   return (
     <Container component="main" maxWidth="xs" style={{ marginTop: "8%" }}>
@@ -44,10 +65,10 @@ function AddReview({ title, instructorName }) {
       </Grid>
       <Grid container spacing={2} marginTop={1}>
         <Grid item xs={12}>
-          <Typography variant="subtitle1">Title: {title}</Typography>
+          <Typography variant="subtitle1">Title: {item.title}</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="subtitle1">강사명: {instructorName}</Typography>
+          <Typography variant="subtitle1">강사명: {item.instructorName}</Typography>
         </Grid>
       </Grid>
       <form onSubmit={handleSubmit}>
@@ -62,9 +83,9 @@ function AddReview({ title, instructorName }) {
               id="write_review"
               label="리뷰"
               name="write_review"
-              autoComplete="off"
-              value={review}
-              onChange={(e) => setReview(e.target.value)}
+              autoComplete="review"
+              value={reviewContent}
+              onChange={(e) => setReviewContent(e.target.value)}
             />
           </Grid>
         </Grid>
@@ -83,26 +104,34 @@ function AddReview({ title, instructorName }) {
                     onClick={() => handleStarClick(value)}
                   />
                 ) : (
-                  <BackgroundStar />
+                  <StarBox selected={false} />
                 )}
               </Grid>
             );
           })}
         </Grid>
 
+        <Grid item xs={12}>
+          <Typography variant="subtitle1">별점: {rating}</Typography>
+        </Grid>
         <Grid container spacing={2} marginTop={2}>
           <Grid item xs={12}>
             <Button type="submit" fullWidth variant="contained" color="primary">
               작성 완료
             </Button>
           </Grid>
+
           <Grid item xs={12}>
-            <Typography variant="subtitle1">별점: {rating}</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <Link to="/signup" variant="body2">
+          <Button
+              component={Link}
+              to={{
+                pathname: "/showreview",
+                search: `?title=${item.title}&instructorName=${item.instructorName}`,
+              }}
+              variant="body2"
+            >
               이 강의 리뷰 더 보러가기
-            </Link>
+            </Button>
           </Grid>
         </Grid>
       </form>

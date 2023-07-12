@@ -1,10 +1,25 @@
-import React from "react";
-import { Typography, Grid, Button } from "@mui/material";
-import { Link } from "react-router-dom";
-import "./ClassDetail.css";
+import React, { useEffect, useState } from "react";
+import { Typography, Grid, Button, Box } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
 const ClassDetail = ({ item }) => {
+  const navigate = useNavigate();
+  const handleClass = () => {
+    navigate('/addreview', {
+      state: {
+        title: item.className,
+        instructorName: item.userId,
+        classRate: item.classRate,
+        classDetail: item.classDetail,
+        classCategory: item.classCategory
+      },
+    });
+  };
 
+  const [items, setItems] = useState([]);
+  useEffect(() =>{
+    setItems(item);
+  },[]);
   
   return (
     <div className="ClassDetail">
@@ -17,49 +32,34 @@ const ClassDetail = ({ item }) => {
           height={150}
         />
         <div className="info-row">
-          <Typography component="span" className="class-title">
-            {item.title}
+          <Typography component="span" className="class-name">
+            제목: {items.className}
           </Typography>
         </div>
         <div className="info-row">
-          <Typography component="span" className="instructor-name">
-            강사: {item.instructorName}
+          <Typography component="span" className="userTk">
+            강사: {items.userId}
           </Typography>
         </div>
         <div className="info-row">
           <Typography component="span" className="rating">
-            별점: {item.rating}
+            별점: {items.classRate}
           </Typography>
         </div>
         <div className="info-row">
           <Typography component="span" className="class-intro">
-            소개: {item.classIntro}
+            소개: {items.classDetail}
           </Typography>
         </div>
-        {/* 리뷰 보기 버튼은 구매자, 비 구매자 마다 다름 */}
-        {/* <div className="link-container">
-          <Link to="/review" variant="body2" className="App-link">
-            View Review
-          </Link>
-        </div> */}
-        <div className="link-container">
-          <Link
-            to={{
-              pathname: "/addreview",
-              state: {
-                title: item.title,
-                instructorName: item.instructorName,
-              },
-            }}
-            variant="body2"
-            className="App-link"
-          >
-            리뷰 작성하기
-          </Link>
-        </div>
+        <Link to={`/showreview?title=${encodeURIComponent(item.className)}&instructorName=${encodeURIComponent(item.instructorName)}`} variant="body2" className="App-link">
+          View Review
+        </Link>
+        <Button onClick={handleClass} variant="body2" className="App-link">
+          리뷰 작성하기
+        </Button>
       </div>
-      <Grid container spacing={2} justifyContent="center" marginTop={20}>
-        <Grid item xs={12} sm={6}>
+      <Grid container spacing={2} justifyContent="center" marginTop={3}>
+        <Grid item xs={6}>
           <Button
             type="submit"
             fullWidth
@@ -69,7 +69,7 @@ const ClassDetail = ({ item }) => {
             장바구니
           </Button>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={6}>
           <Button
             type="button"
             fullWidth
@@ -80,23 +80,6 @@ const ClassDetail = ({ item }) => {
           </Button>
         </Grid>
       </Grid>
-
-      {/* 회차 리스트와 , 댓글은 구매자에게만 공개 */}
-      {/* <Grid item xs={3} sm={3}>
-        <img
-          src={item.img}
-          className="class-thumbnail"
-          alt="Thumbnail"
-          width={300}
-          height={150}
-        />
-      </Grid> */}
-      {/* <div>
-        <Typography variant="subtitle1">작성자 ID: {authorId}</Typography>
-        <Typography variant="subtitle2">작성일: {date}</Typography>
-        <Typography variant="body1">{content}</Typography>
-        <hr />
-      </div> */}
     </div>
   );
 };
