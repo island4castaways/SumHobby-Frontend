@@ -10,6 +10,7 @@ import AdminUsers from "./admin/AdminUsers";
 import AdminClasses from "./admin/AdminClasses";
 import CreateClass from "./admin/CreateClass";
 import AdminLectures from "./admin/AdminLectures";
+import CreateLecture from "./admin/CreateLecture";
 
 function Copyright() {
     return (
@@ -33,6 +34,7 @@ function AppRouter() {
                     <Route path="admin/classes" element={<AdminClasses />} />
                     <Route path="admin/createClass" element={<CreateClass />} />
                     <Route path="admin/lectures" element={<AdminLectures />} />
+                    <Route path="admin/createLecture" element={<CreateLecture />} />
                     <Route path="cart" element={<Cart/>}/>
                 </Routes>
             </BrowserRouter>

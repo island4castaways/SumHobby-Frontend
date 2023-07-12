@@ -1,7 +1,7 @@
-import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminLectures() {
     const location = useLocation();
@@ -12,21 +12,44 @@ function AdminLectures() {
     const classDTO = location.state.classDTO;
 
     const [lectures, setLectures] = useState([]);
-    useEffect((classDTO) => {
-        call("/admin/Lectures", "GET", classDTO).then((response) => (
+    useEffect(() => {
+        call("/admin/lectures", "PATCH", classDTO).then((response) => {
             setLectures(response.data)
-        ));
-    }, []);
+        });
+    }, [classDTO]);
 
-    const createLecture = (classDTO) => {
+    const navigate = useNavigate();
+    const createLecture = () => {
+        return (
+            navigate("/admin/createLecture", {
+                state: {
+                    admin: admin,
+                    classDTO: classDTO
+                }
+            })
+        );
+    };
+
+    const modifyLecture = (lectureDTO) => {
+        return (
+            navigate("/admin/createLecture", {
+                state: {
+                    admin: admin,
+                    classDTO: classDTO,
+                    lectureDTO: lectureDTO
+                }
+            })
+        )
     }
 
     return (
-        <Paper>
+        <Container>
             <h2>강의 관리</h2>
             <h4>{admin.userName} 로그인</h4>
-            <h5>{classDTO.classNum}, {classDTO.className} 강의실</h5>
-            <Button onClick={() => {createLecture(classDTO)}}>강의 추가</Button>
+            {classDTO && (
+                <h5>{classDTO.classNum}, {classDTO.className} 강의실</h5>
+            )}
+            <Button onClick={() => {createLecture()}}>강의 추가</Button>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -47,14 +70,14 @@ function AdminLectures() {
                             <TableCell>{lecture.lecDetail}</TableCell>
                             <TableCell>{lecture.lecUrl}</TableCell>
                             <TableCell>
-                                <Button onClick={() => {}}>수정</Button>
+                                <Button onClick={() => {modifyLecture(lecture)}}>수정</Button>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            <Button onClick={() => {createLecture(classDTO)}}>강의 추가</Button>
-        </Paper>
+            <Button onClick={() => {createLecture()}}>강의 추가</Button>
+        </Container>
     );
 };
 

@@ -1,4 +1,4 @@
-import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
 import { useLocation } from "react-router-dom";
@@ -32,7 +32,7 @@ function AdminUsers() {
     }
 
     return (
-        <Paper>
+        <Container>
             <h2>사용자 관리</h2>
             <h4>{admin.userName} 로그인</h4>
             <Table>
@@ -61,7 +61,7 @@ function AdminUsers() {
                     ))}
                 </TableBody>
             </Table>
-        </Paper>
+        </Container>
     );
 };
 

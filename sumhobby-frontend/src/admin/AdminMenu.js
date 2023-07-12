@@ -1,4 +1,4 @@
-import { Button, Grid, Paper } from "@mui/material";
+import { Button, Container, Grid } from "@mui/material";
 import { React } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -22,7 +22,7 @@ function AdminMenu() {
 
     return (
         <div className="AdminMenu">
-            <Paper>
+            <Container>
                 <Grid>
                     <h2>관리자 메뉴</h2>
                     <h4>{location.state.admin.userName} 로그인</h4>
@@ -52,7 +52,7 @@ function AdminMenu() {
                         관리자 로그아웃
                     </Button>
                 </Grid>
-            </Paper>
+            </Container>
         </div>
     );
 };

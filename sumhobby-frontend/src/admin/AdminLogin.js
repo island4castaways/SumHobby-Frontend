@@ -1,6 +1,6 @@
 import { React } from "react";
 import { call } from "../service/ApiService";
-import { Button, Paper, Table, TableCell, TableRow, TextField } from "@mui/material";
+import { Button, Container, Table, TableCell, TableRow, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 function AdminLogin() {
@@ -25,7 +25,7 @@ function AdminLogin() {
     };
 
     return (
-        <Paper>
+        <Container>
             <h2>관리자 로그인</h2>
             <form noValidate onSubmit={handleSubmit}>
                 <Table>
@@ -56,7 +56,7 @@ function AdminLogin() {
                     </TableRow>
                 </Table>
             </form>
-        </Paper>
+        </Container>
     );
 };
 

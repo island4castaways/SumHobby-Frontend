@@ -1,4 +1,4 @@
-import { Button, Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,16 +23,33 @@ function AdminClasses() {
             navigate("/admin/lectures", {
                 state: {
                     admin: admin,
-                    classDTO: classDTO,
+                    classDTO: classDTO
                 }
             })
         )
     };
 
+    const createClass = () => {
+        return (
+            navigate("/admin/createClass", { state: { admin: admin } })
+        )
+    }
+
+    const modifyClass = (classDTO) => {
+        return (
+            navigate("/admin/createClass", {
+                state: {
+                    admin: admin,
+                    classDTO: classDTO
+                }
+            })
+        )
+    }
+
     return (
-        <Paper>
+        <Container>
             <h2>강의실 관리</h2>
-            <Button onClick={() => {window.location.href="/admin/createClass"}}>새 강의실</Button>
+            <Button onClick={() => {createClass()}}>새 강의실</Button>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -60,7 +77,7 @@ function AdminClasses() {
                             <TableCell>{classroom.classSetDate}</TableCell>
                             <TableCell>{classroom.classLastDate}</TableCell>
                             <TableCell>
-                                <Button onClick={() => {}}>수정</Button>
+                                <Button onClick={() => {modifyClass(classroom)}}>수정</Button>
                             </TableCell>
                             <TableCell>
                                 <Button onClick={() => {adminLectures(classroom)}}>Lecture</Button>
@@ -69,7 +86,7 @@ function AdminClasses() {
                     ))}
                 </TableBody>
             </Table>
-        </Paper>
+        </Container>
     );
 };
 
