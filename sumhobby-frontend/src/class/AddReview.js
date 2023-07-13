@@ -4,27 +4,13 @@ import { useLocation, useNavigate , Link} from "react-router-dom";
 import { BsStarFill, BsStarHalf } from "react-icons/bs";
 import { call } from "../service/ApiService";
 
-function StarBox({ selected, onClick }) {
-  return (
-    <span className={`star ${selected ? "selected" : ""}`} onClick={onClick}>
-      {selected ? (
-        <BsStarFill size="13" color="#BB1628" />
-      ) : (
-        <BsStarFill size="13" color="#E3E3E3" />
-      )}
-    </span>
-  );
-}
-
 const AddReview = () => {
-  const [review, setReview] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const item = location.state.classDTO;
+  
   const [rating, setRating] = useState(0.0);
   const [reviewContent, setReviewContent] = useState("");
-  
-  const navigate = useNavigate();
-
-  const location = useLocation();
-  const item = location.state;
 
   const handleRatingChange = (value) => {
     const decimalRating = value - 0.5; // Calculate rating with decimal points
@@ -38,12 +24,13 @@ const AddReview = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
+    const data = new FormData(event.target);
       // Prepare the review data
       const reviewData = {
-        className: item.title,
-        userId: item.instructorName,
-        revContent: reviewContent,
-        revRate: rating,
+        className: item.className,
+        userId: item.userId,
+        revContent: data.get("wirte_review"),
+        revRate: rating
       };
 
       createReview(reviewData);
@@ -51,7 +38,24 @@ const AddReview = () => {
 
   const createReview = (reviewData) => {
       call("/review/addreview", "POST", reviewData)
-      .then((response) => setReview(response.data));
+      .then((response) => {
+        navigate("/showreview", {
+          state: {
+            classDTO: item
+        }})
+      });
+  };
+
+  function StarBox({ selected, onClick }) {
+    return (
+      <span className={`star ${selected ? "selected" : ""}`} onClick={onClick}>
+        {selected ? (
+          <BsStarFill size="13" color="#BB1628" />
+        ) : (
+          <BsStarFill size="13" color="#E3E3E3" />
+        )}
+      </span>
+    );
   }
 
   return (
@@ -65,10 +69,10 @@ const AddReview = () => {
       </Grid>
       <Grid container spacing={2} marginTop={1}>
         <Grid item xs={12}>
-          <Typography variant="subtitle1">Title: {item.title}</Typography>
+          <Typography variant="subtitle1">Title: {item.className}</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="subtitle1">강사명: {item.instructorName}</Typography>
+          <Typography variant="subtitle1">강사명: {item.userId}</Typography>
         </Grid>
       </Grid>
       <form onSubmit={handleSubmit}>
@@ -118,19 +122,6 @@ const AddReview = () => {
           <Grid item xs={12}>
             <Button type="submit" fullWidth variant="contained" color="primary">
               작성 완료
-            </Button>
-          </Grid>
-
-          <Grid item xs={12}>
-          <Button
-              component={Link}
-              to={{
-                pathname: "/showreview",
-                search: `?title=${item.title}&instructorName=${item.instructorName}`,
-              }}
-              variant="body2"
-            >
-              이 강의 리뷰 더 보러가기
             </Button>
           </Grid>
         </Grid>

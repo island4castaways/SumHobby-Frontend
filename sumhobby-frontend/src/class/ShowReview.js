@@ -5,12 +5,13 @@ import { call } from "../service/ApiService";
 
 const ShowReview = () => {
 
+  const location = useLocation();
+  const item = location.state.classDTO;
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    call("/review", "GET", null)
+    call("/review/showreview", "PATCH", item)
       .then((response) => setReviews(response.data))
-      .catch((error) => console.error(error));
   }, []);
 
   return (
@@ -19,27 +20,22 @@ const ShowReview = () => {
         리뷰 보기
       </Typography>
       <Typography variant="h6" gutterBottom>
-        Title: {reviews.classTitle}
+        Title: {item.className}
       </Typography>
       <Typography variant="h6" gutterBottom>
-        강사명: {reviews.userId}
+        강사명: {item.userId}
       </Typography>
       {/* Render the reviews */}
       {reviews.map((review) => (
-        <div key={reviews.userId}>
+        <div key={review.userId}>
           <Typography variant="h6" gutterBottom>
-            내용: {reviews.revContent}
+            내용: {review.revContent}
           </Typography>
           <Typography variant="h6" gutterBottom>
-            별점: {reviews.revRate}
+            별점: {review.revRate}
           </Typography>
         </div>
       ))}
-      <Box mt={2}>
-        <Button component={Link} to="/addreview" variant="contained" color="primary">
-          리뷰 작성하기
-        </Button>
-      </Box>
     </div>
   );
 };

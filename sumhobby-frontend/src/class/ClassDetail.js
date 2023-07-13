@@ -1,29 +1,27 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Typography, Grid, Button, Card, CardActionArea, CardContent } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { call } from "../service/ApiService";
 import "./ClassDetail.css";
 
 const ClassDetail = ({ item }) => {
+
   const navigate = useNavigate();
+
+  const classDTO = item;
+  console.log(item)
+
   const handleClass = () => {
     navigate("/addreview", {
       state: {
-        title: item.className,
-        instructorName: item.userId,
-        classRate: item.classRate,
-        classDetail: item.classDetail,
-        classCategory: item.classCategory,
-      },
+        classDTO: classDTO
+      }
     });
   };
   const handleClassView = () => {
     navigate("/showreview",{
       state:{
-        title: item.className,
-        instructorName: item.userId,
-        classRate: item.classRate,
-        classDetail: item.classDetail,
+        classDTO: classDTO
       }
     })
   }
@@ -78,10 +76,10 @@ const ClassDetail = ({ item }) => {
             소개: {items.classDetail}
           </Typography>
         </div>
-        <Button onClick={handleClassView} variant="body2" className="App-link">
+        <Button onClick={() => {handleClassView()}} variant="body2" className="App-link">
           view review
         </Button>
-        <Button onClick={handleClass} variant="body2" className="App-link">
+        <Button onClick={() => {handleClass()}} variant="body2" className="App-link">
           리뷰 작성하기
         </Button>
       </div>

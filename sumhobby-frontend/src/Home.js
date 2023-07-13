@@ -51,7 +51,7 @@ const Home = () => {
             {classData[category].map((item, index) => (
               <Grid item xs={12} sm={6} md={4} key={item.classNum}>
                 <Card style={{ height: '100%' }}>
-                  <CardActionArea component={Link} to={`/class/${item.className}`} style={{ textDecoration: 'none', height: '100%' }}>
+                  <CardActionArea style={{ textDecoration: 'none', height: '100%' }}>
                     <CardMedia component="img" height="200" image={item.img} alt={item.className} />
                     <CardContent>
                       <Typography gutterBottom variant="h6" component="div">

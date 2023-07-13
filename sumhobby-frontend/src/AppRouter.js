@@ -68,11 +68,11 @@ function AppRouter() {
                     <Route path="faq" element={<FAQ />} />
                     <Route path="inquiryboard" element={<InquiryBoardList />} />
                     <Route path="purchase" element={<PurchaseList />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/class" element={<Class />} />
-                    <Route path="/class/:title" element={<ClassDetail />} />
-                    <Route path="/addreview" element={<AddReview />} />
-                    <Route path="/showreview" element={<ShowReview />} />
+                    <Route path="home" element={<Home />} />
+                    <Route path="class" element={<Class />} />
+                    <Route path="class/:title" element={<ClassDetail />} />
+                    <Route path="addreview" element={<AddReview />} />
+                    <Route path="showreview" element={<ShowReview />} />
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>
