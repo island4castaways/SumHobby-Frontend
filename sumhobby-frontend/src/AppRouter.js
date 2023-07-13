@@ -11,12 +11,14 @@ import AdminClasses from "./admin/AdminClasses";
 import CreateClass from "./admin/CreateClass";
 import AdminLectures from "./admin/AdminLectures";
 import CreateLecture from "./admin/CreateLecture";
+import AdminInquiries from "./admin/AdminInquiries";
+import AdminInqAnswer from "./admin/AdminInqAnswer";
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {"Copyright © "}
-            Island4Castaways'Developers, {new Date().getFullYear()}
+            IslandDevelopers, {new Date().getFullYear()}
             {"."}
         </Typography>
     );
@@ -35,6 +37,8 @@ function AppRouter() {
                     <Route path="admin/createClass" element={<CreateClass />} />
                     <Route path="admin/lectures" element={<AdminLectures />} />
                     <Route path="admin/createLecture" element={<CreateLecture />} />
+                    <Route path="admin/inquiries" element={<AdminInquiries />} />
+                    <Route path="admin/inqAnswer" element={<AdminInqAnswer />} />
                     <Route path="cart" element={<Cart/>}/>
                 </Routes>
             </BrowserRouter>

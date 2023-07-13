@@ -54,6 +54,7 @@ function AdminClasses() {
     return (
         <Container>
             <h2>강의실 관리</h2>
+            <h4>{admin.userName} 로그인</h4>
             <Button onClick={() => {createClass()}}>새 강의실</Button>
             <Button onClick={() => {returnToList()}}>이전 목록</Button>
             <Table>
@@ -71,6 +72,7 @@ function AdminClasses() {
                         <TableCell>Lecture</TableCell>
                     </TableRow>
                 </TableHead>
+
                 <TableBody>
                     {classes.map((classroom) => (
                         <TableRow key={classroom.classNum}>

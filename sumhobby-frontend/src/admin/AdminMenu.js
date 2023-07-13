@@ -6,13 +6,13 @@ function AdminMenu() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const role = location.state.admin.role;
-    if(role !== "관리자") {
+    const admin = location.state.admin;
+    if(admin.role !== "관리자") {
         window.location.href = "/";
     };
 
     const adminRedirect = (string) => {
-        navigate("" + string, { state: { admin: location.state.admin } })
+        navigate("" + string, { state: { admin: admin } })
     }
     
     const adminLogout = () => {
