@@ -1,17 +1,17 @@
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
-import { signin } from "./service/ApiService";
+import { signin } from "../service/ApiService";
 import { Link } from "react-router-dom";
 
 //수정 필요함 
-const FindPW = () => {
+const FindId = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
-        const useremail = data.get("useremail");
+        const email = data.get("email");
         //ApiService의 signin 메서드를 사용해서 로그인... 
         signin({
-            useremail: useremail
+            email: email
         })
     };
 
@@ -20,7 +20,7 @@ const FindPW = () => {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Typography component="h1" variant="h5">
-                        비밀번호 찾기
+                        아이디 찾기
                     </Typography>
                 </Grid>
             </Grid>
@@ -33,21 +33,10 @@ const FindPW = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            id="userid"
-                            label="아이디"
-                            name="userid"
-                            autoComplete="userid"
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="useremail"
+                            id="email"
                             label="이메일"
-                            name="useremail"
-                            autoComplete="useremail"
+                            name="email"
+                            autoComplete="email"
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -58,8 +47,8 @@ const FindPW = () => {
                     <Grid item xs={12} sm={11} style={{ textAlign: "center" }}>
                         <Grid container spacing={1} justifyContent="center">
                             <Grid item>
-                                <Link to="/findid" variant="body2">
-                                    아이디 찾기
+                                <Link to="/Findpw" variant="body2">
+                                    비밀번호 찾기
                                 </Link>
                             </Grid>
                             <Grid item>
@@ -79,4 +68,4 @@ const FindPW = () => {
 }
 
 
-export default FindPW;
+export default FindId;

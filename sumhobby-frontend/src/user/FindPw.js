@@ -1,10 +1,10 @@
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
-import { signin } from "./service/ApiService";
+import { signin } from "../service/ApiService";
 import { Link } from "react-router-dom";
 
 //수정 필요함 
-const ChangePw = () => {
+const FindPW = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
@@ -16,12 +16,11 @@ const ChangePw = () => {
     };
 
     return (
-        // <p> 아이디 찾기 페이지 </p>
         <Container component="main" maxWidth="xs" style={{ marginTop: "8%" }}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Typography component="h1" variant="h5">
-                        비밀번호 변경
+                        비밀번호 찾기
                     </Typography>
                 </Grid>
             </Grid>
@@ -34,10 +33,10 @@ const ChangePw = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            id="useremail"
-                            label="현재 비밀번호"
-                            name="useremail"
-                            autoComplete="useremail"
+                            id="userid"
+                            label="아이디"
+                            name="userid"
+                            autoComplete="userid"
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -46,34 +45,31 @@ const ChangePw = () => {
                             required
                             fullWidth
                             id="useremail"
-                            label="새 비밀번호"
-                            name="useremail"
-                            autoComplete="useremail"
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="useremail"
-                            label="새 비밀번호 확인"
+                            label="이메일"
                             name="useremail"
                             autoComplete="useremail"
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <Button type="submit" fullWidth variant="contained" color="primary">
-                            변경
+                            찾기
                         </Button>
                     </Grid>
-                    <Grid item >
-                        <Grid >
+                    <Grid item xs={12} sm={11} style={{ textAlign: "center" }}>
+                        <Grid container spacing={1} justifyContent="center">
                             <Grid item>
-                                <Link to="/Findpw" variant="body2">
-                                    비밀번호를 잊으셨나요? 
+                                <Link to="/findid" variant="body2">
+                                    아이디 찾기
                                 </Link>
-                            </Grid>                    
+                            </Grid>
+                            <Grid item>
+                                <span>|</span>
+                            </Grid>
+                            <Grid item>
+                                <Link to="/login" variant="body2">
+                                    로그인
+                                </Link>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -83,4 +79,4 @@ const ChangePw = () => {
 }
 
 
-export default ChangePw;
+export default FindPW;

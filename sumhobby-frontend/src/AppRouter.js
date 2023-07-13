@@ -13,19 +13,22 @@ import AdminLectures from "./admin/AdminLectures";
 import CreateLecture from "./admin/CreateLecture";
 import AdminInquiries from "./admin/AdminInquiries";
 import AdminInqAnswer from "./admin/AdminInqAnswer";
-import Login from "./Login";
-import SignUp from "./SignUp";
-import FindId from "./FindId";
-import FindPw from "./FindPw";
-import MyPage from "./MyPage";
-import ChangePw from "./ChangePw"
-import ChangeInfo from "./ChangeInfo"
-import FAQ from "./FAQ";
-import PurchaseList from "./PurchaseList"
-import InquiryBoardList from "./inquiryBoardList"
-import { Box, Typography } from "@mui/material";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Class, Home } from "@mui/icons-material";
+import Login from "./user/Login";
+import SignUp from "./user/SignUp";
+import FindId from "./user/FindId";
+import FindPw from "./user/FindPw";
+import MyPage from "./user/MyPage";
+import ChangePw from "./user/ChangePw";
+import ChangeInfo from "./user/ChangeInfo";
+import FAQ from "./user/FAQ";
+import PurchaseList from "./user/PurchaseList";
+import InquiryBoardList from "./user/inquiryBoardList";
+import Class from "./class/Class";
+import Home from "./Home";
+import Nav from "./nav/Nav";
+import ClassDetail from "./class/ClassDetail";
+import AddReview from "./class/AddReview";
+import ShowReview from "./class/ShowReview";
 
 function Copyright() {
     return (
@@ -39,6 +42,9 @@ function Copyright() {
 function AppRouter() {
     return (
         <div>
+            <Box marginBottom={5}>
+                <Nav />
+            </Box>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<App />}/>

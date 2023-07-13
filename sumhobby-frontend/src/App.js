@@ -12,7 +12,7 @@ function App() {
   
   const addItem = (item) => {
     call("/update","POST", item)
-    .then((Response)=> setItems(Response.data))
+    .then((Response)=> setItem(Response.data))
   }
 
   return (

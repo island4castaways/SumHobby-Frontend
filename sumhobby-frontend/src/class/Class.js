@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Typography, Button } from "@mui/material";
 import ClassDetail from "./ClassDetail";
-import { call } from "./service/ApiService";
+import { call } from "../service/ApiService";
 import "./Class.css";
 
 const Class = () => {

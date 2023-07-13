@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Typography, Grid, Button, Card, CardActionArea, CardContent } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { call } from "./service/ApiService";
+import { call } from "../service/ApiService";
 import "./ClassDetail.css";
 
 const ClassDetail = ({ item }) => {

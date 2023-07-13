@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Grid, Button, Box } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
-import { call } from "./service/ApiService";
+import { call } from "../service/ApiService";
 
 const ShowReview = () => {
 

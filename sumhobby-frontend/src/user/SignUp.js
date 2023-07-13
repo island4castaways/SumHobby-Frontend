@@ -1,9 +1,9 @@
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { modify} from "./service/ApiService";
+import { signup } from "../service/ApiService";
 
-function ChangeInfo() {
+function SignUp() {
     const handleSubmit = (event) => {
         event.preventDefault();
         // 오브젝트에서 form에 저장된 데이터를 맴의 형태로 변환
@@ -11,9 +11,9 @@ function ChangeInfo() {
         const userId = data.get("userId");
         const password = data.get("password");
         const userName = data.get("userName");
-        const email = data.get("email");
         const phone = data.get("phone");
-        modify({ userId: userId, password: password, userName: userName, email: email, phone: phone }).then(
+        const email = data.get("email");
+        signup({ userId: userId, password: password, userName: userName, email: email, phone: phone }).then(
             (response) => {
                 //계정 생성 성공시 login 페이지로 리다이렉트
                 window.location.href = "/login";
@@ -27,7 +27,7 @@ function ChangeInfo() {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography component="h1" variant="h5">
-                            회원 정보 수정
+                            회원 가입
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -47,10 +47,11 @@ function ChangeInfo() {
                             variant="outlined"
                             required
                             fullWidth
-                            name="userName"
-                            label="이름"
-                            type="userName"
-                            id="userName"
+                            name="password"
+                            label="패스워드"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -58,13 +59,11 @@ function ChangeInfo() {
                             variant="outlined"
                             required
                             fullWidth
-                            name="password"
-                            label="패스워드"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
+                            name="userName"
+                            label="이름"
+                            id="userName"
                         />
-                    </Grid>            
+                    </Grid>
                     <Grid item xs={12}>
                         <TextField
                             variant="outlined"
@@ -94,8 +93,15 @@ function ChangeInfo() {
                             variant="contained"
                             color="primary"
                         >
-                            수정 완료
+                            계정 생성
                         </Button>
+                    </Grid>
+                </Grid>
+                <Grid container justify="flex-end" marginTop={"3%"}>
+                    <Grid item>
+                        <Link to="/login" variant="body2" style={{ marginTop: "8%" }} >
+                            이미 계정이 있습니까? 로그인하세요.
+                        </Link>
                     </Grid>
                 </Grid>
 
@@ -104,4 +110,5 @@ function ChangeInfo() {
     )
 
 }
-export default ChangeInfo;
+
+export default SignUp;
