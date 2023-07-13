@@ -36,8 +36,13 @@ const Cart = () => {
 
   const deleteItem = (item) => {
     // 삭제할 아이템을 찾는다.
+    if(item.add){
+      const newTotalPrice = total - item.price;
+      setTotal(newTotalPrice);
+    }
     const newItems = cartItems.filter((e) => e !== item);
     // 삭제할 아이템을 제외한 아이템을 다시 배열에 저장한다.
+    
     setCartItems([...newItems]);
   };
 
