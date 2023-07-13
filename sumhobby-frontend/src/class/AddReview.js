@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { useLocation, useNavigate , Link} from "react-router-dom";
 import { BsStarFill, BsStarHalf } from "react-icons/bs";
-import { call } from "./service/ApiService";
+import { call } from "../service/ApiService";
 
 function StarBox({ selected, onClick }) {
   return (

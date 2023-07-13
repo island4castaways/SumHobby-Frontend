@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Typography, Grid, Button, Card, CardActionArea, CardContent } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import { call } from "./service/ApiService";
+import { call } from "../service/ApiService";
 import "./ClassDetail.css";
 
 const ClassDetail = ({ item }) => {
@@ -17,6 +17,16 @@ const ClassDetail = ({ item }) => {
       },
     });
   };
+  const handleClassView = () => {
+    navigate("/showreview",{
+      state:{
+        title: item.className,
+        instructorName: item.userId,
+        classRate: item.classRate,
+        classDetail: item.classDetail,
+      }
+    })
+  }
 
   const [items, setItems] = useState([]);
   useEffect(() => {
@@ -68,15 +78,9 @@ const ClassDetail = ({ item }) => {
             소개: {items.classDetail}
           </Typography>
         </div>
-        <Link
-          to={`/showreview?title=${encodeURIComponent(item.className)}&instructorName=${encodeURIComponent(
-            item.instructorName
-          )}`}
-          variant="body2"
-          className="App-link"
-        >
-          View Review
-        </Link>
+        <Button onClick={handleClassView} variant="body2" className="App-link">
+          view review
+        </Button>
         <Button onClick={handleClass} variant="body2" className="App-link">
           리뷰 작성하기
         </Button>
@@ -102,7 +106,8 @@ const ClassDetail = ({ item }) => {
         <div className="lecture-scroll-container" ref={scrollContainerRef} >
           <Grid container spacing={2} justifyContent="flex-start">
             {lectures.slice(0, 6).map((lecture) => (
-              <Grid item xs={12} sm={4} md={2} key={lecture.lectureNum}>
+              <Grid item xs={12} sm={4} md={2} 
+              key={lecture.lectureNum}>
                 <Card>
                   <CardActionArea>
                     <iframe

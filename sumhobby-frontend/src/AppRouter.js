@@ -5,11 +5,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
 import Home from './Home';
 import Cart from './Cart';
-import Class from './Class';
-import ClassDetail from './ClassDetail';
-import AddReview from './AddReview';
-import ShowReview from './ShowReview';
+import Class from './class/Class';
+import ClassDetail from './class/ClassDetail';
+import AddReview from './class/AddReview';
+import ShowReview from './class/ShowReview';
 import { Star } from '@mui/icons-material';
+import LectureDetail from './class/LectureDetail';
 
 function AppRouter() {
   return (
@@ -20,6 +21,7 @@ function AppRouter() {
           <Route path="/cart" element={<Cart />} />
           <Route path="/home" element={<Home />} />
           <Route path="/class" element={<Class />} />
+          <Route path="/lecture" element={<LectureDetail />} />
           <Route path="/class/:title" element={<ClassDetail />} />
           <Route
             path="/addreview"
