@@ -147,7 +147,7 @@ function CreateClass() {
                                         삭제
                                     </Button>
                                 </TableCell>
-                            ) : (<></>)}
+                            ) : null}
                         </TableRow>
                     </TableBody>
                 </Table>
