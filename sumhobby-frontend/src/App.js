@@ -20,6 +20,6 @@ function App() {
       <Home classData={classData} />
     </div>
   );
-}
+};
 
 export default App;
