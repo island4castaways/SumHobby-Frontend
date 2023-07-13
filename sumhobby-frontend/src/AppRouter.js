@@ -13,13 +13,24 @@ import AdminLectures from "./admin/AdminLectures";
 import CreateLecture from "./admin/CreateLecture";
 import AdminInquiries from "./admin/AdminInquiries";
 import AdminInqAnswer from "./admin/AdminInqAnswer";
+import Login from "./Login";
+import SignUp from "./SignUp";
+import FindId from "./FindId";
+import FindPw from "./FindPw";
+import MyPage from "./MyPage";
+import ChangePw from "./ChangePw"
+import ChangeInfo from "./ChangeInfo"
+import FAQ from "./FAQ";
+import PurchaseList from "./PurchaseList"
+import InquiryBoardList from "./inquiryBoardList"
+import { Box, Typography } from "@mui/material";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function Copyright() {
     return (
         <Typography variant="body2" color="textSecondary" align="center">
             {"Copyright © "}
             IslandDevelopers, {new Date().getFullYear()}
-            {"."}
         </Typography>
     );
 };
@@ -40,6 +51,16 @@ function AppRouter() {
                     <Route path="admin/inquiries" element={<AdminInquiries />} />
                     <Route path="admin/inqAnswer" element={<AdminInqAnswer />} />
                     <Route path="cart" element={<Cart/>}/>
+                    <Route path="login" element={<Login />} />
+                    <Route path="signup" element={<SignUp />} />
+                    <Route path="findid" element={<FindId />} />
+                    <Route path="findpw" element={<FindPw />} />
+                    <Route path="mypage" element={<MyPage />} />
+                    <Route path="changepw" element={<ChangePw />} />
+                    <Route path="changeinfo" element={<ChangeInfo />} />
+                    <Route path="faq" element={<FAQ />} />
+                    <Route path="inquiryboard" element={<InquiryBoardList />} />
+                    <Route path="purchase" element={<PurchaseList />} />
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>

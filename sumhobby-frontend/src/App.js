@@ -10,6 +10,11 @@ function App() {
     .then((response) => setItem(response.data));
   }, []);
   
+  const addItem = (item) => {
+    call("/update","POST", item)
+    .then((Response)=> setItems(Response.data))
+  }
+
   return (
     <div className="App">
       <header className="App-header">
