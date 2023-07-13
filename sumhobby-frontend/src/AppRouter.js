@@ -25,6 +25,7 @@ import PurchaseList from "./PurchaseList"
 import InquiryBoardList from "./inquiryBoardList"
 import { Box, Typography } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Class, Home } from "@mui/icons-material";
 
 function Copyright() {
     return (
@@ -50,7 +51,7 @@ function AppRouter() {
                     <Route path="admin/createLecture" element={<CreateLecture />} />
                     <Route path="admin/inquiries" element={<AdminInquiries />} />
                     <Route path="admin/inqAnswer" element={<AdminInqAnswer />} />
-                    <Route path="cart" element={<Cart/>}/>
+                    <Route path="cart" element={<Cart />} />
                     <Route path="login" element={<Login />} />
                     <Route path="signup" element={<SignUp />} />
                     <Route path="findid" element={<FindId />} />
@@ -61,6 +62,11 @@ function AppRouter() {
                     <Route path="faq" element={<FAQ />} />
                     <Route path="inquiryboard" element={<InquiryBoardList />} />
                     <Route path="purchase" element={<PurchaseList />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/class" element={<Class />} />
+                    <Route path="/class/:title" element={<ClassDetail />} />
+                    <Route path="/addreview" element={<AddReview />} />
+                    <Route path="/showreview" element={<ShowReview />} />
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>
