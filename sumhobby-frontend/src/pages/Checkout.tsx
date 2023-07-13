@@ -5,6 +5,7 @@ import { nanoid } from "nanoid"
 import "../App.css"
 import { useLocation } from "react-router-dom"
 import { call } from "../service/ApiService"
+import { SuccessPage } from "./Success.tsx"
 
 const clientKey = "test_ck_5GePWvyJnrKnv4pgnx7VgLzN97Eo"
 const customerKey = "test_sk_4vZnjEJeQVxXaL051vbVPmOoBN0k"
@@ -14,10 +15,27 @@ export default function Checkout() {
   const paymentMethodsWidgetRef = useRef<ReturnType<
     PaymentWidgetInstance["renderPaymentMethods"]
   > | null>(null)
+
+  type Item = {
+    add: boolean;
+    cartNum: number;
+    className: string;
+    classNum: number;
+    classPrice: number;
+    userEmail: string;
+    userName: string;
+    userTk: string;
+    orderId: string;
+  };
+
   const location = useLocation();
-  const amount = location.state;
-  console.log(amount.total)
-  const [price, setPrice] = useState(amount.total);
+  const state = location.state as {total: number, checkItems: Item[]};
+  const [price, setPrice] = useState(state.total);
+  const [items, setItems] = useState<Item[]>(state.checkItems || []);
+
+  useEffect(() => {
+    setItems(state.checkItems);
+  }, [])
 
   useEffect(() => {
     (async () => {
@@ -46,6 +64,24 @@ export default function Checkout() {
     )
   }, [price])
 
+  
+  const createOrderId = () => {
+    const orderId = nanoid();
+    const updatedItems = items.map((item) => {
+      return {
+        ...item,
+        orderId: orderId,
+      };
+    });
+    setItems(updatedItems);
+
+    items.map((item) =>{
+      call("/checkout","POST",item)
+    })
+    return orderId;
+  };
+
+
   return (
     <div>
       <h1>주문서</h1>
@@ -64,12 +100,12 @@ export default function Checkout() {
           const paymentWidget = paymentWidgetRef.current
           try{
             await paymentWidget?.requestPayment({
-            orderId: nanoid(),
-            orderName: "토스 티셔츠 외 2건",
-            customerName: "이게될까",
-            customerEmail: "customer123@gmail.com",
-            successUrl: `http://localhost:3000/success`,
-            failUrl: `http://localhost:3000/fail`,
+            orderId: createOrderId(),
+            orderName: items[0].className,
+            customerName: items[0].userTk,
+            customerEmail: items[0].userEmail,
+            successUrl: `http://localhost:1010/checkout/success`,
+            failUrl: `http://localhost:1010/checkout/fail`,
             })
           }catch(err){
             console.log(err)
@@ -77,8 +113,6 @@ export default function Checkout() {
         }}>
         결제하기
         </button>
-
-
     </div>
   )
 }

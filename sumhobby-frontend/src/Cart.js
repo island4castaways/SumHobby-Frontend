@@ -17,6 +17,8 @@ import { Link, useNavigate, useNavigationType } from 'react-router-dom';
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
+  const [checkItems, setCheckItems] = useState([]);
+
 
   const navigate = useNavigate();
 
@@ -31,7 +33,7 @@ const Cart = () => {
     call("/cart","DELETE",item)
     .then((response) => setCartItems(response.data));
     
-  };
+  }; 
 
   const handleCheckboxChange = (index) => {
     const updatedCartItems = cartItems.map((item, i) => {
@@ -55,14 +57,26 @@ const Cart = () => {
     setTotal(newTotalPrice);
   };
 
-  const goCheckout = () =>{
+  const goCheckout = () => {
+    const checkedItems = cartItems.filter((item) => item.add);
+    setCheckItems(checkedItems);
+
+
+    // checkedItems.map((item, index) =>{
+    //   call("/checkout", "POST", item)
+    // })
     
-    
-    
-    navigate('/checkout',
-     {
+    setTimeout(() => {
+      navigateCheck(checkedItems);
+    }, 0);
+  };
+  
+  const navigateCheck = (items) => {
+    console.log(items);
+    navigate('/checkout', {
       state: {
         total: total,
+        checkItems: items,
       },
     });
   };
