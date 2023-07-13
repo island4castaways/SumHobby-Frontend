@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 function App() {
   const [item, setItem] = useState([]);
 
-  // useEffect(() => {
-  //   call("/cart/testcart", "GET", null)
-  //   .then((response) => setItem(response.data));
-  // }, []);
+  useEffect(() => {
+    call("/cart/testcart", "GET", null)
+    .then((response) => setItem(response.data));
+  }, []);
   
   const addItem = (item) => {
     call("/update","POST", item)
