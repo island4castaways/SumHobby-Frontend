@@ -1,47 +1,85 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
-import App from './App';
-import Home from './Home';
+import React from "react";
+import "./index.css";
+import { Box, Typography } from "@mui/material";
+import AdminLogin from "./admin/AdminLogin";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AdminMenu from "./admin/AdminMenu";
 import Cart from './Cart';
-import Class from './class/Class';
-import ClassDetail from './class/ClassDetail';
-import AddReview from './class/AddReview';
-import ShowReview from './class/ShowReview';
-import { Star } from '@mui/icons-material';
-import LectureDetail from './class/LectureDetail';
+import App from './App';
+import AdminUsers from "./admin/AdminUsers";
+import AdminClasses from "./admin/AdminClasses";
+import CreateClass from "./admin/CreateClass";
+import AdminLectures from "./admin/AdminLectures";
+import CreateLecture from "./admin/CreateLecture";
+import AdminInquiries from "./admin/AdminInquiries";
+import AdminInqAnswer from "./admin/AdminInqAnswer";
+import Login from "./user/Login";
+import SignUp from "./user/SignUp";
+import FindId from "./user/FindId";
+import FindPw from "./user/FindPw";
+import MyPage from "./user/MyPage";
+import ChangePw from "./user/ChangePw";
+import ChangeInfo from "./user/ChangeInfo";
+import FAQ from "./user/FAQ";
+import PurchaseList from "./user/PurchaseList";
+import InquiryBoardList from "./user/inquiryBoardList";
+import Class from "./class/Class";
+import Home from "./Home";
+import Nav from "./nav/Nav";
+import ClassDetail from "./class/ClassDetail";
+import AddReview from "./class/AddReview";
+import ShowReview from "./class/ShowReview";
+
+function Copyright() {
+    return (
+        <Typography variant="body2" color="textSecondary" align="center">
+            {"Copyright © "}
+            IslandDevelopers, {new Date().getFullYear()}
+        </Typography>
+    );
+};
 
 function AppRouter() {
-  return (
-    <div>
-      <Router>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/class" element={<Class />} />
-          <Route path="/lecture" element={<LectureDetail />} />
-          <Route path="/class/:title" element={<ClassDetail />} />
-          <Route
-            path="/addreview"
-            element={<AddReview />}
-          />
-          <Route
-            path="/showreview"
-            element={<ShowReview />}
-          />
-        </Routes>
-      </Router>
-      <Box mt={5}>
-        <Typography variant="body2" color="textSecondary" align="center">
-          {'Copyright ©'}
-          Islandengineer, {new Date().getFullYear()}
-          {'.'}
-        </Typography>
-      </Box>
-    </div>
-  );
-}
+    return (
+        <div>
+            <Box marginBottom={5}>
+                <Nav />
+            </Box>
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<App />}/>
+                    <Route path="admin" element={<AdminLogin />} />
+                    <Route path="admin/menu" element={<AdminMenu />} />
+                    <Route path="admin/users" element={<AdminUsers />} />
+                    <Route path="admin/classes" element={<AdminClasses />} />
+                    <Route path="admin/createClass" element={<CreateClass />} />
+                    <Route path="admin/lectures" element={<AdminLectures />} />
+                    <Route path="admin/createLecture" element={<CreateLecture />} />
+                    <Route path="admin/inquiries" element={<AdminInquiries />} />
+                    <Route path="admin/inqAnswer" element={<AdminInqAnswer />} />
+                    <Route path="cart" element={<Cart />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="signup" element={<SignUp />} />
+                    <Route path="findid" element={<FindId />} />
+                    <Route path="findpw" element={<FindPw />} />
+                    <Route path="mypage" element={<MyPage />} />
+                    <Route path="changepw" element={<ChangePw />} />
+                    <Route path="changeinfo" element={<ChangeInfo />} />
+                    <Route path="faq" element={<FAQ />} />
+                    <Route path="inquiryboard" element={<InquiryBoardList />} />
+                    <Route path="purchase" element={<PurchaseList />} />
+                    <Route path="/home" element={<Home />} />
+                    <Route path="/class" element={<Class />} />
+                    <Route path="/class/:title" element={<ClassDetail />} />
+                    <Route path="/addreview" element={<AddReview />} />
+                    <Route path="/showreview" element={<ShowReview />} />
+                </Routes>
+            </BrowserRouter>
+            <Box mt={5}>
+                <Copyright />
+            </Box>
+        </div>
+    );
+};
 
 export default AppRouter;

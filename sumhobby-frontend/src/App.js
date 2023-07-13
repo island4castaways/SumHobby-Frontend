@@ -1,23 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { call } from './service/ApiService';
-import Home from './Home';
+import './App.css';
+import { call } from "./service/ApiService"
+import { useEffect, useState } from 'react';
 
 function App() {
-  const [classData, setClassData] = useState([]);
+  const [item, setItem] = useState([]);
 
-  useEffect(() => {
-    call('/class/top-rated', 'GET', null)
-      .then((response) => {
-        if (response && response.data) {
-          setClassData(response.data);
-        }
-      })
-      .catch((error) => console.log('Error:', error));
-  }, []);
+  // useEffect(() => {
+  //   call("/cart/testcart", "GET", null)
+  //   .then((response) => setItem(response.data));
+  // }, []);
+  
+  const addItem = (item) => {
+    call("/update","POST", item)
+    .then((Response)=> setItem(Response.data))
+  }
 
   return (
     <div className="App">
-      <Home classData={classData} />
+      <header className="App-header">
+        <p>
+          {item}
+        </p>
+      </header>
     </div>
   );
 };
