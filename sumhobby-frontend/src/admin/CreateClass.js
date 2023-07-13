@@ -5,35 +5,40 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function CreateClass() {
     const location = useLocation();
+    const navigate = useNavigate();
+
     const admin = location.state.admin;
     const mode = location.state.classDTO ? "modify" : "create";
     const classDTO = location.state.classDTO ? location.state.classDTO : null;
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.target);
-        const className = data.get("className");
-        const userId = data.get("userId");
-        const classDetail = data.get("classDetail");
-        const classCategory = data.get("classCategory");
-        const classPrice = data.get("classPrice");
-        if(mode === "create") {
-            createClass({
-                className: className,
-                userId: userId,
-                classDetail: classDetail,
-                classCategory: classCategory,
-                classPrice: classPrice
-            });    
-        } else if(mode === "modify") {
-            modifyClass({
-                classNum: classDTO.classNum,
-                className: className,
-                userId: userId,
-                classDetail: classDetail,
-                classCategory: classCategory,
-                classPrice: classPrice
-            });
+        const confirm = window.confirm("강의실을 저장하겠습니까?");
+        if(confirm) {
+            const data = new FormData(event.target);
+            const className = data.get("className");
+            const userId = data.get("userId");
+            const classDetail = data.get("classDetail");
+            const classCategory = data.get("classCategory");
+            const classPrice = data.get("classPrice");
+            if(mode === "create") {
+                createClass({
+                    className: className,
+                    userId: userId,
+                    classDetail: classDetail,
+                    classCategory: classCategory,
+                    classPrice: classPrice
+                });    
+            } else if(mode === "modify") {
+                modifyClass({
+                    classNum: classDTO.classNum,
+                    className: className,
+                    userId: userId,
+                    classDetail: classDetail,
+                    classCategory: classCategory,
+                    classPrice: classPrice
+                });
+            }    
         }
     };
 
@@ -48,7 +53,6 @@ function CreateClass() {
         });
     };
 
-    const navigate = useNavigate();
     const modifyClass = (classDTO) => {
         return call("/admin/modifyClass", "PUT", classDTO).then((response) => {
             if(response.data) {
@@ -69,6 +73,10 @@ function CreateClass() {
                 alert("강의실 삭제를 실패했습니다.");
             }
         });
+    };
+
+    const returnToList = () => {
+        navigate("/admin/classes", { state: { admin: admin } })
     };
 
     const textField = (mode, id) => {
@@ -92,13 +100,14 @@ function CreateClass() {
 
     return (
         <Container>
+            {classDTO ? (<h2>{classDTO.classNum}, {classDTO.className} 수정 중</h2>) : (<h2>새 강의실</h2>)}
+            <h4>{admin.userName} 로그인</h4>
             <form onSubmit={handleSubmit}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell colSpan={2}>
-                                {classDTO ? (<h2>{classDTO.classNum}, {classDTO.className} 수정 중</h2>) : (<h2>새 강의실</h2>)}
-                                <h4>{admin.userName} 로그인</h4>
+                            <TableCell>
+                                <Button onClick={() => {returnToList()}}>이전 목록</Button>
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -136,14 +145,14 @@ function CreateClass() {
                         </TableRow>
                         <TableRow>
                             <TableCell>
-                                <Button type="submit" onClick={() => window.confirm("강의실을 저장하겠습니까?")}>저장</Button>
+                                <Button type="submit">저장</Button>
                             </TableCell>
                             {classDTO ? (
                                 <TableCell>
                                     <Button onClick={() => {
-                                        window.confirm("강의실을 삭제하겠습니까?")
-                                        deleteClass(classDTO)
-                                        }}>
+                                        if(window.confirm("강의실을 삭제하겠습니까?")) {
+                                            deleteClass(classDTO);
+                                        }}}>
                                         삭제
                                     </Button>
                                 </TableCell>

@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function CreateLecture() {
     const location = useLocation();
+    const navigate = useNavigate();
+
     const admin = location.state.admin;
     const classDTO = location.state.classDTO;
     const mode = location.state.lectureDTO ? "modify": "create";
@@ -12,39 +14,36 @@ function CreateLecture() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.target);
-        const lecTitle = data.get("lecTitle");
-        const lecDetail = data.get("lecDetail");
-        const lecUrl = data.get("lecUrl");
-        if(mode === "create") {
-            createLecture({
-                lecTitle: lecTitle,
-                lecDetail: lecDetail,
-                lecUrl: lecUrl,
-                classNum: classDTO.classNum
-            });    
-        } else if(mode === "modify") {
-            modifyLecture({
-                lecNum: lectureDTO.lecNum,
-                lecTitle: lecTitle,
-                classNum: classDTO.classNum,
-                lecDetail: lecDetail,
-                lecUrl: lecUrl
-            });
+        const confirm = window.confirm("강의를 저장하겠습니까?");
+        if(confirm) {
+            const data = new FormData(event.target);
+            const lecTitle = data.get("lecTitle");
+            const lecDetail = data.get("lecDetail");
+            const lecUrl = data.get("lecUrl");
+            if(mode === "create") {
+                createLecture({
+                    lecTitle: lecTitle,
+                    lecDetail: lecDetail,
+                    lecUrl: lecUrl,
+                    classNum: classDTO.classNum
+                });    
+            } else if(mode === "modify") {
+                modifyLecture({
+                    lecNum: lectureDTO.lecNum,
+                    lecTitle: lecTitle,
+                    classNum: classDTO.classNum,
+                    lecDetail: lecDetail,
+                    lecUrl: lecUrl
+                });
+            }
         }
     };
 
-    const navigate = useNavigate();
     const createLecture = (lectureDTO) => {
         return call("/admin/createLecture", "POST", lectureDTO).then((response) => {
             if(response.data) {
                 alert("강의 추가가 완료되었습니다.");
-                navigate("/admin/lectures", {
-                    state: {
-                        admin: admin,
-                        classDTO: classDTO
-                    }
-                });
+                navigate("/admin/lectures", { state: { admin: admin, classDTO: classDTO } });
             } else {
                 alert("강의 추가를 실패했습니다.");
             }
@@ -55,12 +54,7 @@ function CreateLecture() {
         return call("/admin/modifyLecture", "PUT", lectureDTO).then((response) => {
             if(response.data) {
                 alert("강의 수정이 완료되었습니다.");
-                navigate("/admin/lectures", {
-                    state: {
-                        admin: admin,
-                        classDTO: classDTO
-                    }
-                });
+                navigate("/admin/lectures", { state: { admin: admin, classDTO: classDTO } });
             } else {
                 alert("강의 수정을 실패했습니다.");
             }
@@ -71,14 +65,13 @@ function CreateLecture() {
         return call("/admin/deleteLecture", "DELETE", lectureDTO).then((response) => {
             if(response.data) {
                 alert("강의 삭제가 완료되었습니다.");
-                navigate("/admin/lectures", {
-                    state: {
-                        admin: admin,
-                        classDTO: classDTO
-                    }
-                });
+                navigate("/admin/lectures", { state: { admin: admin, classDTO: classDTO } });
             }
         });
+    };
+
+    const returnToList = () => {
+        navigate("/admin/lectures", { state: { admin: admin, classDTO: classDTO } })
     };
 
     const textField = (mode, id) => {
@@ -102,17 +95,18 @@ function CreateLecture() {
 
     return (
         <Container>
+            {lectureDTO ? (<h2>
+                {classDTO.classNum}, {classDTO.className} 강의실 {lectureDTO.lecNum}, {lectureDTO.lecTitle} 수정 중
+            </h2>) : (<h2>
+                {classDTO.classNum}, {classDTO.className} 강의 추가
+            </h2>)}
+            <h4>{admin.userName} 로그인</h4>
             <form onSubmit={handleSubmit}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell colSpan={2}>
-                                {lectureDTO ? (<h2>
-                                    {classDTO.classNum}, {classDTO.className} 강의실 {lectureDTO.lecNum}, {lectureDTO.lecTitle} 수정 중
-                                </h2>) : (<h2>
-                                    {classDTO.classNum}, {classDTO.className} 강의 추가
-                                </h2>)}
-                                <h4>{admin.userName} 로그인</h4>
+                            <TableCell>
+                                <Button onClick={() => {returnToList()}}>이전 목록</Button>
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -138,14 +132,14 @@ function CreateLecture() {
                         </TableRow>
                         <TableRow>
                             <TableCell>
-                                <Button type="submit" onClick={() => window.confirm("강의를 저장하겠습니까?")}>저장</Button>
+                                <Button type="submit">저장</Button>
                             </TableCell>
                             {lectureDTO ? (
                                 <TableCell>
                                     <Button onClick={() => {
-                                        window.confirm("강의를 삭제하겠습니까?")
-                                        deleteLecture(lectureDTO)
-                                        }}>
+                                        if(window.confirm("강의를 삭제하겠습니까?")) {
+                                            deleteLecture(lectureDTO)
+                                        }}}>
                                         삭제
                                     </Button>
                                 </TableCell>

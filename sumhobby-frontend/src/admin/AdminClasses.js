@@ -5,6 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminClasses() {
     const location = useLocation();
+    const navigate = useNavigate();
+
     const admin = location.state.admin;
     if(admin.role !== "관리자") {
         window.location.href = "/";
@@ -17,7 +19,6 @@ function AdminClasses() {
         ));
     }, []);
 
-    const navigate = useNavigate();
     const adminLectures = (classDTO) => {
         return (
             navigate("/admin/lectures", {
@@ -46,10 +47,15 @@ function AdminClasses() {
         )
     }
 
+    const returnToList = () => {
+        navigate("/admin/menu", { state: { admin: admin } })
+    }
+
     return (
         <Container>
             <h2>강의실 관리</h2>
             <Button onClick={() => {createClass()}}>새 강의실</Button>
+            <Button onClick={() => {returnToList()}}>이전 목록</Button>
             <Table>
                 <TableHead>
                     <TableRow>

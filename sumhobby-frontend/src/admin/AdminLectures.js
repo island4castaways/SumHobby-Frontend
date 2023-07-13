@@ -5,10 +5,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminLectures() {
     const location = useLocation();
+    const navigate = useNavigate();
+
     const admin = location.state.admin;
     if(admin.role !== "관리자") {
         window.location.href = "/";
     };
+
     const classDTO = location.state.classDTO;
 
     const [lectures, setLectures] = useState([]);
@@ -18,7 +21,6 @@ function AdminLectures() {
         });
     }, [classDTO]);
 
-    const navigate = useNavigate();
     const createLecture = () => {
         return (
             navigate("/admin/createLecture", {
@@ -42,6 +44,10 @@ function AdminLectures() {
         )
     }
 
+    const returnToList = () => {
+        navigate("/admin/classes", { state: { admin: admin } })
+    }
+
     return (
         <Container>
             <h2>강의 관리</h2>
@@ -50,6 +56,7 @@ function AdminLectures() {
                 <h5>{classDTO.classNum}, {classDTO.className} 강의실</h5>
             )}
             <Button onClick={() => {createLecture()}}>강의 추가</Button>
+            <Button onClick={() => {returnToList()}}>이전 목록</Button>
             <Table>
                 <TableHead>
                     <TableRow>

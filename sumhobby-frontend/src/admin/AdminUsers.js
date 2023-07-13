@@ -1,10 +1,12 @@
 import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminUsers() {
     const location = useLocation();
+    const navigate = useNavigate();
+
     const admin = location.state.admin;
     if(admin.role !== "관리자") {
         window.location.href = "/";
@@ -25,16 +27,21 @@ function AdminUsers() {
         }
     }
 
-    function changeTeacher(userDTO) {
+    const changeTeacher = (userDTO) => {
         call("/admin/users", "PUT", userDTO).then((response) => (
             setUsers(response.data)
         ));
+    }
+
+    const returnToList = () => {
+        navigate("/admin/menu", { state: { admin: admin } })
     }
 
     return (
         <Container>
             <h2>사용자 관리</h2>
             <h4>{admin.userName} 로그인</h4>
+            <Button onClick={() => {returnToList()}}>목록</Button>
             <Table>
                 <TableHead>
                     <TableRow>

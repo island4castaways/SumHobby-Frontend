@@ -4,12 +4,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminMenu() {
     const location = useLocation();
+    const navigate = useNavigate();
+
     const role = location.state.admin.role;
     if(role !== "관리자") {
         window.location.href = "/";
     };
-
-    const navigate = useNavigate();
 
     const adminRedirect = (string) => {
         navigate("" + string, { state: { admin: location.state.admin } })
