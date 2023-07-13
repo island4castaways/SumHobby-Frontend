@@ -34,5 +34,143 @@
     cursor: pointer;
   }
   
+  .lecture-header{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
   /* Additional styling if needed */
   
+
+/* ClassDetail.css */
+
+.ClassDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.class-thumbnail {
+  max-width: 300px;
+  max-height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.info-row {
+  margin-bottom: 10px;
+}
+
+.link-container {
+  margin-bottom: 10px;
+}
+
+.App-link {
+  color: #1976d2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lecture-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Additional styling if needed */
+
+/* Scrollable container */
+.lecture-scroll-container {
+  display: flex;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+/* Hide scrollbar */
+.ClassDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.class-thumbnail {
+  max-width: 300px;
+  max-height: 150px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.info-row {
+  margin-bottom: 10px;
+}
+
+.link-container {
+  margin-bottom: 10px;
+}
+
+.App-link {
+  color: #1976d2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lecture-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.lecture-scroll-container {
+  display: flex;
+  overflow-x: scroll;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.lecture-grid {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.lecture-card {
+  flex: 0 0 auto;
+  width: 200px;
+  margin-right: 10px;
+}
+
+.scroll-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.scroll-buttons button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+}
+
+.scroll-buttons button:hover {
+  color: #555;
+}
+
+
