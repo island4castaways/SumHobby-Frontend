@@ -3,9 +3,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FaAngleRight } from "react-icons/fa";
-import { signout } from './service/ApiService';
+import { signout } from '../service/ApiService';
 import { useParams } from "react-router-dom";
-
 
 const MyPage = () => {
   const { userId } = useParams();

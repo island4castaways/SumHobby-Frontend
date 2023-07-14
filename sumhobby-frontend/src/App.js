@@ -1,33 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
-import { call } from './service/ApiService';
-import { useState } from 'react';
+import { call } from "./service/ApiService"
+import { useEffect, useState } from 'react';
 
 function App() {
-  const [items, setItems] = useState([]);
+  const [item, setItem] = useState([]);
+
+  useEffect(() => {
+    call("/cart/testcart", "GET", null)
+    .then((response) => setItem(response.data));
+  }, []);
+  
   const addItem = (item) => {
     call("/update","POST", item)
-    .then((Response)=> setItems(Response.data))
+    .then((Response)=> setItem(Response.data))
   }
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {item}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
   );
-}
+};
 
 export default App;

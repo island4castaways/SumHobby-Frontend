@@ -31,11 +31,11 @@ const Nav = () => {
                         </div>
 
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a className="Navs" href="/">
+                        <a className="Navs" href="/home">
                             홈
                         </a>
                         &nbsp;&nbsp;|&nbsp;&nbsp;
-                        <a className="Navs" href="/">
+                        <a className="Navs" href="/class">
                             강의실
                         </a>
                         &nbsp;&nbsp;|&nbsp;&nbsp;
@@ -43,7 +43,7 @@ const Nav = () => {
                             마이페이지
                         </a>
                         &nbsp;&nbsp;|&nbsp;&nbsp;
-                        <a className="Navs" href="/">
+                        <a className="Navs" href="/cart">
                             장바구니
                         </a>  
                         &nbsp;&nbsp;&nbsp;              

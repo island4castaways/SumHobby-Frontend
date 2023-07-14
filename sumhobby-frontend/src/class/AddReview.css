@@ -1,0 +1,25 @@
+.starBox {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+
+.pointOfStar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: yellow;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.backgroundStar {
+  color: gray;
+}
+
+.star-rating {
+  margin-top: 10px;
+}
