@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { Typography, Card, CardActionArea, CardContent } from "@mui/material";
 import { call } from "../service/ApiService";
+import { useLocation } from "react-router-dom";
 
 const LectureDetail = () => {
 
-    const [lecture, setLectures] = useState([]);
+  const location = useLocation();
 
-    useEffect(() => {
-        call("/lecture","GET",null)
-        .then((response) => setLectures(response.data)) 
-    });
+  const lectureDTO = location.state.lectureDTO; 
+
+    // useEffect(() => {
+    //     call("/lecture","GET",null)
+    //     .then((response) => setLectures(response.data)) 
+    // });
     
   return (
     <div>
       <Typography variant="h6" gutterBottom>
-        제목: {lecture.lecTitle}
+        제목: {lectureDTO.lecTitle}
       </Typography>
       <Typography variant="body2" gutterBottom>
-        세부사항: {lecture.lecDetail}
+        강의 내용: {lectureDTO.lecDetail}
       </Typography>
       <div>
         <Typography variant="subtitle1" gutterBottom>
@@ -27,7 +30,7 @@ const LectureDetail = () => {
           title="YouTube video player"
           width="100%"
           height="400"
-          src={lecture.lecUrl}
+          src={lectureDTO.lecUrl}
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen

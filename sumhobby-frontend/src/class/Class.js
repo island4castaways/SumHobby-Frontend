@@ -73,7 +73,7 @@ const Class = () => {
               <Grid item xs={6}>
                 <div className="image-container">
                   <img
-                    src={item.img}
+                    src={item.classImg}
                     className="class-thumbnail"
                     alt="Thumbnail"
                     width={300}

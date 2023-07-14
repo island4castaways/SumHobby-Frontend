@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Container, Grid, Typography, Card, CardActionArea, CardContent, CardMedia, Box } from '@mui/material';
 import { call } from './service/ApiService';
 
 const Home = () => {
   const [classData, setClassData] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     call('/class/top-rated', 'GET', null)
@@ -12,7 +14,6 @@ const Home = () => {
         const categorizedClasses = categorizeClasses(response.data);
         setClassData(categorizedClasses);
       })
-      .catch((error) => console.error(error));
   }, []);
 
   const categorizeClasses = (classes) => {
@@ -29,7 +30,6 @@ const Home = () => {
         categorized[category] = [classItem];
       }
     }
-    
     return categorized;
   };
 
@@ -48,18 +48,28 @@ const Home = () => {
             {category}
           </Typography>
           <Grid container spacing={2}>
-            {classData[category].map((item, index) => (
+            {classData[category].map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item.classNum}>
-                <Card style={{ height: '100%' }}>
-                  <CardActionArea style={{ textDecoration: 'none', height: '100%' }}>
-                    <CardMedia component="img" height="200" image={item.img} alt={item.className} />
-                    <CardContent>
-                      <Typography gutterBottom variant="h6" component="div">
-                        {item.className}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+                {/* <div onClick={() => {onclickClass(item)}}> */}
+                <Link to={{
+                  pathname:"/classdetail",
+                  state: {
+                    item: item
+                  }
+                }}>
+                 <Card style={{ height: '100%' }} >
+                    <CardActionArea style={{ textDecoration: 'none', height: '100%' }}>
+                      <CardMedia component="img" height="200" image={item.img} alt={item.className} />
+                      <CardContent>
+                        <Typography gutterBottom variant="h6" component="div">
+                          {item.className}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Link>
+                  
+                {/* </div> */}
               </Grid>
             ))}
           </Grid>

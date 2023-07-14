@@ -29,6 +29,7 @@ import Nav from "./nav/Nav";
 import ClassDetail from "./class/ClassDetail";
 import AddReview from "./class/AddReview";
 import ShowReview from "./class/ShowReview";
+import LectureDetail from "./class/LectureDetail";
 
 function Copyright() {
     return (
@@ -70,9 +71,10 @@ function AppRouter() {
                     <Route path="purchase" element={<PurchaseList />} />
                     <Route path="home" element={<Home />} />
                     <Route path="class" element={<Class />} />
-                    <Route path="class/:title" element={<ClassDetail />} />
+                    <Route path="classdetail" element={<ClassDetail />} />
                     <Route path="addreview" element={<AddReview />} />
                     <Route path="showreview" element={<ShowReview />} />
+                    <Route path="lecture" element={<LectureDetail />} />
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>

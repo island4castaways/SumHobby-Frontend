@@ -29,10 +29,10 @@ const ShowReview = () => {
       {reviews.map((review) => (
         <div key={review.userId}>
           <Typography variant="h6" gutterBottom>
-            내용: {review.revContent}
+            내용: {reviews.revContent}
           </Typography>
           <Typography variant="h6" gutterBottom>
-            별점: {review.revRate}
+            별점: {reviews.revRate}
           </Typography>
         </div>
       ))}

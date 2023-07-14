@@ -7,9 +7,9 @@ import "./ClassDetail.css";
 const ClassDetail = ({ item }) => {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const classDTO = item;
-  console.log(item)
 
   const handleClass = () => {
     navigate("/addreview", {
@@ -52,28 +52,36 @@ const ClassDetail = ({ item }) => {
     }
   };
 
+  const enterLecture = (lectureDTO) => {
+    navigate("/lecture", {
+      state: {
+        lectureDTO: lectureDTO
+      }
+    })
+  }
+
   return (
     <div className="ClassDetail">
       <div className="info-container">
-        <img src={item.img} className="class-thumbnail" alt="Thumbnail" width={300} height={150} />
+        <img src={item.classImg} className="class-thumbnail" alt="Thumbnail" width={300} height={150} />
         <div className="info-row">
           <Typography component="span" className="class-name">
-            제목: {items.className}
+            제목: {item.className}
           </Typography>
         </div>
         <div className="info-row">
           <Typography component="span" className="userTk">
-            강사: {items.userId}
+            강사: {item.userId}
           </Typography>
         </div>
         <div className="info-row">
           <Typography component="span" className="rating">
-            별점: {items.classRate}
+            별점: {item.classRate}
           </Typography>
         </div>
         <div className="info-row">
           <Typography component="span" className="class-intro">
-            소개: {items.classDetail}
+            소개: {item.classDetail}
           </Typography>
         </div>
         <Button onClick={() => {handleClassView()}} variant="body2" className="App-link">
@@ -106,27 +114,29 @@ const ClassDetail = ({ item }) => {
             {lectures.slice(0, 6).map((lecture) => (
               <Grid item xs={12} sm={4} md={2} 
               key={lecture.lectureNum}>
-                <Card>
-                  <CardActionArea>
-                    <iframe
-                      title="YouTube video player"
-                      width="100%"
-                      height="200"
-                      src={lecture.lecUrl}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                    <CardContent>
-                      <Typography gutterBottom variant="subtitle2" component="div">
-                        {lecture.lecTitle}
-                      </Typography>
-                      <Typography variant="caption" color="textSecondary">
-                        회차: {lecture.lecNum}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+                <div onClick={() => {enterLecture(lecture)}}>
+                  <Card>
+                    <CardActionArea>
+                      <iframe
+                        title="YouTube video player"
+                        width="100%"
+                        height="200"
+                        src={lecture.lecUrl}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                      <CardContent>
+                        <Typography gutterBottom variant="subtitle2" component="div">
+                          {lecture.lecTitle}
+                        </Typography>
+                        <Typography variant="caption" color="textSecondary">
+                          회차: {lecture.lecNum}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </div>
               </Grid>
             ))}
           </Grid>
