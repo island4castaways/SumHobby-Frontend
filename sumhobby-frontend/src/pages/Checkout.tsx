@@ -41,7 +41,6 @@ export default function Checkout() {
   useEffect(() => {
     const generatedOrderId = nanoid();
     setOrderId(generatedOrderId);
-    console.log(orderId)
   }, []);
 
   useEffect(() => {
@@ -70,34 +69,6 @@ export default function Checkout() {
       paymentMethodsWidget.UPDATE_REASON.COUPON
     )
   }, [price])
-
-  useEffect(() => {
-    console.log(orderId)
-    itemSetOrderId(orderId)
-  }, [orderId])
-
-  const cratePayment = () =>{
-    items.map((item) => {
-      console.log(items);
-      call("/checkout","POST",item)
-      .then((response) => setItems(response.data));
-    });
-  }
-
-  const itemSetOrderId = (orderId: string) =>{
-    console.log(orderId)
-    if (orderId) {
-      const updatedItems = items.map((item) => {
-        return {
-          ...item,
-          [orderId]: orderId,
-        };
-      });
-    setItems(updatedItems);
-    console.log(items)
-    cratePayment();
-  }
-}
 
   return (
     <div>

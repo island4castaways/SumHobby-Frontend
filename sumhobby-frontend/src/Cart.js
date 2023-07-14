@@ -8,11 +8,13 @@ import {
   List,
   ListItem,
   IconButton,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
+  Avatar
 } from '@mui/material';
 import { DeleteOutlined } from '@mui/icons-material';
 import { call } from './service/ApiService';
 import { Link, useNavigate, useNavigationType } from 'react-router-dom';
+const cartImageBase64 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -96,13 +98,13 @@ const Cart = () => {
                 <ListItem key={index}>
                   <Checkbox checked={item.add} onChange={() => handleCheckboxChange(index)} />
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                    <img
-                      src={item.userTk}
+                    <img 
+                      src={"/img/cartimg3.png"}
                       alt={item.className}
-                      style={{ width: '50px', height: '50px', marginRight: '10px' }}
+                      style={{ width: '150px', height: '150px', marginRight: '10px' }}
                     />
-                    <Typography variant="body1">{item.className}</Typography>
-                    <Typography variant="body1">{item.classPrice}</Typography>
+                    <Typography variant="body1">강의명:{item.className}&nbsp;&nbsp;&nbsp;</Typography>
+                    <Typography variant="body1">가격:{item.classPrice}</Typography>
                   </div>
                   <ListItemSecondaryAction>
                     <IconButton aria-label="Delete Todo" onClick={() => deleteItem(item)}>
