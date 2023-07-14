@@ -13,10 +13,18 @@ function AdminUsers() {
     };
 
     const [users, setUsers] = useState([]);
+    const [sortKey, setSortKey] = useState("");
+
     useEffect(() => {
-        call("/admin/users", "GET", null).then((response) => (
-            setUsers(response.data)
-        ));
+        call("/admin/users", "GET", null).then((response) => {
+            if(response.data) {
+                setUsers(response.data)
+                setSortKey("role");
+                onSort(sortKey);        
+            } else {
+                alert("사용자 데이터를 가져오는데 실패했습니다.");
+            }
+        });
     }, []);
 
     const teacherButton = (role) => {
@@ -25,17 +33,22 @@ function AdminUsers() {
         } else if(role === "강사") {
             return "승인 취소"
         }
-    }
+    };
 
     const changeTeacher = (userDTO) => {
         call("/admin/users", "PUT", userDTO).then((response) => (
             setUsers(response.data)
         ));
-    }
+    };
 
     const returnToList = () => {
         navigate("/admin/menu", { state: { admin: admin } })
-    }
+    };
+
+    const onSort = (sortKey) => {
+        const tempUsers = [...users];
+        setUsers(tempUsers.sort((a, b) => a[sortKey].localeCompare(b[sortKey])));
+    };
 
     return (
         <Container>
@@ -49,7 +62,7 @@ function AdminUsers() {
                         <TableCell>UserName</TableCell>
                         <TableCell>Phone</TableCell>
                         <TableCell>Email</TableCell>
-                        <TableCell>강사 여부</TableCell>
+                        <TableCell onClick={() => onSort("role")}>Role</TableCell>
                         <TableCell>강사 승인</TableCell>
                     </TableRow>
                 </TableHead>
@@ -60,7 +73,7 @@ function AdminUsers() {
                             <TableCell>{user.userName}</TableCell>
                             <TableCell>{user.phone}</TableCell>
                             <TableCell>{user.email}</TableCell>
-                            <TableCell>{user.role}</TableCell>
+                            <TableCell data-title="role">{user.role}</TableCell>
                             <TableCell>
                                 <Button onClick={() => changeTeacher(user)}>{teacherButton(user.role)}</Button>
                             </TableCell>

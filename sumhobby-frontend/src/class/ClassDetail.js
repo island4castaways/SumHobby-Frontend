@@ -26,11 +26,6 @@ const ClassDetail = ({ item }) => {
     })
   }
 
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    setItems(item);
-  }, []);
-
   const [lectures, setLectures] = useState([]);
 
   useEffect(() => {
@@ -113,7 +108,7 @@ const ClassDetail = ({ item }) => {
           <Grid container spacing={2} justifyContent="flex-start">
             {lectures.slice(0, 6).map((lecture) => (
               <Grid item xs={12} sm={4} md={2} 
-              key={lecture.lectureNum}>
+              key={lecture.lecNum}>
                 <div onClick={() => {enterLecture(lecture)}}>
                   <Card>
                     <CardActionArea>

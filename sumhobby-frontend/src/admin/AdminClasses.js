@@ -64,6 +64,7 @@ function AdminClasses() {
                         <TableCell>Name</TableCell>
                         <TableCell>Teacher</TableCell>
                         <TableCell>Category</TableCell>
+                        <TableCell>Image</TableCell>
                         <TableCell>Rate</TableCell>
                         <TableCell>Price</TableCell>
                         <TableCell>Uploaded</TableCell>
@@ -80,6 +81,7 @@ function AdminClasses() {
                             <TableCell>{classroom.className}</TableCell>
                             <TableCell>{classroom.userId}</TableCell>
                             <TableCell>{classroom.classCategory}</TableCell>
+                            <TableCell>{classroom.classImg}</TableCell>
                             <TableCell>{classroom.classRate}</TableCell>
                             <TableCell>{classroom.classPrice}</TableCell>
                             <TableCell>{classroom.classSetDate}</TableCell>

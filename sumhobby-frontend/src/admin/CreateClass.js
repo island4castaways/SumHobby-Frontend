@@ -19,6 +19,7 @@ function CreateClass() {
             const className = data.get("className");
             const userId = data.get("userId");
             const classDetail = data.get("classDetail");
+            const classImg = data.get("classImg");
             const classCategory = data.get("classCategory");
             const classPrice = data.get("classPrice");
             if(mode === "create") {
@@ -26,6 +27,7 @@ function CreateClass() {
                     className: className,
                     userId: userId,
                     classDetail: classDetail,
+                    classImg: classImg,
                     classCategory: classCategory,
                     classPrice: classPrice
                 });    
@@ -35,6 +37,7 @@ function CreateClass() {
                     className: className,
                     userId: userId,
                     classDetail: classDetail,
+                    classImg: classImg,
                     classCategory: classCategory,
                     classPrice: classPrice
                 });
@@ -135,6 +138,12 @@ function CreateClass() {
                             <TableCell>classCategory</TableCell>
                             <TableCell>
                                 {textField(mode, "classCategory")}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>classImg</TableCell>
+                            <TableCell>
+                                {textField(mode, "classImg")}
                             </TableCell>
                         </TableRow>
                         <TableRow>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { useLocation, useNavigate , Link} from "react-router-dom";
 import { BsStarFill, BsStarHalf } from "react-icons/bs";
@@ -11,6 +11,12 @@ const AddReview = () => {
   
   const [rating, setRating] = useState(0.0);
   const [reviewContent, setReviewContent] = useState("");
+  const [userDTO, setUserDTO] = useState(null);
+  useEffect(() => {
+    call("/auth/returnUser", "GET", null).then((response) => {
+      setUserDTO(response);
+    });  
+  }, []);
 
   const handleRatingChange = (value) => {
     const decimalRating = value - 0.5; // Calculate rating with decimal points
@@ -18,6 +24,7 @@ const AddReview = () => {
   };
 
   const handleStarClick = (value) => {
+    value.preventDefault();
     handleRatingChange(value);
   };
 
@@ -26,24 +33,29 @@ const AddReview = () => {
     
     const data = new FormData(event.target);
       // Prepare the review data
-      const reviewData = {
-        className: item.className,
-        userId: item.userId,
-        revContent: data.get("wirte_review"),
-        revRate: rating
-      };
+  
+    const reviewData = {
+      classNum: item.classNum,
+      userId: userDTO.userId,
+      revContent: data.get("revContent"),
+      revRate: rating
+    };
 
-      createReview(reviewData);
+    createReview(reviewData);
   };
 
-  const createReview = (reviewData) => {
-      call("/review/addreview", "POST", reviewData)
-      .then((response) => {
+  const createReview = (reviewDTO) => {
+    call("/review/addreview", "POST", reviewDTO)
+    .then((response) => {
+      if(response.data) {
         navigate("/showreview", {
           state: {
             classDTO: item
         }})
-      });
+      } else {
+        alert("리뷰 저장 실패");
+      }
+    });
   };
 
   function StarBox({ selected, onClick }) {
@@ -84,12 +96,12 @@ const AddReview = () => {
               fullWidth
               multiline
               rows={4}
-              id="write_review"
+              id="revContent"
               label="리뷰"
-              name="write_review"
+              name="revContent"
               autoComplete="review"
-              value={reviewContent}
-              onChange={(e) => setReviewContent(e.target.value)}
+              // value={reviewContent}
+              // onChange={(e) => setReviewContent(e.target.value)}
             />
           </Grid>
         </Grid>

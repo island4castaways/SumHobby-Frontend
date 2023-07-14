@@ -27,12 +27,12 @@ const ShowReview = () => {
       </Typography>
       {/* Render the reviews */}
       {reviews.map((review) => (
-        <div key={review.userId}>
+        <div key={review.revNum}>
           <Typography variant="h6" gutterBottom>
-            내용: {reviews.revContent}
+            내용: {review.revContent}
           </Typography>
           <Typography variant="h6" gutterBottom>
-            별점: {reviews.revRate}
+            별점: {review.revRate}
           </Typography>
         </div>
       ))}
