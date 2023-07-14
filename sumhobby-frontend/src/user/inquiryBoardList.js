@@ -8,8 +8,8 @@ import "./FAQ.css";
 const qnaList = [
     {
         category: "category1",
-        question: "what is that ? 1",
-        answer: "this is react. 1",
+        question: "테스트입니다",
+        answer: "답변입니다.",
     },
     {
         category: "category2",

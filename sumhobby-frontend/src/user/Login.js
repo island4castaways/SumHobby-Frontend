@@ -82,11 +82,11 @@ function Login(_userDTO) {
                                     회원가입
                                 </Link>
                             </Grid>
-                            <Grid item>
+                            {/* <Grid item>
                                 <Link to="/mypage" variant="body2">
                                     마이페이지 지울거임 테스트용
                                 </Link>
-                            </Grid>
+                            </Grid> */}
                         </Grid>
                     </Grid>
                     <Grid item xs={12} sm={4}>

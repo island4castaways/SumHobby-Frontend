@@ -1,24 +1,40 @@
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
-import React from "react";
-import { Link } from "react-router-dom";
-import { modify} from "./service/ApiService";
+import React, { useState, useEffect } from "react";
+import { getUserInfo, modifyUserInfo } from "./service/ApiService";
+import { withRouter } from "react-router-dom";
 
-function ChangeInfo() {
+const ModifyUserInfo = ({ history }) => {
+    const [userInfo, setUserInfo] = useState({});
+
+    useEffect(() => {
+        // 현재 사용자 정보를 가져와서 텍스트 필드에 설정
+        getUserInfo().then((response) => {
+            const { userId, userName, email, phone } = response.data;
+            setUserInfo({
+                userId,
+                userName,
+                email,
+                phone,
+            });
+        });
+    }, []);
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setUserInfo((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        // 오브젝트에서 form에 저장된 데이터를 맴의 형태로 변환
-        const data = new FormData(event.target);
-        const userId = data.get("userId");
-        const password = data.get("password");
-        const userName = data.get("userName");
-        const email = data.get("email");
-        const phone = data.get("phone");
-        modify({ userId: userId, password: password, userName: userName, email: email, phone: phone }).then(
-            (response) => {
-                //계정 생성 성공시 login 페이지로 리다이렉트
-                window.location.href = "/login";
-            }
-        );
+        modifyUserInfo(userInfo).then(() => {
+            // 회원 정보 수정 성공시 필요한 로직 추가
+            // 로컬 스토리지에 저장 후 로그인 페이지로 이동
+            localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            history.push("/login");
+        });
     };
 
     return (
@@ -32,14 +48,14 @@ function ChangeInfo() {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            autoComplete="fname"
+                            autoComplete="off"
                             name="userId"
                             variant="outlined"
                             required
                             fullWidth
+                            value={userInfo.userId}
+                            disabled
                             id="userId"
-                            label="아이디"
-                            autoFocus
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -49,7 +65,9 @@ function ChangeInfo() {
                             fullWidth
                             name="userName"
                             label="이름"
-                            type="userName"
+                            type="text"
+                            value={userInfo.userName}
+                            disabled
                             id="userName"
                         />
                     </Grid>
@@ -58,21 +76,11 @@ function ChangeInfo() {
                             variant="outlined"
                             required
                             fullWidth
-                            name="password"
-                            label="패스워드"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                    </Grid>            
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
                             name="phone"
                             label="휴대폰 번호"
-                            type="phone"
+                            type="tel"
+                            value={userInfo.phone}
+                            onChange={handleChange}
                             id="phone"
                         />
                     </Grid>
@@ -84,24 +92,20 @@ function ChangeInfo() {
                             name="email"
                             label="이메일"
                             type="email"
+                            value={userInfo.email}
+                            onChange={handleChange}
                             id="email"
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                        >
+                        <Button type="submit" fullWidth variant="contained" color="primary">
                             수정 완료
                         </Button>
                     </Grid>
                 </Grid>
-
             </form>
         </Container>
-    )
+    );
+};
 
-}
-export default ChangeInfo;
+export default withRouter(ModifyUserInfo);

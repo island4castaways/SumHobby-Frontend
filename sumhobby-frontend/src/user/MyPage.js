@@ -4,14 +4,13 @@ import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FaAngleRight } from "react-icons/fa";
 import { signout } from './service/ApiService';
-import Nav from "./Nav/Nav";
 import { useParams } from "react-router-dom";
 
 
 const MyPage = () => {
   const { userId } = useParams();
   return (
-        <><Nav />
+        <>
         <div style={{ backgroundColor: "lightgrey", minHeight: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <TableContainer sx={{ width: "30%", overflow: "hidden", backgroundColor: "white", borderRadius: "6px" }}>
         <Table>
@@ -48,7 +47,7 @@ const MyPage = () => {
             </TableRow>
             <TableRow>
               <TableCell align="left" sx={{ border: "0px solid" }}>
-                <Link to="/profiles">강사 신청/내 강의실     {<FaAngleRight />}</Link>
+                <Link to="/profiles">강사 신청     {<FaAngleRight />}</Link>
               </TableCell>
             </TableRow>
           </TableBody>
