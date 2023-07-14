@@ -5,7 +5,6 @@ import { nanoid } from "nanoid"
 import "../App.css"
 import { useLocation } from "react-router-dom"
 import { call } from "../service/ApiService"
-import { SuccessPage } from "./Success.tsx"
 
 const clientKey = "test_ck_5GePWvyJnrKnv4pgnx7VgLzN97Eo"
 const customerKey = "test_sk_4vZnjEJeQVxXaL051vbVPmOoBN0k"
@@ -17,6 +16,7 @@ export default function Checkout() {
   > | null>(null)
 
   type Item = {
+    orderId: string;
     add: boolean;
     cartNum: number;
     className: string;
@@ -25,17 +25,24 @@ export default function Checkout() {
     userEmail: string;
     userName: string;
     userTk: string;
-    orderId: string;
   };
 
   const location = useLocation();
   const state = location.state as {total: number, checkItems: Item[]};
   const [price, setPrice] = useState(state.total);
   const [items, setItems] = useState<Item[]>(state.checkItems || []);
+  const [orderId, setOrderId] = useState("");
+  
 
   useEffect(() => {
     setItems(state.checkItems);
   }, [])
+
+  useEffect(() => {
+    const generatedOrderId = nanoid();
+    setOrderId(generatedOrderId);
+    console.log(orderId)
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -64,23 +71,33 @@ export default function Checkout() {
     )
   }, [price])
 
-  
-  const createOrderId = () => {
-    const orderId = nanoid();
-    const updatedItems = items.map((item) => {
-      return {
-        ...item,
-        orderId: orderId,
-      };
-    });
-    setItems(updatedItems);
+  useEffect(() => {
+    console.log(orderId)
+    itemSetOrderId(orderId)
+  }, [orderId])
 
-    items.map((item) =>{
+  const cratePayment = () =>{
+    items.map((item) => {
+      console.log(items);
       call("/checkout","POST",item)
-    })
-    return orderId;
-  };
+      .then((response) => setItems(response.data));
+    });
+  }
 
+  const itemSetOrderId = (orderId: string) =>{
+    console.log(orderId)
+    if (orderId) {
+      const updatedItems = items.map((item) => {
+        return {
+          ...item,
+          [orderId]: orderId,
+        };
+      });
+    setItems(updatedItems);
+    console.log(items)
+    cratePayment();
+  }
+}
 
   return (
     <div>
@@ -100,7 +117,7 @@ export default function Checkout() {
           const paymentWidget = paymentWidgetRef.current
           try{
             await paymentWidget?.requestPayment({
-            orderId: createOrderId(),
+            orderId: orderId,
             orderName: items[0].className,
             customerName: items[0].userTk,
             customerEmail: items[0].userEmail,
