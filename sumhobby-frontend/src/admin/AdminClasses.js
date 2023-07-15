@@ -1,5 +1,5 @@
-import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { React, useEffect, useState } from "react";
+import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { call } from "../service/ApiService";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,17 +7,58 @@ function AdminClasses() {
     const location = useLocation();
     const navigate = useNavigate();
 
+    const [classes, setClasses] = useState([]);
+    const [sortKey, setSortKey] = useState("");
+    const [sortMethod, setSortMethod] = useState("");
+
     const admin = location.state.admin;
-    if(admin.role !== "관리자") {
-        window.location.href = "/";
+
+    useEffect(() => {
+        if(admin.role !== "관리자") {
+            navigate("/");
+            return null;
+        }
+    }, [admin.role, navigate]);
+
+    useEffect(() => {
+        call("/admin/classes", "GET", null).then((response) => {
+            if(response.data) {
+                setClasses(response.data);
+                setSortKey("classLastDate");
+                setSortMethod("asc");
+            } else {
+                alert("강의실 데이터를 가져오는데 실패했습니다.");
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        onSort(sortKey, sortMethod);
+    }, [sortKey, sortMethod]);
+
+    const onSort = (key, method) => {
+        const tempClasses = [...classes];
+        const sortByAsc = (a, b) => (a[key] < b[key] ? -1 : 1);
+        const sortByDesc = (a, b) => (a[key] > b[key] ? -1 : 1);
+        if(method === "asc") {
+            setClasses(tempClasses.sort(sortByAsc));
+        } else {
+            setClasses(tempClasses.sort(sortByDesc));
+        }
     };
 
-    const [classes, setClasses] = useState([]);
-    useEffect(() => {
-        call("/admin/classes", "GET", null).then((response) => (
-            setClasses(response.data)
-        ));
-    }, []);
+    const columnClicked = (key) => {
+        if(sortKey === key) {
+            if(sortMethod === "asc") {
+                setSortMethod("desc");
+            } else {
+                setSortMethod("asc");
+            }
+        } else {
+            setSortKey(key);
+            setSortMethod("asc");
+        }
+    }
 
     const adminLectures = (classDTO) => {
         return (
@@ -51,6 +92,18 @@ function AdminClasses() {
         navigate("/admin/menu", { state: { admin: admin } })
     }
 
+    const makeTHCell = (name, key) => {
+        if(key === sortKey) {
+            if(sortMethod === "asc") {
+                return <TableCell onClick={() => columnClicked(key)}>{name} ↑</TableCell>
+            } else {
+                return <TableCell onClick={() => columnClicked(key)}>{name} ↓</TableCell>
+            }
+        } else {
+            return <TableCell onClick={() => columnClicked(key)}>{name}</TableCell>
+        }
+    }
+
     return (
         <Container>
             <h2>강의실 관리</h2>
@@ -60,17 +113,17 @@ function AdminClasses() {
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Num</TableCell>
-                        <TableCell>Name</TableCell>
-                        <TableCell>Teacher</TableCell>
-                        <TableCell>Category</TableCell>
-                        <TableCell>Image</TableCell>
-                        <TableCell>Rate</TableCell>
-                        <TableCell>Price</TableCell>
-                        <TableCell>Uploaded</TableCell>
-                        <TableCell>LastUpdated</TableCell>
+                        {makeTHCell("Num", "classNum")}
+                        {makeTHCell("Name", "className")}
+                        {makeTHCell("Teacher", "userId")}
+                        {makeTHCell("Category", "classCategory")}
+                        {makeTHCell("Image", "classImg")}
+                        {makeTHCell("Rate", "classRate")}
+                        {makeTHCell("Price", "classPrice")}
+                        {makeTHCell("FirstUploaded", "classSetDate")}
+                        {makeTHCell("LastUpdated", "classLastDate")}
                         <TableCell>수정</TableCell>
-                        <TableCell>Lecture</TableCell>
+                        <TableCell>강의 관리</TableCell>
                     </TableRow>
                 </TableHead>
 
@@ -90,7 +143,7 @@ function AdminClasses() {
                                 <Button onClick={() => {modifyClass(classroom)}}>수정</Button>
                             </TableCell>
                             <TableCell>
-                                <Button onClick={() => {adminLectures(classroom)}}>Lecture</Button>
+                                <Button onClick={() => {adminLectures(classroom)}}>관리</Button>
                             </TableCell>
                         </TableRow>
                     ))}

@@ -7,20 +7,25 @@ function AdminUsers() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const admin = location.state.admin;
-    if(admin.role !== "관리자") {
-        window.location.href = "/";
-    };
-
     const [users, setUsers] = useState([]);
     const [sortKey, setSortKey] = useState("");
-    const [isSorted, setIsSorted] = useState(false);
+    const [sortMethod, setSortMethod] = useState("");
+
+    const admin = location.state.admin;
+
+    useEffect(() => {
+        if(admin.role !== "관리자") {
+            navigate("/");
+            return null;
+        }
+    }, [admin.role, navigate]);
 
     useEffect(() => {
         call("/admin/users", "GET", null).then((response) => {
             if(response.data) {
                 setUsers(response.data);
                 setSortKey("role");
+                setSortMethod("asc")
             } else {
                 alert("사용자 데이터를 가져오는데 실패했습니다.");
             }
@@ -28,14 +33,62 @@ function AdminUsers() {
     }, []);
 
     useEffect(() => {
-        if(sortKey !== "") {
-            setIsSorted(true);
-            onSort(sortKey);
-        } else {
-            setIsSorted(false);
-            onSort(sortKey);
+        onSort(sortKey, sortMethod);
+    }, [sortKey, sortMethod]);
+
+    const onSort = (key, method) => {
+        const tempUsers = [...users];
+        const sortByAsc = (a, b) => (a[key] < b[key] ? -1 : 1);
+        const sortByDesc = (a, b) => (a[key] > b[key] ? -1 : 1);
+        const sortByRole = (a, b) => {
+            if((a[key] === "강사 신청" && b[key] === "강사 신청")
+                || (a[key] !== "강사 신청" && b[key] !== "강사 신청")) {
+                if(method === "asc") {
+                    return sortByAsc;
+                } else {
+                    return sortByDesc;
+                }
+            } else {
+                return (a[key] === "강사 신청") ? -1 : 1;
+            }
         }
-    }, [sortKey]);
+
+        if(key === "role") {
+            setUsers(tempUsers.sort(sortByRole));
+        } else {
+            if(method === "asc") {
+                setUsers(tempUsers.sort(sortByAsc));
+            } else {
+                setUsers(tempUsers.sort(sortByDesc));
+            }
+        }
+    };
+
+    const columnClicked = (key) => {
+        if(sortKey === key) {
+            if(sortMethod === "asc") {
+                setSortMethod("desc");
+            } else {
+                setSortMethod("asc");
+            }
+        } else {
+            setSortKey(key);
+            setSortMethod("asc");
+        }
+    }
+
+    const changeTeacher = (userDTO) => {
+        setSortKey("");
+        call("/admin/users", "PUT", userDTO).then((response) => {
+            setUsers(response.data);
+            setSortKey("role");
+            setSortMethod("asc")
+        });
+    };
+
+    const returnToList = () => {
+        navigate("/admin/menu", { state: { admin: admin } })
+    };
 
     const teacherButton = (role) => {
         if(role === "일반" || role === "강사 신청") {
@@ -45,42 +98,15 @@ function AdminUsers() {
         }
     };
 
-    const changeTeacher = (userDTO) => {
-        setSortKey("");
-        call("/admin/users", "PUT", userDTO).then((response) => {
-            setUsers(response.data);
-            setSortKey("role");
-        });
-    };
-
-    const onSort = (sortKey) => {
-        const tempUsers = [...users];
-        if(sortKey === "role") {
-            setUsers(tempUsers.sort((a, b) => {
-                if(a[sortKey] === "강사 신청") {
-                    return (a[sortKey] === "강사 신청") ? -1 : 1;
-                } else {
-                    return (a[sortKey] < b[sortKey]) ? -1 : 1;
-                }
-            }));
-        } else {
-            setUsers(tempUsers.sort((a, b) => ((a[sortKey] < b[sortKey]) ? -1 : 1)));
-        }
-    };
-
-    const returnToList = () => {
-        navigate("/admin/menu", { state: { admin: admin } })
-    };
-
     const makeTHCell = (name, key) => {
-        if(isSorted) {
-            if(key === sortKey) {
-                return <TableCell onClick={() => setSortKey(key)}>{name} ↓</TableCell>
+        if(key === sortKey) {
+            if(sortMethod === "asc") {
+                return <TableCell onClick={() => columnClicked(key)}>{name} ↑</TableCell>
             } else {
-                return <TableCell onClick={() => setSortKey(key)}>{name}</TableCell>
+                return <TableCell onClick={() => columnClicked(key)}>{name} ↓</TableCell>
             }
         } else {
-            return <TableCell onClick={() => setSortKey(key)}>{name}</TableCell>
+            return <TableCell onClick={() => columnClicked(key)}>{name}</TableCell>
         }
     }
 
@@ -107,7 +133,7 @@ function AdminUsers() {
                             <TableCell>{user.userName}</TableCell>
                             <TableCell>{user.phone}</TableCell>
                             <TableCell>{user.email}</TableCell>
-                            <TableCell data-title="role">{user.role}</TableCell>
+                            <TableCell>{user.role}</TableCell>
                             <TableCell>
                                 <Button onClick={() => changeTeacher(user)}>{teacherButton(user.role)}</Button>
                             </TableCell>
