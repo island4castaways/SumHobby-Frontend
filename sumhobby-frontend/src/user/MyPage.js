@@ -46,7 +46,7 @@ const MyPage = () => {
             </TableRow>
             <TableRow>
               <TableCell align="left" sx={{ border: "0px solid" }}>
-                <Link to="/profiles">강사 신청/내 강의실     {<FaAngleRight />}</Link>
+                <Link to="/profiles">강사 신청     {<FaAngleRight />}</Link>
               </TableCell>
             </TableRow>
           </TableBody>
