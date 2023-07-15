@@ -1,99 +1,64 @@
-import Header from './Header';
-import React, { useEffect, useState } from "react";
-import CategoryFilter from "./CategoryFilter";
+// InquiryBoard.js
 
-import "./FAQ.css";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { getInquiries } from '../service/ApiService';
 
+const InquiryBoard = () => {
+  const [inquiries, setInquiries] = useState([]);
 
-const qnaList = [
-    {
-        category: "category1",
-        question: "테스트입니다",
-        answer: "답변입니다.",
-    },
-    {
-        category: "category2",
-        question: "what is that ? 2",
-        answer: "this is react. 2",
-    },
-    {
-        category: "category3",
-        question: "what is that ? 3",
-        answer: "this is react. 3",
-    },
-    {
-        category: "category1",
-        question: "what is that ? 4",
-        answer: "this is react. 4",
-    },
-    {
-        category: "category2",
-        question: "what is that ? 5",
-        answer: "this is react. 5",
-    },
-    {
-        category: "category3",
-        question: "what is that ? 6",
-        answer: "this is react. 6",
-    },
-];
+  // useEffect(() => {
+  //   // Inquiry 목록을 불러와서 inquiries 상태에 저장
+  //   getInquiries()
+  //     .then((data) => {
+  //       setInquiries(data);
+  //     })
+  //     .catch((error) => {
+  //       console.error('Failed to get inquiries:', error);
+  //     });
+  // }, []);
 
-const BoardList = () => {
-    const [category, setCatecory] = useState("all");
-    const [cardOnOff, setCardOnOff] = useState(qnaList);
-    const [showList, setShowList] = useState(qnaList);
+  return (
+    <div style={{ position: 'relative' }}>
+      <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;문의함</h1>
+      <TableContainer component={Paper} sx={{ maxWidth: 900, margin: '0 auto' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>번호</TableCell>
+              <TableCell sx={{ minWidth: 200 }}>제목</TableCell>
+              <TableCell>작성일</TableCell>
+              <TableCell>작성자</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
 
-    const getQnACard = (item, index) => {
-        return (
-            <div className="faq-card" key={index}>
-                <div
-                    className="faq-card-title"
-                    onClick={() => {
-                        let tempCard = cardOnOff;
-                        tempCard[index].show = !tempCard[index].show;
-                        setCardOnOff([...tempCard]);
-                    }}
-                >
-                    <span className="question-mark">Q.</span>
-                    <span>{item.question}</span>
-                </div>
-                <div
-                    className={
-                        qnaList[index].show
-                            ? "faq-card-answer"
-                            : "faq-card-answer faq-card-none"
-                    }
-                >
-                    <span className="answer-mark">A.</span>
-                    <span className="FAQ-card-answer">{item.answer}</span>
-                </div>
-            </div>
-        );
-    };
-
-    useEffect(() => {
-        setShowList(
-            qnaList.filter((item) => {
-                if (category === "all") return true;
-                if (category === item.category) return true;
-                return false;
-            })
-        );
-    }, [category]);
-
-    return (
-
-        <div>
-            <Header />
-            <h1>FAQ</h1>
-            <div className="fqa-parent">
-                <div className="faq-list">
-                    {showList.map((item, index) => getQnACard(item, index))}
-                </div>
-            </div>
-        </div>
-
-    );
+            {inquiries.map((inquiry) => (
+              <TableRow key={inquiry.inqNum}>
+                <TableCell>{inquiry.inqNum}</TableCell>
+                <TableCell>
+                  <Link to={`/inquiry/${inquiry.inqNum}`}>{inquiry.inqContent}</Link>
+                </TableCell>
+                <TableCell>{inquiry.inqDate}</TableCell>
+                <TableCell>{inquiry.userId}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Fab
+        color="primary"
+        aria-label="add"
+        style={{ position: 'absolute', bottom: '30px', right: '30px' }}
+        component={Link}
+        to="/write"
+      >
+        <AddIcon />
+      </Fab>
+    </div>
+  );
 };
 
-export default BoardList;
+export default InquiryBoard;

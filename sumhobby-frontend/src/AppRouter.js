@@ -20,7 +20,7 @@ import FindPw from "./user/FindPw";
 import MyPage from "./user/MyPage";
 import ChangePw from "./user/ChangePw";
 import ChangeInfo from "./user/ChangeInfo";
-import FAQ from "./user/FAQ";
+import QnA from "./user/QnA";
 import PurchaseList from "./user/PurchaseList";
 import InquiryBoardList from "./user/inquiryBoardList";
 import Class from "./class/Class";
@@ -29,6 +29,9 @@ import Nav from "./nav/Nav";
 import ClassDetail from "./class/ClassDetail";
 import AddReview from "./class/AddReview";
 import ShowReview from "./class/ShowReview";
+import WriteInquiry from './user/WriteInquiry';
+import Profiles from "./user/Profiles";
+
 
 function Copyright() {
     return (
@@ -64,8 +67,9 @@ function AppRouter() {
                     <Route path="findpw" element={<FindPw />} />
                     <Route path="mypage" element={<MyPage />} />
                     <Route path="changepw" element={<ChangePw />} />
-                    <Route path="changeinfo" element={<ChangeInfo />} />
-                    <Route path="faq" element={<FAQ />} />
+                    <Route path="changeinfo" element={<ChangeInfo />} />                    
+                    <Route path="qna" element={<QnA />} />
+                    <Route path="profiles" element={<Profiles />} />
                     <Route path="inquiryboard" element={<InquiryBoardList />} />
                     <Route path="purchase" element={<PurchaseList />} />
                     <Route path="/home" element={<Home />} />
@@ -73,6 +77,7 @@ function AppRouter() {
                     <Route path="/class/:title" element={<ClassDetail />} />
                     <Route path="/addreview" element={<AddReview />} />
                     <Route path="/showreview" element={<ShowReview />} />
+                    <Route path="/write" element={<WriteInquiry/>} />
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>

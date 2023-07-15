@@ -1,44 +1,48 @@
-import React from "react";
-// import productImage1 from "./productImage1.jpg";
-// import productImage2 from "./productImage2.jpg";
-import "./Board.css";
+import React, { useState, useEffect } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+// import { getPurchases } from '../service/ApiService';
 
-function Product() {
-    const products = [
-        {
-            id: 1,
-            title: "상품 제목 1",
-            description: "상품 내용 요약 1",
-            price: "15,000￦",
-            //   imageSrc: productImage1,
-        },
-        {
-            id: 2,
-            title: "상품 제목 2",
-            description: "상품 내용 요약 2",
-            price: "20,000￦",
-            //   imageSrc: productImage2,
-        },
-        // 다른 상품들 추가 가능
-    ];
+const PurchaseList = () => {
+    const [purchases, setPurchases] = useState([]);
+
+    // useEffect(() => {
+    //     // 구매 목록을 불러와서 purchases 상태에 저장
+    //     getPurchases()
+    //         .then((data) => {
+    //             setPurchases(data);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Failed to get purchases:', error);
+    //         });
+    // }, []);
 
     return (
         <div>
-            <h2>내 구매 목록</h2>
-            <div className="product_container">
-                {products.map((product) => (
-                    <div className="product" key={product.id}>
-                        <div className="product_img_div">
-                            <img src={product.imageSrc} className="product_img" alt="상품 이미지" />
-                        </div>
-                        <h5 className="product_title">{product.title}</h5>
-                        <p className="product_des">{product.description}</p>
-                        <div className="product_mon">금액: {product.price}</div>
-                    </div>
-                ))}
-            </div>
+            <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;강의 구매 목록</h1>
+            <TableContainer component={Paper} sx={{ maxWidth: 900, margin: '0 auto' }}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>번호</TableCell>
+                            <TableCell>상품명</TableCell>
+                            <TableCell>가격</TableCell>
+                            <TableCell>구매일</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {purchases.map((purchase) => (
+                            <TableRow key={purchase.orderNum}>
+                                <TableCell>{purchase.id}</TableCell>
+                                <TableCell>{purchase.userRef}</TableCell>
+                                <TableCell>{purchase.orderPrice}</TableCell>
+                                <TableCell>{purchase.orderDate}</TableCell>                            
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </div>
     );
-}
+};
 
-export default Product;
+export default PurchaseList;
