@@ -9,7 +9,7 @@ function CreateLecture() {
 
     const admin = location.state.admin;
     const classDTO = location.state.classDTO;
-    const mode = location.state.lectureDTO ? "modify": "create";
+    const mode = location.state.lectureDTO ? "modify" : "create";
     const lectureDTO = location.state.lectureDTO ? location.state.lectureDTO : null;
 
     const handleSubmit = (event) => {
