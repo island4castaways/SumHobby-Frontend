@@ -71,33 +71,33 @@ export default function Checkout() {
     )
   }, [price])
 
-  useEffect(() => {
-    console.log(orderId)
-    itemSetOrderId(orderId)
-  }, [orderId])
+//   useEffect(() => {
+//     console.log(orderId)
+//     itemSetOrderId(orderId)
+//   }, [orderId])
 
-  const cratePayment = () =>{
-    items.map((item) => {
-      console.log(items);
-      call("/checkout","POST",item)
-      .then((response) => setItems(response.data));
-    });
-  }
+//   const cratePayment = () =>{
+//     items.map((item) => {
+//       console.log(items);
+//       call("/checkout","POST",item)
+//       .then((response) => setItems(response.data));
+//     });
+//   }
 
-  const itemSetOrderId = (orderId: string) =>{
-    console.log(orderId)
-    if (orderId) {
-      const updatedItems = items.map((item) => {
-        return {
-          ...item,
-          [orderId]: orderId,
-        };
-      });
-    setItems(updatedItems);
-    console.log(items)
-    cratePayment();
-  }
-}
+//   const itemSetOrderId = (orderId: string) =>{
+//     console.log(orderId)
+//     if (orderId) {
+//       const updatedItems = items.map((item) => {
+//         return {
+//           ...item,
+//           [orderId]: orderId,
+//         };
+//       });
+//     setItems(updatedItems);
+//     console.log(items)
+//     cratePayment();
+//   }
+// }
 
   return (
     <div>
@@ -116,9 +116,10 @@ export default function Checkout() {
         onClick={async () =>{
           const paymentWidget = paymentWidgetRef.current
           try{
+            call("/checkout","POST", { orderId: orderId, classNum: items[0].classNum})
             await paymentWidget?.requestPayment({
             orderId: orderId,
-            orderName: items[0].className,
+            orderName: items[0].userTk,
             customerName: items[0].userTk,
             customerEmail: items[0].userEmail,
             successUrl: `http://localhost:1010/checkout/success`,
@@ -127,6 +128,7 @@ export default function Checkout() {
           }catch(err){
             console.log(err)
           }
+
         }}>
         결제하기
         </button>

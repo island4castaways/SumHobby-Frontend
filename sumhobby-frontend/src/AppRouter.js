@@ -30,6 +30,10 @@ import ClassDetail from "./class/ClassDetail";
 import AddReview from "./class/AddReview";
 import ShowReview from "./class/ShowReview";
 import LectureDetail from "./class/LectureDetail";
+import Checkout from "./pages/Checkout.tsx";
+import { SuccessPage } from "./pages/Success.tsx";
+import { FailPage } from "./pages/Fail.tsx";
+
 
 function Copyright() {
     return (
@@ -75,6 +79,9 @@ function AppRouter() {
                     <Route path="addreview" element={<AddReview />} />
                     <Route path="showreview" element={<ShowReview />} />
                     <Route path="lecture" element={<LectureDetail />} />
+                    <Route path="checkout" element={<Checkout/>}/>
+                    <Route path="success" element={<SuccessPage/>}/>
+                    <Route path="fail" element={<FailPage/>}/>
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>
