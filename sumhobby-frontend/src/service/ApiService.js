@@ -59,9 +59,9 @@ export function findId(userDTO) {
 }
 
 export function getUserInfo() {
-    return call("/getuserinfo", "GET");
+    return call("/auth/userinfo", "GET", null); 
 }
 
 export function modifyUserInfo(userDTO) {
-    return call("/update", "POST", userDTO);
+    return call("/auth/update", "PUT", userDTO);
 }

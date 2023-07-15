@@ -1,39 +1,35 @@
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import { getUserInfo, modifyUserInfo } from "./service/ApiService";
-import { withRouter } from "react-router-dom";
+import { modifyUserInfo, getUserInfo, call } from "../service/ApiService"; // getUserInfo import 제거
 
-const ModifyUserInfo = ({ history }) => {
+const ModifyUserInfo = () => {
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
         // 현재 사용자 정보를 가져와서 텍스트 필드에 설정
-        getUserInfo().then((response) => {
-            const { userId, userName, email, phone } = response.data;
-            setUserInfo({
-                userId,
-                userName,
-                email,
-                phone,
-            });
+        call("/auth/userinfo", "GET", null).then((response) => {
+            console.log("userinfo has been called.")
+            if(response) {
+                setUserInfo(response);
+                console.log("userinfo" + userInfo);
+            }
         });
     }, []);
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setUserInfo((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
-    };
+
+    // const handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setUserInfo((prevState) => ({
+    //         ...prevState,
+    //         [name]: value,
+    //     }));
+    // };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         modifyUserInfo(userInfo).then(() => {
-            // 회원 정보 수정 성공시 필요한 로직 추가
-            // 로컬 스토리지에 저장 후 로그인 페이지로 이동
-            localStorage.setItem("userInfo", JSON.stringify(userInfo));
-            history.push("/login");
+            // localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            window.location.href = "/mypage";
         });
     };
 
@@ -48,14 +44,31 @@ const ModifyUserInfo = ({ history }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            autoComplete="off"
-                            name="userId"
+                            autoFocus = "true"
                             variant="outlined"
                             required
                             fullWidth
+                            name="userId"
+                            label="아이디"
+                            type="text"
                             value={userInfo.userId}
                             disabled
                             id="userId"
+                            autoComplete="userId"
+                        />
+                    </Grid>                
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            name="password"
+                            label="패스워드"
+                            type="password"
+                            value="********" // 비밀번호는 암호화된 상태로 표시
+                            disabled
+                            id="password"
+                            autoComplete="current-password"
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -73,14 +86,14 @@ const ModifyUserInfo = ({ history }) => {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            variant="outlined"
+                            variant="outlined"                            
                             required
                             fullWidth
                             name="phone"
                             label="휴대폰 번호"
                             type="tel"
                             value={userInfo.phone}
-                            onChange={handleChange}
+                            onChange
                             id="phone"
                         />
                     </Grid>
@@ -93,7 +106,7 @@ const ModifyUserInfo = ({ history }) => {
                             label="이메일"
                             type="email"
                             value={userInfo.email}
-                            onChange={handleChange}
+                            onChange
                             id="email"
                         />
                     </Grid>
@@ -108,4 +121,4 @@ const ModifyUserInfo = ({ history }) => {
     );
 };
 
-export default withRouter(ModifyUserInfo);
+export default ModifyUserInfo;
