@@ -32,6 +32,7 @@ import ShowReview from "./class/ShowReview";
 import LectureDetail from "./class/LectureDetail";
 import AdminPayments from "./admin/AdminPayments";
 import AdminReviews from "./admin/AdminReviews";
+import StarRating from "./class/StarRating";
 
 function Copyright() {
     return (
@@ -79,6 +80,7 @@ function AppRouter() {
                     <Route path="addreview" element={<AddReview />} />
                     <Route path="showreview" element={<ShowReview />} />
                     <Route path="lecture" element={<LectureDetail />} />
+                    <Route path="star" element={<StarRating />} />
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>

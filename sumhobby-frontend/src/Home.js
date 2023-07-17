@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Grid, Typography, Card, CardActionArea, CardContent, CardMedia, Box } from '@mui/material';
 import { call } from './service/ApiService';
+import "./Home.css";
 
 const Home = () => {
   const [classData, setClassData] = useState([]);
@@ -37,31 +38,26 @@ const Home = () => {
     <Container component="main" maxWidth="md" style={{ marginTop: '8%' }}>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={12}>
-          <Typography component="h1" variant="h5" align="center">
+          <Typography component="h1" variant="h3" align="center" fontSize="30px" border="border">
             실시간 인기 클래스
           </Typography>
         </Grid>
       </Grid>
       {Object.keys(classData).map((category) => (
         <React.Fragment key={category}>
-          <Typography variant="h6" component="h2" style={{ marginTop: '16px' }}>
+          <Typography variant="h5" component="h2" style={{ marginTop: '25px', textDecorationLine:'blink',textEmphasis:'CaptionText' }}>
             {category}
           </Typography>
           <Grid container spacing={2}>
             {classData[category].map((item) => (
               <Grid item xs={12} sm={6} md={4} key={item.classNum}>
                 {/* <div onClick={() => {onclickClass(item)}}> */}
-                <Link to={{
-                  pathname:"/classdetail",
-                  state: {
-                    item: item
-                  }
-                }}>
-                 <Card style={{ height: '100%' }} >
+                <Link to="/classdetail" state={{ item: item }}>
+                 <Card style={{ height: '100%',marginTop:'15px' }} >
                     <CardActionArea style={{ textDecoration: 'none', height: '100%' }}>
-                      <CardMedia component="img" height="200" image={item.img} alt={item.className} />
+                      <CardMedia component="img" height="200" image={item.classImg} alt="Thumbnail"/>
                       <CardContent>
-                        <Typography gutterBottom variant="h6" component="div">
+                        <Typography gutterBottom variant="h6" component="div" marginTop='15px'>
                           {item.className}
                         </Typography>
                       </CardContent>
@@ -75,9 +71,9 @@ const Home = () => {
           </Grid>
         </React.Fragment>
       ))}
-      <Box mt={2} textAlign="center">
-        <Link to="/class" variant="body2">
-          View more
+      <Box mt={2} textAlign="center" >
+        <Link to="/class" variant="body2" className='view'>
+          View more →
         </Link>
       </Box>
     </Container>

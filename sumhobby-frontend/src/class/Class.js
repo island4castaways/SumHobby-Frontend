@@ -3,8 +3,11 @@ import { Grid, Typography, Button } from "@mui/material";
 import ClassDetail from "./ClassDetail";
 import { call } from "../service/ApiService";
 import "./Class.css";
+import { useNavigate } from "react-router-dom";
 
 const Class = () => {
+  const navigate = useNavigate();
+
   const [activeMenu, setActiveMenu] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [classData, setClassData] = useState([]);
@@ -37,7 +40,7 @@ const Class = () => {
   };
 
   const handleItemSelect = (item) => {
-    setSelectedItem(item);
+    navigate("/classdetail", { state: { item: item } });
   };
 
   const itemData = activeMenu
