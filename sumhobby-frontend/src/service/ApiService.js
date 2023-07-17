@@ -66,5 +66,5 @@ export function getUserInfo() {
 }
 
 export function modifyUserInfo(userDTO) {
-    return call("/auth/update", "PUT", userDTO);
+    return call("/auth/modifyuser", "PUT", userDTO);
 }
