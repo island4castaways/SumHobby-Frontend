@@ -1,4 +1,4 @@
-import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Button, Container, MenuItem, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,6 +8,11 @@ function AdminReviews() {
     const navigate = useNavigate();
 
     const [reviews, setReviews] = useState([]);
+    const [sortKey, setSortKey] = useState("");
+    const [sortMethod, setSortMethod] = useState("");
+    const [searchKey, setSearchKey] = useState("");
+    const [searchValue, setSearchValue] = useState("");
+    const [original, setOriginal] = useState([]);
     const [admin, setAdmin] = useState({});
 
     const classDTO = location.state.classDTO;
@@ -30,16 +35,67 @@ function AdminReviews() {
         call("/admin/reviews", "PATCH", classDTO).then((response) => {
             if(response.data) {
                 setReviews(response.data);
+                setOriginal(response.data);
+                setSortKey("revDate");
+                setSortMethod("desc");
             } else {
                 alert("리뷰를 가져오는데 실패했습니다.");
             }
         });
     }, [classDTO]);
 
+    useEffect(() => {
+        onSort(sortKey, sortMethod);
+    }, [sortKey, sortMethod]);
+
+    const onSort = (key, method) => {
+        const tempReviews = [...reviews];
+        const sortByAsc = (a, b) => (a[key] < b[key] ? -1 : 1);
+        const sortByDesc = (a, b) => (a[key] > b[key] ? -1 : 1);
+
+        if(method === "asc") {
+            setReviews(tempReviews.sort(sortByAsc));
+        } else {
+            setReviews(tempReviews.sort(sortByDesc));
+        }
+    };
+
+    const columnClicked = (key) => {
+        if(sortKey === key) {
+            if(sortMethod === "asc") {
+                setSortMethod("desc");
+            } else {
+                setSortMethod("asc");
+            }
+        } else {
+            setSortKey(key);
+            setSortMethod("asc");
+        }
+    }
+
+    const handleSearchKeyChange = (event) => {
+        setSearchKey(event.target.value);
+    };
+    
+    const handleSearchValueChange = (event) => {
+        setSearchValue(event.target.value);
+    };
+    
+    const handleSearch = () => {
+        const filteredReviews = original.filter((review) => {
+            const value = review[searchKey] && review[searchKey].toString().toLowerCase();
+            return value && value.includes(searchValue.toLowerCase());
+        });
+        setReviews(filteredReviews);
+    };
+
     const deleteReview = (reviewDTO) => {
         call("/admin/deleteReview", "DELETE", reviewDTO).then((response) => {
             if(response.data) {
                 setReviews(response.data);
+                setOriginal(response.data);
+                setSortKey("revDate");
+                setSortMethod("desc");
             } else {
                 alert("리뷰를 삭제하는데 실패했습니다.");
             }
@@ -50,6 +106,18 @@ function AdminReviews() {
         navigate("/admin/classes");
     };
 
+    const makeTHCell = (name, key) => {
+        if(key === sortKey) {
+            if(sortMethod === "asc") {
+                return <TableCell onClick={() => columnClicked(key)}>{name} ↑</TableCell>
+            } else {
+                return <TableCell onClick={() => columnClicked(key)}>{name} ↓</TableCell>
+            }
+        } else {
+            return <TableCell onClick={() => columnClicked(key)}>{name}</TableCell>
+        }
+    };
+
     return (
         <Container>
             <h2>강의 관리</h2>
@@ -58,14 +126,25 @@ function AdminReviews() {
                 <h5>{classDTO.classNum}, {classDTO.className} 강의실</h5>
             )}
             <Button onClick={() => {returnToList()}}>이전 목록</Button>
+            <div>
+                <TextField select value={searchKey} onChange={handleSearchKeyChange}>
+                    <MenuItem value="revNum">Num</MenuItem>
+                    <MenuItem value="userId">UserId</MenuItem>
+                    <MenuItem value="revContent">Content</MenuItem>
+                    <MenuItem value="revRate">Rate</MenuItem>
+                    <MenuItem value="revDate">Date</MenuItem>
+                </TextField>
+                <TextField label="Search" value={searchValue} onChange={handleSearchValueChange} />
+                <Button onClick={handleSearch}>Search</Button>
+            </div>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Num</TableCell>
-                        <TableCell>UserId</TableCell>
-                        <TableCell>Content</TableCell>
-                        <TableCell>Rate</TableCell>
-                        <TableCell>Date</TableCell>
+                        {makeTHCell("Num", "revNum")}
+                        {makeTHCell("UserId", "userId")}
+                        {makeTHCell("Content", "revContent")}
+                        {makeTHCell("Rate", "revRate")}
+                        {makeTHCell("Date", "revDate")}
                         <TableCell>삭제</TableCell>
                     </TableRow>
                 </TableHead>
