@@ -1,24 +1,40 @@
-// InquiryBoard.js
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Fab } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { getInquiries } from '../service/ApiService';
+import { call } from '../service/ApiService';
 
 const InquiryBoard = () => {
   const [inquiries, setInquiries] = useState([]);
+  const [userDTO, setUserDTO] = useState({});
 
-  // useEffect(() => {
-  //   // Inquiry 목록을 불러와서 inquiries 상태에 저장
-  //   getInquiries()
-  //     .then((data) => {
-  //       setInquiries(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error('Failed to get inquiries:', error);
-  //     });
-  // }, []);
+  const [expandedInquiry, setExpandedInquiry] = useState(null);
+
+  const handleInquiryClick = (inqNum) => {
+    setExpandedInquiry((prevExpanded) => (prevExpanded === inqNum ? null : inqNum));
+  };
+
+  useEffect(() => {
+    call("/auth/returnUser", "GET", null).then((response) => {
+      if (response) {
+        if (response) {
+          setUserDTO(response);
+        } else {
+          alert("사용자 정보를 확인하는데 실패했습니다.");
+        }
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    call("/auth/inquiry", "PATCH", userDTO).then((response) => {
+      if (response.data) {
+        setInquiries(response.data);
+      } else {
+        alert("문의글 정보를 가져오는데 실패했습니다.");
+      }
+    });
+  }, [userDTO]);
 
   return (
     <div style={{ position: 'relative' }}>
@@ -28,24 +44,28 @@ const InquiryBoard = () => {
           <TableHead>
             <TableRow>
               <TableCell>번호</TableCell>
-              <TableCell sx={{ minWidth: 200 }}>제목</TableCell>
+              <TableCell sx={{ minWidth: 200 }}>내 QnA</TableCell>
               <TableCell>작성일</TableCell>
-              <TableCell>작성자</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
 
+          <TableBody>
             {inquiries.map((inquiry) => (
-              <TableRow key={inquiry.inqNum}>
-                <TableCell>{inquiry.inqNum}</TableCell>
-                <TableCell>
-                  <Link to={`/inquiry/${inquiry.inqNum}`}>{inquiry.inqContent}</Link>
-                </TableCell>
-                <TableCell>{inquiry.inqDate}</TableCell>
-                <TableCell>{inquiry.userId}</TableCell>
-              </TableRow>
+              <React.Fragment key={inquiry.inqNum}>
+                <TableRow key={inquiry.inqNum} onClick={() => handleInquiryClick(inquiry.inqNum)} style={{ cursor: 'pointer' }}>
+                  <TableCell>{inquiry.inqNum}</TableCell>
+                  <TableCell>{inquiry.inqContent}</TableCell>
+                  <TableCell>{inquiry.inqDate}</TableCell>
+                </TableRow>
+                {expandedInquiry === inquiry.inqNum && (
+                  <TableRow>
+                    <TableCell colSpan={3}>{inquiry.inqAnswer}</TableCell>
+                  </TableRow>
+                )}
+              </React.Fragment>
             ))}
           </TableBody>
+
         </Table>
       </TableContainer>
       <Fab

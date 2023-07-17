@@ -19,31 +19,41 @@ const ModifyUserInfo = () => {
     }, []);
 
     // 이벤트 객체에서 name과 value를 추출 후 userInfo 상태를 갱신하여 입력된 정보를 반영
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setUserInfo((prevState) => ({
-            ...prevState,
-            [name]: value,
+     const handleChange = (event) => {
+         const { name, value } = event.target;
+         setUserInfo((prevState) => ({
+             ...prevState,
+             [name]: value,
         }));
-        console.log("handleChange", name, value);
+         console.log("handleChange", name, value);
+     };
+
+     const handleSubmit = (event) => {
+         setEmailError("");
+         setPhoneError("");
+         event.preventDefault();
+         console.log("handleSubmit", userInfo);
+
+    //     // 바로 API 호출
+         modifyUserInfo(userInfo)
+             .then(() => {
+                 window.location.href = "/mypage";
+             })
+             .catch((error) => {
+                 console.error("Failed to update user info:", error);
+             });
+     };
+
+    const modifyuser = () => {
+        return call("/user/modifyuser", "PUT", userInfo).then((response) => {
+            if(response.data) {
+                alert("회원정보 수정이 완료되었습니다.");
+                
+            } else {
+                alert("회원정보 수정을 실패했습니다.");
+            }
+        });
     };
-
-    const handleSubmit = (event) => {
-        setEmailError("");
-        setPhoneError("");
-        event.preventDefault();
-        console.log("handleSubmit", userInfo);
-
-        // 바로 API 호출
-        modifyUserInfo(userInfo)
-            .then(() => {
-                window.location.href = "/mypage";
-            })
-            .catch((error) => {
-                console.error("Failed to update user info:", error);
-            });
-    };
-
 
     return (
         <Container component="main" maxWidth="xs" style={{ marginTop: "8%" }}>

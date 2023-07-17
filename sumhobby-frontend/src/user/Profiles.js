@@ -76,7 +76,7 @@ const ApplyInstructorForm = () => {
                 value={proposal}
                 onChange={handleDescriptionChange}
                 multiline
-                rows={4}
+                rows={10}
                 fullWidth
                 margin="normal"
             />

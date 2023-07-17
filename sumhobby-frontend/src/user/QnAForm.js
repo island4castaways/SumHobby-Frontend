@@ -19,7 +19,7 @@ const PostForm = ({ onAddPost }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label>제목:</label>
+        <label>QnA:</label>
         <input
           type="text"
           value={title}

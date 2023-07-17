@@ -1,27 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Container, Grid, TextField, Typography } from '@mui/material';
 import { call } from '../service/ApiService';
 
 const WriteInquiry = () => {
-  const [inquiry, setInquiry] = useState({
-    title: '',
-    content: '',
-  });
+  const [inquiry, setInquiry] = useState({ inqContent: '' });
+  const [userDTO, setUserDTO] = useState({});
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setInquiry((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  useEffect(() => {
+    call("/auth/returnUser", "GET", null).then((response) => {
+      if (response) {
+        if (response) {
+          setUserDTO(response);
+        } else {
+          alert("사용자 정보를 확인하는데 실패했습니다.");
+        }
+      }
+    });
+  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    call('/inquiries', 'POST', inquiry).then(() => {
-      window.location.href = '/inquiryboard'; // 글 작성 완료 후 게시판 페이지로 이동
-    }).catch((error) => {
-      console.error('Failed to write inquiry:', error);
+    const confirm = window.confirm("문의 내용을 저장하겠습니까?");
+    if (confirm) {
+      const data = new FormData(event.target);
+      const inqContent = data.get("content");
+      saveInq({
+        inqContent: inqContent,
+        userId: userDTO.userId
+      });
+    }
+  };
+
+  const saveInq = (inquiryDTO) => {
+    return call("/auth/inquiry", "POST", inquiryDTO).then((response) => {
+      if (response) {
+        alert("문의글 저장이 완료되었습니다.");
+        window.location.href = "/inquiryboard";
+        getInquiry();
+      } else {
+        alert("문의글 저장에 실패하였습니다.");
+      }
+    });
+  };
+
+  const getInquiry = () => {
+    return call("/auth/inquiry", "PATCH", inquiry).then((response) => {
+      setInquiry(response);
     });
   };
 
@@ -39,32 +63,13 @@ const WriteInquiry = () => {
               variant="outlined"
               required
               fullWidth
-              name="title"
-              label="제목"
-              type="text"
-              value={inquiry.title}
-              onChange={handleChange}
-              id="title"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              required
-              fullWidth
               name="content"
               label="내용"
               multiline
               rows={4}
-              value={inquiry.content}
-              onChange={handleChange}
+              value={inquiry.inqContent}
+              onChange={(e) => setInquiry({ ...inquiry, inqContent: e.target.value })}
               id="content"
-              InputLabelProps={{
-                shrink: true,
-              }}
             />
           </Grid>
           <Grid item xs={12}>
