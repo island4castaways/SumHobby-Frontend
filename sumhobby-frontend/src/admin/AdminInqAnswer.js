@@ -13,15 +13,16 @@ function AdminInqAnswer() {
     useEffect(() => {
         call("/auth/returnUser", "GET", null).then((response) => {
             if(response) {
-                setAdmin(response);
-                if(admin.role !== "관리자") {
+                if(response.role !== "관리자") {
                     navigate("/");
+                } else {
+                    setAdmin(response);
                 }
             } else {
                 alert("관리자 정보를 확인하는데 실패했습니다.");
             }
         });
-    }, [admin, navigate]);
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
