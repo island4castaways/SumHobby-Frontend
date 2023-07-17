@@ -30,6 +30,8 @@ import ClassDetail from "./class/ClassDetail";
 import AddReview from "./class/AddReview";
 import ShowReview from "./class/ShowReview";
 import LectureDetail from "./class/LectureDetail";
+import AdminPayments from "./admin/AdminPayments";
+import AdminReviews from "./admin/AdminReviews";
 
 function Copyright() {
     return (
@@ -58,6 +60,8 @@ function AppRouter() {
                     <Route path="admin/createLecture" element={<CreateLecture />} />
                     <Route path="admin/inquiries" element={<AdminInquiries />} />
                     <Route path="admin/inqAnswer" element={<AdminInqAnswer />} />
+                    <Route path="admin/payments" element={<AdminPayments />} />
+                    <Route path="admin/reviews" element={<AdminReviews />} />
                     <Route path="cart" element={<Cart />} />
                     <Route path="login" element={<Login />} />
                     <Route path="signup" element={<SignUp />} />

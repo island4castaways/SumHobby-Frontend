@@ -3,10 +3,10 @@ import { Button, Container, MenuItem, Table, TableBody, TableCell, TableHead, Ta
 import { call } from "../service/ApiService";
 import { useNavigate } from "react-router-dom";
 
-function AdminClasses() {
+function AdminPayments() {
     const navigate = useNavigate();
 
-    const [classes, setClasses] = useState([]);
+    const [payments, setPayments] = useState([]);
     const [sortKey, setSortKey] = useState("");
     const [sortMethod, setSortMethod] = useState("");
     const [searchKey, setSearchKey] = useState("");
@@ -29,11 +29,11 @@ function AdminClasses() {
     }, []);
 
     useEffect(() => {
-        call("/admin/classes", "GET", null).then((response) => {
+        call("/admin/payments", "GET", null).then((response) => {
             if(response.data) {
-                setClasses(response.data);
+                setPayments(response.data);
                 setOriginal(response.data);
-                setSortKey("classLastDate");
+                setSortKey("payDate");
                 setSortMethod("desc");
             } else {
                 alert("강의실 정보를 가져오는데 실패했습니다.");
@@ -46,14 +46,14 @@ function AdminClasses() {
     }, [sortKey, sortMethod]);
 
     const onSort = (key, method) => {
-        const tempClasses = [...classes];
+        const tempClasses = [...payments];
         const sortByAsc = (a, b) => (a[key] < b[key] ? -1 : 1);
         const sortByDesc = (a, b) => (a[key] > b[key] ? -1 : 1);
 
         if(method === "asc") {
-            setClasses(tempClasses.sort(sortByAsc));
+            setPayments(tempClasses.sort(sortByAsc));
         } else {
-            setClasses(tempClasses.sort(sortByDesc));
+            setPayments(tempClasses.sort(sortByDesc));
         }
     };
 
@@ -79,32 +79,20 @@ function AdminClasses() {
     };
     
     const handleSearch = () => {
-        const filteredClasses = original.filter((classroom) => {
-            const value = classroom[searchKey] && classroom[searchKey].toString().toLowerCase();
+        const filteredPayments = original.filter((payment) => {
+            const value = payment[searchKey] && payment[searchKey].toString().toLowerCase();
             return value && value.includes(searchValue.toLowerCase());
         });
-        setClasses(filteredClasses);
+        setPayments(filteredPayments);
     };
 
-    const adminLectures = (classDTO) => {
-        navigate("/admin/lectures", {state: {classDTO: classDTO}});
-    };
-
-    const adminReviews = (classDTO) => {
-        navigate("/admin/reviews", {state: {classDTO: classDTO}});
-    };
-
-    const createClass = () => {
-        navigate("/admin/createClass");
-    };
-
-    const modifyClass = (classDTO) => {
-        navigate("/admin/createClass", {state: {classDTO: classDTO}});
-    };
+    const paymentDetail = (paymentDTO) => {
+        navigate("/admin/paymentDetail", {state: {paymentDTO: paymentDTO}});
+    }
 
     const returnToList = () => {
         navigate("/admin/menu");
-    };
+    }
 
     const makeTHCell = (name, key) => {
         if(key === sortKey) {
@@ -116,20 +104,21 @@ function AdminClasses() {
         } else {
             return <TableCell onClick={() => columnClicked(key)}>{name}</TableCell>
         }
-    };
+    }
 
     return (
         <Container>
-            <h2>강의실 관리</h2>
+            <h2>결제 내역 관리</h2>
             <h4>{admin.userName} 로그인</h4>
-            <Button onClick={() => {createClass()}}>새 강의실</Button>
             <Button onClick={() => {returnToList()}}>이전 목록</Button>
             <div>
                 <TextField select value={searchKey} onChange={handleSearchKeyChange}>
-                    <MenuItem value="classNum">Num</MenuItem>
-                    <MenuItem value="className">Name</MenuItem>
-                    <MenuItem value="userId">Teacher</MenuItem>
-                    <MenuItem value="classCategory">Category</MenuItem>
+                    <MenuItem value="paymentNum">Num</MenuItem>
+                    <MenuItem value="userId">UserId</MenuItem>
+                    <MenuItem value="classNum">ClassNum</MenuItem>
+                    <MenuItem value="className">className</MenuItem>
+                    <MenuItem value="orderId">OrderId</MenuItem>
+                    <MenuItem value="payDate">Date</MenuItem>
                 </TextField>
                 <TextField label="Search" value={searchValue} onChange={handleSearchValueChange} />
                 <Button onClick={handleSearch}>Search</Button>
@@ -137,41 +126,27 @@ function AdminClasses() {
             <Table>
                 <TableHead>
                     <TableRow>
-                        {makeTHCell("Num", "classNum")}
-                        {makeTHCell("Name", "className")}
-                        {makeTHCell("Teacher", "userId")}
-                        {makeTHCell("Category", "classCategory")}
-                        {makeTHCell("Image", "classImg")}
-                        {makeTHCell("Rate", "classRate")}
-                        {makeTHCell("Price", "classPrice")}
-                        {makeTHCell("FirstUploaded", "classSetDate")}
-                        {makeTHCell("LastUpdated", "classLastDate")}
-                        <TableCell>수정</TableCell>
-                        <TableCell>강의 관리</TableCell>
-                        <TableCell>리뷰 관리</TableCell>
+                        {makeTHCell("Num", "paymentNum")}
+                        {makeTHCell("UserId", "userId")}
+                        {makeTHCell("ClassNum", "classNum")}
+                        {makeTHCell("ClassName", "className")}
+                        {makeTHCell("OrderId", "orderId")}
+                        {makeTHCell("Date", "payDate")}
+                        <TableCell>결제 관리</TableCell>
                     </TableRow>
                 </TableHead>
 
                 <TableBody>
-                    {classes.map((classroom) => (
-                        <TableRow key={classroom.classNum}>
-                            <TableCell>{classroom.classNum}</TableCell>
-                            <TableCell>{classroom.className}</TableCell>
-                            <TableCell>{classroom.userId}</TableCell>
-                            <TableCell>{classroom.classCategory}</TableCell>
-                            <TableCell>{classroom.classImg}</TableCell>
-                            <TableCell>{classroom.classRate}</TableCell>
-                            <TableCell>{classroom.classPrice}</TableCell>
-                            <TableCell>{classroom.classSetDate}</TableCell>
-                            <TableCell>{classroom.classLastDate}</TableCell>
+                    {payments.map((payment) => (
+                        <TableRow key={payment.paymentNum}>
+                            <TableCell>{payment.paymentNum}</TableCell>
+                            <TableCell>{payment.userId}</TableCell>
+                            <TableCell>{payment.classNum}</TableCell>
+                            <TableCell>{payment.className}</TableCell>
+                            <TableCell>{payment.orderId}</TableCell>
+                            <TableCell>{payment.payDate}</TableCell>
                             <TableCell>
-                                <Button onClick={() => {modifyClass(classroom)}}>수정</Button>
-                            </TableCell>
-                            <TableCell>
-                                <Button onClick={() => {adminLectures(classroom)}}>강의</Button>
-                            </TableCell>
-                            <TableCell>
-                                <Button onClick={() => {adminReviews(classroom)}}>리뷰</Button>
+                                <Button onClick={() => {paymentDetail(payment)}}>관리</Button>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -181,4 +156,4 @@ function AdminClasses() {
     );
 };
 
-export default AdminClasses;
+export default AdminPayments;

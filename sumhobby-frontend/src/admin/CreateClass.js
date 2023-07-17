@@ -9,8 +9,8 @@ function CreateClass() {
 
     const [admin, setAdmin] = useState({});
 
-    const mode = location.state.classDTO ? "modify" : "create";
-    const classDTO = location.state.classDTO ? location.state.classDTO : null;
+    const mode = location.state ? "modify" : "create";
+    const classDTO = location.state ? location.state.classDTO : null;
 
     useEffect(() => {
         call("/auth/returnUser", "GET", null).then((response) => {

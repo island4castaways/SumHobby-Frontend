@@ -41,7 +41,7 @@ function AdminInqAnswer() {
         return call("/admin/inqAnswer", "POST", inquiryDTO).then((response) => {
             if(response) {
                 alert("답변 저장이 완료되었습니다.");
-                setInquiry(response);
+                getInquiry(response);
             } else {
                 alert("답변 저장을 실패했습니다.");
             }
@@ -52,7 +52,7 @@ function AdminInqAnswer() {
         return call("/admin/deleteInqAnswer", "DELETE", inquiryDTO).then((response) => {
             if(response) {
                 alert("답변 삭제가 완료되었습니다.");
-                setInquiry(response);
+                getInquiry(response);
             } else {
                 alert("답변 삭제를 실패했습니다.");
             }
