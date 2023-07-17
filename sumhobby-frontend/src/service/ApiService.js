@@ -16,12 +16,33 @@ export function call(api,method,request){
     return fetch(options.url,options).then((response)=>{
         if(response.status === 200){
             return response.json();
+        } else if(response.status === 403) {
+            window.location.href = "/";
+        } else {
+            throw Error(response);
+        }
+    }).catch((error) => {
+        console.log("http error");
+        console.log(error);
+    });
+};
+
+export function signin(userDTO) {
+    if(localStorage.getItem("ACCESS_TOKEN")) {
+        localStorage.removeItem("ACCESS_TOKEN");
+    }
+    return call("/auth/signin","POST", userDTO).then((response) => {
+        if(response.token){
+            //로컬 스토리리지에 토큰 저장
+            localStorage.setItem("ACCESS_TOKEN", response.token);
+            //token이 존재하는 경우 리다이렉트 나중에 홈으로 변경
+            window.location.href = "/mypage";   
         }
     });
 };
 
 export function signout() {
-    localStorage.setItem("ACCESS_TOKEN", null);
+    localStorage.removeItem("ACCESS_TOKEN");
     window.location.href = "/login";
 };
 

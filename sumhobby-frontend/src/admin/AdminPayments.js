@@ -1,12 +1,12 @@
-import { Button, Container, MenuItem, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { React, useEffect, useState } from "react";
+import { Button, Container, MenuItem, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { call } from "../service/ApiService";
 import { useNavigate } from "react-router-dom";
 
-function AdminInquiries() {
+function AdminPayments() {
     const navigate = useNavigate();
 
-    const [inquiries, setInquiries] = useState([]);
+    const [payments, setPayments] = useState([]);
     const [sortKey, setSortKey] = useState("");
     const [sortMethod, setSortMethod] = useState("");
     const [searchKey, setSearchKey] = useState("");
@@ -29,14 +29,14 @@ function AdminInquiries() {
     }, []);
 
     useEffect(() => {
-        call("/admin/inquiries", "GET", null).then((response) => {
+        call("/admin/payments", "GET", null).then((response) => {
             if(response.data) {
-                setInquiries(response.data);
+                setPayments(response.data);
                 setOriginal(response.data);
-                setSortKey("inqAnswer");
+                setSortKey("payDate");
                 setSortMethod("desc");
             } else {
-                alert("문의글 정보를 가져오는데 실패했습니다.");
+                alert("강의실 정보를 가져오는데 실패했습니다.");
             }
         });
     }, []);
@@ -46,29 +46,14 @@ function AdminInquiries() {
     }, [sortKey, sortMethod]);
 
     const onSort = (key, method) => {
-        const tempInquiries = [...inquiries];
+        const tempClasses = [...payments];
         const sortByAsc = (a, b) => (a[key] < b[key] ? -1 : 1);
         const sortByDesc = (a, b) => (a[key] > b[key] ? -1 : 1);
-        const sortByAnswer = (a, b) => {
-            if((a[key] && b[key]) || (!a[key] && !b[key])) {
-                if(method === "asc") {
-                    return sortByAsc;
-                } else {
-                    return sortByDesc;
-                }
-            } else {
-                return a[key] ? 1 : -1;
-            }
-        }
 
-        if(key === "inqAnswer") {
-            setInquiries(tempInquiries.sort(sortByAnswer));
+        if(method === "asc") {
+            setPayments(tempClasses.sort(sortByAsc));
         } else {
-            if(method === "asc") {
-                setInquiries(tempInquiries.sort(sortByAsc));
-            } else {
-                setInquiries(tempInquiries.sort(sortByDesc));
-            }    
+            setPayments(tempClasses.sort(sortByDesc));
         }
     };
 
@@ -94,15 +79,15 @@ function AdminInquiries() {
     };
     
     const handleSearch = () => {
-        const filteredClasses = original.filter((inquiry) => {
-            const value = inquiry[searchKey] && inquiry[searchKey].toString().toLowerCase();
+        const filteredPayments = original.filter((payment) => {
+            const value = payment[searchKey] && payment[searchKey].toString().toLowerCase();
             return value && value.includes(searchValue.toLowerCase());
         });
-        setInquiries(filteredClasses);
+        setPayments(filteredPayments);
     };
 
-    const detail = (inquiry) => {
-        navigate("/admin/inqAnswer", { state: { inquiry: inquiry } });
+    const paymentDetail = (paymentDTO) => {
+        navigate("/admin/paymentDetail", {state: {paymentDTO: paymentDTO}});
     }
 
     const returnToList = () => {
@@ -119,19 +104,21 @@ function AdminInquiries() {
         } else {
             return <TableCell onClick={() => columnClicked(key)}>{name}</TableCell>
         }
-    };
+    }
 
     return (
         <Container>
-            <h2>문의글 관리</h2>
+            <h2>결제 내역 관리</h2>
             <h4>{admin.userName} 로그인</h4>
             <Button onClick={() => {returnToList()}}>이전 목록</Button>
             <div>
                 <TextField select value={searchKey} onChange={handleSearchKeyChange}>
-                    <MenuItem value="inqNum">Num</MenuItem>
+                    <MenuItem value="paymentNum">Num</MenuItem>
                     <MenuItem value="userId">UserId</MenuItem>
-                    <MenuItem value="inqDate">Date</MenuItem>
-                    <MenuItem value="inqAnswer">Answer</MenuItem>
+                    <MenuItem value="classNum">ClassNum</MenuItem>
+                    <MenuItem value="className">className</MenuItem>
+                    <MenuItem value="orderId">OrderId</MenuItem>
+                    <MenuItem value="payDate">Date</MenuItem>
                 </TextField>
                 <TextField label="Search" value={searchValue} onChange={handleSearchValueChange} />
                 <Button onClick={handleSearch}>Search</Button>
@@ -139,30 +126,34 @@ function AdminInquiries() {
             <Table>
                 <TableHead>
                     <TableRow>
-                        {makeTHCell("Num", "inqNum")}
+                        {makeTHCell("Num", "paymentNum")}
                         {makeTHCell("UserId", "userId")}
-                        {makeTHCell("Date", "inqDate")}
-                        {makeTHCell("Answer", "inqAnswer")}
-                        <TableCell>Detail</TableCell>
+                        {makeTHCell("ClassNum", "classNum")}
+                        {makeTHCell("ClassName", "className")}
+                        {makeTHCell("OrderId", "orderId")}
+                        {makeTHCell("Date", "payDate")}
+                        <TableCell>결제 관리</TableCell>
                     </TableRow>
                 </TableHead>
 
                 <TableBody>
-                    {inquiries.map((inquiry) => (
-                        <TableRow key={inquiry.inqNum}>
-                            <TableCell>{inquiry.inqNum}</TableCell>
-                            <TableCell>{inquiry.userId}</TableCell>
-                            <TableCell>{inquiry.inqDate}</TableCell>
-                            <TableCell>{inquiry.inqAnswer ? "답변 완료" : "미답변"}</TableCell>
+                    {payments.map((payment) => (
+                        <TableRow key={payment.paymentNum}>
+                            <TableCell>{payment.paymentNum}</TableCell>
+                            <TableCell>{payment.userId}</TableCell>
+                            <TableCell>{payment.classNum}</TableCell>
+                            <TableCell>{payment.className}</TableCell>
+                            <TableCell>{payment.orderId}</TableCell>
+                            <TableCell>{payment.payDate}</TableCell>
                             <TableCell>
-                                <Button onClick={() => {detail(inquiry)}}>Detail</Button>
+                                <Button onClick={() => {paymentDetail(payment)}}>관리</Button>
                             </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
         </Container>
-    )
+    );
 };
 
-export default AdminInquiries;
+export default AdminPayments;

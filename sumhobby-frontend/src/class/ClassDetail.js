@@ -27,11 +27,6 @@ const ClassDetail = () => {
     });
   };
 
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    setItems(item);
-  }, []);
-
   const [lectures, setLectures] = useState([]);
   useEffect(() => {
     call("/lecture", "PATCH", classDTO)
