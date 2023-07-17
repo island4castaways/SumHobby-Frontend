@@ -14,16 +14,41 @@ const MyPage = () => {
     const accessToken = localStorage.getItem("ACCESS_TOKEN");
     if(accessToken !== null){
       call("/auth/userinfo", "GET", null).then((response) => {
-        console.log("userinfo has been called.");
         if (response) {
           setUserInfo(response);
-          console.log("userinfo", userInfo);
         }
       });
     }else{
       window.location.href = "/login";
     }
   }, []);
+
+  const changeRole = (userDTO) => {
+    call("/auth/changeRole", "PUT", userDTO).then((response) => {
+      if(response) {
+        setUserInfo(response);
+      }
+    });
+  };
+
+  const checkRole = () => {
+    if(userInfo.role === "강사") {
+      return (
+        <Link to="/myclasses" state={{userDTO: userInfo}}>나의 강의실     {<FaAngleRight />}</Link>
+      );
+    } else if(userInfo.role === "강사 신청") {
+      return (
+        <p>강사 승인 대기 중</p>
+      );
+    } else {
+      return (
+        <Button onClick={() => {if(window.confirm("지원서를 제출하지 않았을 경우 반려될 수 있습니다.\n강사 자격을 신청하시겠습니까?")) {
+            changeRole(userInfo)
+          }}}>강사 신청     {<FaAngleRight />}
+        </Button>
+      );
+    }
+  };
 
   return(
     <div style={{ backgroundColor: "lightgrey", minHeight: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -62,7 +87,7 @@ const MyPage = () => {
             </TableRow>
             <TableRow>
               <TableCell align="left" sx={{ border: "0px solid" }}>
-                <Link to="/profiles">강사 신청     {<FaAngleRight />}</Link>
+                {checkRole()}
               </TableCell>
             </TableRow>
           </TableBody>

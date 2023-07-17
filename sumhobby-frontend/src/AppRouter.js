@@ -36,6 +36,7 @@ import StarRating from "./class/StarRating";
 import Checkout from "./pages/Checkout.tsx";
 import { SuccessPage } from "./pages/Success.tsx";
 import { FailPage } from "./pages/Fail.tsx";
+import MyClasses from "./user/MyClasses";
 
 
 function Copyright() {
@@ -78,6 +79,7 @@ function AppRouter() {
                     <Route path="faq" element={<FAQ />} />
                     <Route path="inquiryboard" element={<InquiryBoardList />} />
                     <Route path="purchase" element={<PurchaseList />} />
+                    <Route path="myclasses" element={<MyClasses />} />
                     <Route path="home" element={<Home />} />
                     <Route path="class" element={<Class />} />
                     <Route path="classdetail" element={<ClassDetail />} />
