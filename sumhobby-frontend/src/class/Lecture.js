@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Grid, Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import "./ClassDetail.css";
 
-const ClassDetail = ({ item }) => {
+const Lecture = () => {
+   const [lecItems, setLecItems] = useState([]);
 
-  
+   const addItem = () => {
+    // 임의의 항목 데이터 생성 (이 부분은 실제 데이터로 대체해야 합니다)
+   }
   return (
-    <div className="ClassDetail">
+    <div className="Lecture">
       <div className="info-container">
         <img
           src={item.img}
@@ -17,7 +19,7 @@ const ClassDetail = ({ item }) => {
           height={150}
         />
         <div className="info-row">
-          <Typography component="span" className="class-title">
+          <Typography component="span" className="lecture-name">
             {item.title}
           </Typography>
         </div>
@@ -36,12 +38,11 @@ const ClassDetail = ({ item }) => {
             소개: {item.classIntro}
           </Typography>
         </div>
-        {/* 리뷰 보기 버튼은 구매자, 비 구매자 마다 다름 */}
-        {/* <div className="link-container">
+        <div className="link-container">
           <Link to="/review" variant="body2" className="App-link">
             View Review
           </Link>
-        </div> */}
+        </div>
         <div className="link-container">
           <Link
             to={{
@@ -81,7 +82,7 @@ const ClassDetail = ({ item }) => {
         </Grid>
       </Grid>
 
-      {/* 회차 리스트와 , 댓글은 구매자에게만 공개 */}
+      {/* 회차 리스트는 구매자에게만 공개 */}
       {/* <Grid item xs={3} sm={3}>
         <img
           src={item.img}
@@ -91,12 +92,7 @@ const ClassDetail = ({ item }) => {
           height={150}
         />
       </Grid> */}
-      {/* <div>
-        <Typography variant="subtitle1">작성자 ID: {authorId}</Typography>
-        <Typography variant="subtitle2">작성일: {date}</Typography>
-        <Typography variant="body1">{content}</Typography>
-        <hr />
-      </div> */}
+      
     </div>
   );
 };

@@ -1,62 +1,83 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import {Container,Grid,Typography,Card,CardActionArea,CardContent,CardMedia,Box,} from '@mui/material';
-import { getClassData } from './Class';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Container, Grid, Typography, Card, CardActionArea, CardContent, CardMedia, Box } from '@mui/material';
+import { call } from './service/ApiService';
+import "./Home.css";
 
-const itemData = [
-  {
-    img: 'https://images.unsplash.com/photo-1551963831-b3b1ca40c98e',
-    title: 'Breakfast',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1551782450-a2132b4ba21d',
-    title: 'Burger',
-  },
-  {
-    img: 'https://images.unsplash.com/photo-1522770179533-24471fcdba45',
-    title: 'Camera',
-  },
-];
+const Home = () => {
+  const [classData, setClassData] = useState([]);
 
-export default function Home() {
-  const sortedItems = itemData.sort((a, b) => b.rating - a.rating);
-  const topItems = sortedItems.slice(0, 3);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    call('/class/top-rated', 'GET', null)
+      .then((response) => {
+        const categorizedClasses = categorizeClasses(response.data);
+        setClassData(categorizedClasses);
+      })
+  }, []);
+
+  const categorizeClasses = (classes) => {
+    const categorized = {};
+
+    // Categorize classes by classCategory
+    for (const classItem of classes) {
+      
+      const category = classItem.classCategory;
+
+      if (categorized[category]) {
+        categorized[category].push(classItem);
+      } else {
+        categorized[category] = [classItem];
+      }
+    }
+    return categorized;
+  };
 
   return (
     <Container component="main" maxWidth="md" style={{ marginTop: '8%' }}>
       <Grid container spacing={2} justifyContent="center">
         <Grid item xs={12}>
-          <Typography component="h1" variant="h5" align="center">
+          <Typography component="h1" variant="h3" align="center" fontSize="30px" border="border">
             실시간 인기 클래스
           </Typography>
         </Grid>
       </Grid>
-      <Grid container spacing={2} justifyContent="center">
-        {topItems.map((item) => (
-          <Grid item xs={12} sm={6} md={4} key={item.title}>
-            <Card>
-              <CardActionArea component={Link} to={`/class/${item.title}`}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={`${item.img}?w=200&h=200&fit=crop&auto=format`}
-                  alt={item.title}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h6" component="div">
-                    {item.title}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
+      {Object.keys(classData).map((category) => (
+        <React.Fragment key={category}>
+          <Typography variant="h5" component="h2" style={{ marginTop: '25px', textDecorationLine:'blink',textEmphasis:'CaptionText' }}>
+            {category}
+          </Typography>
+          <Grid container spacing={2}>
+            {classData[category].map((item) => (
+              <Grid item xs={12} sm={6} md={4} key={item.classNum}>
+                {/* <div onClick={() => {onclickClass(item)}}> */}
+                <Link to="/classdetail" state={{ item: item }}>
+                 <Card style={{ height: '100%',marginTop:'15px' }} >
+                    <CardActionArea style={{ textDecoration: 'none', height: '100%' }}>
+                      <CardMedia component="img" height="200" image={item.classImg} alt="Thumbnail"/>
+                      <CardContent>
+                        <Typography gutterBottom variant="h6" component="div" marginTop='15px'>
+                          {item.className}
+                        </Typography>
+                      </CardContent>
+                    </CardActionArea>
+                  </Card>
+                </Link>
+                  
+                {/* </div> */}
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Box mt={2} textAlign="center">
-        <Link to="/class" variant="body2">
-          View more
+        </React.Fragment>
+      ))}
+      <Box mt={2} textAlign="center" >
+        <Link to="/class" variant="body2" className='view'>
+          View more →
         </Link>
       </Box>
     </Container>
   );
-}
+};
+
+export default Home;

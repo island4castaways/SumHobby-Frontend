@@ -1,0 +1,121 @@
+.ClassDetail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.class-thumbnail {
+  max-width: 300px;
+  max-height: 200px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.info-row {
+  margin-bottom: 10px;
+}
+
+.link-container {
+  margin-bottom: 10px;
+}
+
+.App-link {
+  color: #1976d2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.lecture-header {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+/* Additional styling if needed */
+
+/* Scrollable container */
+.lecture-scroll-container {
+  display: flex;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+/* Hide scrollbar */
+.ClassDetail {
+  padding: 20px;
+}
+
+.info-container {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.info-row {
+  margin-top: 10px;
+}
+
+.class-thumbnail {
+  margin-bottom: 10px;
+}
+
+.class-name {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.userTk {
+  font-size: 16px;
+}
+
+.rating {
+  font-size: 16px;
+}
+
+.class-intro {
+  font-size: 16px;
+}
+
+.App-link {
+  margin-top: 10px;
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+}
+
+.lecture-container {
+  margin-top: 50px;
+}
+
+.lecture-header {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.lecture-scroll-container {
+  overflow-x: auto;
+  white-space: nowrap;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.lecture-card-container {
+  display: flex;
+  gap: 10px;
+}
+
+.lecture-card {
+  flex: 0 0 auto;
+  width: 20%;
+  cursor: pointer;
+}

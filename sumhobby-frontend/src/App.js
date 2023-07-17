@@ -9,11 +9,16 @@ const App = () => {
     .then((response) => setItem(response.data));
   }, []);
   
+  const addItem = (item) => {
+    call("/update","POST", item)
+    .then((Response)=> setItem(Response.data))
+  }
+
   return (
     <div className="App">
       <Home />
     </div>
   );
-}
+};
 
 export default App;

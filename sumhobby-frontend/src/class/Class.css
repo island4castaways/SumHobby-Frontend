@@ -6,7 +6,7 @@
     flex-direction: column;
     align-items: center;
     margin: 50px auto; /* Adjust margin as needed for spacing */
-    max-width: 800px; /* Limit the width of the component */
+    max-width: 100%; /* Limit the width of the component */
   }
   
   /* Header */
@@ -29,7 +29,7 @@
   
   /* Class List */
   .class-list {
-    width: 100%;
+    width: 60%;
   }
   
   /* Class Item */

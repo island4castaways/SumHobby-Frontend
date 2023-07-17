@@ -17,9 +17,22 @@ export function call(api,method,request){
         if(response.status === 200){
             return response.json();
         }
-    }).catch((error)=>{
-        console.log("http error");
-        console.log(error);
     });
-    
-}
+};
+
+export function signout() {
+    localStorage.setItem("ACCESS_TOKEN", null);
+    window.location.href = "/login";
+};
+
+export function signup(userDTO) {
+    return call("/auth/signup", "POST", userDTO);
+};
+
+export function findId(userDTO) {
+    return call(`/search/id?email=${userDTO.email}`, "GET");
+};
+
+export function modify(userDTO){
+    return call("/update","POST", userDTO);
+};
