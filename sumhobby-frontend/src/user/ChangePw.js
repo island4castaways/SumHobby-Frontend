@@ -1,18 +1,42 @@
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
-import React from "react";
-import { signin } from "../service/ApiService";
+import React, { useState } from "react";
+import { call, signin } from "../service/ApiService";
 import { Link } from "react-router-dom";
 
 //수정 필요함 
 const ChangePw = () => {
+    const [passwords, setPasswords] = useState({});
+    
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.target);
-        const useremail = data.get("useremail");
-        //ApiService의 signin 메서드를 사용해서 로그인... 
-        signin({
-            useremail: useremail
-        })
+        console.log(passwords);
+        // event.preventDefault();
+        // const data = new FormData(event.target);
+
+        console.log(passwords.newPW)
+        if(passwords.newPW === passwords.newPwOk){
+            call("/auth/modifypw", "PUT", passwords).then((response) => {
+                console.log(response.data)
+                if(response.data =='fail'){
+                    alert("변경에 실패하였습니다.")   
+                }else{
+                    alert("비밀번호 변경 성공")
+                    window.location.href = "/mypage";                    
+                }
+            });
+        }else{
+            alert("변경에 실패하였습니다.");
+        }
+        //ApiService의 signin 메서드를 사용해서 로그인..
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setPasswords((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        console.log("handleChange", name, value);
     };
 
     return (
@@ -26,7 +50,6 @@ const ChangePw = () => {
                 </Grid>
             </Grid>
             <form noValidate onSubmit={handleSubmit}>
-                {" "}
                 {/* submit 버튼을 누르면 handleSubmit이 실행됨 */}
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -34,10 +57,11 @@ const ChangePw = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            id="useremail"
+                            id="originalPW"
                             label="현재 비밀번호"
-                            name="useremail"
-                            autoComplete="useremail"
+                            name="originalPW"
+                            autoComplete="originalPW"
+                            onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -45,10 +69,11 @@ const ChangePw = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            id="useremail"
+                            id="newPW"
                             label="새 비밀번호"
-                            name="useremail"
-                            autoComplete="useremail"
+                            name="newPW"
+                            autoComplete="newPW"
+                            onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -56,10 +81,11 @@ const ChangePw = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            id="useremail"
+                            id="newPwOk"
                             label="새 비밀번호 확인"
-                            name="useremail"
-                            autoComplete="useremail"
+                            name="newPwOk"
+                            autoComplete="newPwOk"
+                            onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -71,9 +97,9 @@ const ChangePw = () => {
                         <Grid >
                             <Grid item>
                                 <Link to="/Findpw" variant="body2">
-                                    비밀번호를 잊으셨나요? 
+                                    비밀번호를 잊으셨나요?
                                 </Link>
-                            </Grid>                    
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

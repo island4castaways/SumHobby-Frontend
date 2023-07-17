@@ -1,22 +1,38 @@
 import { Button, Grid } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FaAngleRight } from "react-icons/fa";
-import { signout } from '../service/ApiService';
+import { call, signout } from '../service/ApiService';
 import { useParams } from "react-router-dom";
 
 const MyPage = () => {
-  const { userId } = useParams();
-  return (
-        <>
-        <div style={{ backgroundColor: "lightgrey", minHeight: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+  const [userInfo, setUserInfo] = useState({});
+
+  useEffect(() => {
+    // 현재 사용자 정보를 가져와서 텍스트 필드에 설정
+    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    if(accessToken !== null){
+      call("/auth/userinfo", "GET", null).then((response) => {
+        console.log("userinfo has been called.");
+        if (response) {
+          setUserInfo(response);
+          console.log("userinfo", userInfo);
+        }
+      });
+    }else{
+      window.location.href = "/login";
+    }
+  }, []);
+
+  return(
+    <div style={{ backgroundColor: "lightgrey", minHeight: "80vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <TableContainer sx={{ width: "30%", overflow: "hidden", backgroundColor: "white", borderRadius: "6px" }}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell align="left" sx={{ borderBottom: "1px solid", width: "50%" }}>
-              { userId }님 ∑Hobby에 오신걸 환영합니다.
+                {userInfo.userId}님 ∑Hobby에 오신걸 환영합니다.
               </TableCell>
               <TableCell align="right" sx={{ borderBottom: "1px solid", width: "50%" }}>
                 <Grid item>
@@ -46,13 +62,14 @@ const MyPage = () => {
             </TableRow>
             <TableRow>
               <TableCell align="left" sx={{ border: "0px solid" }}>
-                <Link to="/profiles">강사 신청/내 강의실     {<FaAngleRight />}</Link>
+                <Link to="/profiles">강사 신청     {<FaAngleRight />}</Link>
               </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
-    </div></>
+    </div>
   );
 };
+
 export default MyPage;
