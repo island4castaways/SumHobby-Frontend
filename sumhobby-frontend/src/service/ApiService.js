@@ -52,8 +52,12 @@ export function signup(userDTO) {
 
 export function findId(userDTO) {
     return call(`/search/id?email=${userDTO.email}`, "GET");
-};
+}
 
-export function modify(userDTO){
-    return call("/update","POST", userDTO);
-};
+export function getUserInfo() {
+    return call("/auth/userinfo", "GET", null); 
+}
+
+export function modifyUserInfo(userDTO) {
+    return call("/auth/modifyuser", "PUT", userDTO);
+}
