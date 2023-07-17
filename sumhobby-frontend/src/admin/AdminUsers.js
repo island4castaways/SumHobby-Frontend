@@ -1,17 +1,18 @@
-import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { Button, Container, MenuItem, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AdminUsers() {
-    const location = useLocation();
     const navigate = useNavigate();
 
     const [users, setUsers] = useState([]);
     const [sortKey, setSortKey] = useState("");
     const [sortMethod, setSortMethod] = useState("");
-
-    const admin = location.state.admin;
+    const [searchKey, setSearchKey] = useState("");
+    const [searchValue, setSearchValue] = useState("");
+    const [original, setOriginal] = useState([]);
+    const [admin, setAdmin] = useState({});
 
     useEffect(() => {
         if(admin.role !== "관리자") {
@@ -21,9 +22,20 @@ function AdminUsers() {
     }, [admin.role, navigate]);
 
     useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if(response) {
+                setAdmin(response);
+            } else {
+                alert("관리자 정보를 확인하는데 실패했습니다.");
+            }
+        });
+    }, []);
+
+    useEffect(() => {
         call("/admin/users", "GET", null).then((response) => {
             if(response.data) {
                 setUsers(response.data);
+                setOriginal(response.data);
                 setSortKey("role");
                 setSortMethod("asc")
             } else {
@@ -78,16 +90,36 @@ function AdminUsers() {
     }
 
     const changeTeacher = (userDTO) => {
-        setSortKey("");
         call("/admin/users", "PUT", userDTO).then((response) => {
-            setUsers(response.data);
-            setSortKey("role");
-            setSortMethod("asc")
+            if(response.data) {
+                setUsers(response.data);
+                setOriginal(response.data);
+                setSortKey("role");
+                setSortMethod("asc")
+            } else {
+                alert("사용자 데이터를 가져오는데 실패했습니다.");
+            }
         });
     };
 
+    const handleSearchKeyChange = (event) => {
+        setSearchKey(event.target.value);
+    };
+    
+    const handleSearchValueChange = (event) => {
+        setSearchValue(event.target.value);
+    };
+    
+    const handleSearch = () => {
+        const filteredUsers = original.filter((user) => {
+            const value = user[searchKey] && user[searchKey].toString().toLowerCase();
+            return value && value.includes(searchValue.toLowerCase());
+        });
+        setUsers(filteredUsers);
+    };
+
     const returnToList = () => {
-        navigate("/admin/menu", { state: { admin: admin } })
+        navigate("/admin/menu");
     };
 
     const teacherButton = (role) => {
@@ -114,7 +146,18 @@ function AdminUsers() {
         <Container>
             <h2>사용자 관리</h2>
             <h4>{admin.userName} 로그인</h4>
-            <Button onClick={() => {returnToList()}}>목록</Button>
+            <Button onClick={() => {returnToList()}}>이전 목록</Button>
+            <div>
+                <TextField select value={searchKey} onChange={handleSearchKeyChange}>
+                    <MenuItem value="userId">UserId</MenuItem>
+                    <MenuItem value="userName">UserName</MenuItem>
+                    <MenuItem value="phone">Phone</MenuItem>
+                    <MenuItem value="email">Email</MenuItem>
+                    <MenuItem value="role">Role</MenuItem>
+                </TextField>
+                <TextField label="Search" value={searchValue} onChange={handleSearchValueChange} />
+                <Button onClick={handleSearch}>Search</Button>
+            </div>
             <Table>
                 <TableHead>
                     <TableRow>

@@ -1,5 +1,5 @@
 import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,9 +7,23 @@ function CreateClass() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const admin = location.state.admin;
+    const [admin, setAdmin] = useState({});
+
     const mode = location.state.classDTO ? "modify" : "create";
     const classDTO = location.state.classDTO ? location.state.classDTO : null;
+
+    useEffect(() => {
+        if(admin.role === "관리자") {
+            navigate("/admin/menu");
+            return null;
+        }
+    }, [admin.role, navigate]);
+
+    useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            setAdmin(response);
+        });
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -49,7 +63,7 @@ function CreateClass() {
         return call("/admin/createClass", "POST", classDTO).then((response) => {
             if(response.data) {
                 alert("강의실 저장이 완료되었습니다.");
-                navigate("/admin/classes", { state: { admin: admin } })
+                navigate("/admin/classes");
             } else {
                 alert("강의실 저장을 실패했습니다.");
             }
@@ -60,7 +74,7 @@ function CreateClass() {
         return call("/admin/modifyClass", "PUT", classDTO).then((response) => {
             if(response.data) {
                 alert("강의실 수정이 완료되었습니다.");
-                navigate("/admin/classes", { state: { admin: admin } })
+                navigate("/admin/classes");
             } else {
                 alert("강의실 수정을 실패했습니다.");
             }
@@ -71,7 +85,7 @@ function CreateClass() {
         return call("/admin/deleteClass", "DELETE", classDTO).then((response) => {
             if(response.data) {
                 alert("강의실 삭제가 완료되었습니다.");
-                navigate("/admin/classes", { state: { admin: admin } })                
+                navigate("/admin/classes");                
             } else {
                 alert("강의실 삭제를 실패했습니다.");
             }
@@ -79,7 +93,7 @@ function CreateClass() {
     };
 
     const returnToList = () => {
-        navigate("/admin/classes", { state: { admin: admin } })
+        navigate("/admin/classes");
     };
 
     const textField = (mode, id) => {

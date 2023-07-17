@@ -1,10 +1,9 @@
 import { React, useEffect, useState } from "react";
 import { Button, Container, MenuItem, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import { call } from "../service/ApiService";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AdminClasses() {
-    const location = useLocation();
     const navigate = useNavigate();
 
     const [classes, setClasses] = useState([]);
@@ -13,8 +12,7 @@ function AdminClasses() {
     const [searchKey, setSearchKey] = useState("");
     const [searchValue, setSearchValue] = useState("");
     const [original, setOriginal] = useState([]);
-
-    const admin = location.state.admin;
+    const [admin, setAdmin] = useState({});
 
     useEffect(() => {
         if(admin.role !== "관리자") {
@@ -24,6 +22,16 @@ function AdminClasses() {
     }, [admin.role, navigate]);
 
     useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if(response) {
+                setAdmin(response);
+            } else {
+                alert("관리자 정보를 확인하는데 실패했습니다.");
+            }
+        });
+    }, []);
+
+    useEffect(() => {
         call("/admin/classes", "GET", null).then((response) => {
             if(response.data) {
                 setClasses(response.data);
@@ -31,7 +39,7 @@ function AdminClasses() {
                 setSortKey("classLastDate");
                 setSortMethod("asc");
             } else {
-                alert("강의실 데이터를 가져오는데 실패했습니다.");
+                alert("강의실 정보를 가져오는데 실패했습니다.");
             }
         });
     }, []);
@@ -44,6 +52,7 @@ function AdminClasses() {
         const tempClasses = [...classes];
         const sortByAsc = (a, b) => (a[key] < b[key] ? -1 : 1);
         const sortByDesc = (a, b) => (a[key] > b[key] ? -1 : 1);
+
         if(method === "asc") {
             setClasses(tempClasses.sort(sortByAsc));
         } else {
@@ -64,17 +73,6 @@ function AdminClasses() {
         }
     }
 
-    const adminLectures = (classDTO) => {
-        return (
-            navigate("/admin/lectures", {
-                state: {
-                    admin: admin,
-                    classDTO: classDTO
-                }
-            })
-        )
-    };
-
     const handleSearchKeyChange = (event) => {
         setSearchKey(event.target.value);
     };
@@ -91,25 +89,20 @@ function AdminClasses() {
         setClasses(filteredClasses);
     };
 
+    const adminLectures = (classDTO) => {
+        navigate("/admin/lectures", {state: {classDTO: classDTO}});
+    };
+
     const createClass = () => {
-        return (
-            navigate("/admin/createClass", { state: { admin: admin } })
-        )
+        navigate("/admin/createClass");
     }
 
     const modifyClass = (classDTO) => {
-        return (
-            navigate("/admin/createClass", {
-                state: {
-                    admin: admin,
-                    classDTO: classDTO
-                }
-            })
-        )
+        navigate("/admin/createClass", {state: {classDTO: classDTO}});
     }
 
     const returnToList = () => {
-        navigate("/admin/menu", { state: { admin: admin } })
+        navigate("/admin/menu");
     }
 
     const makeTHCell = (name, key) => {

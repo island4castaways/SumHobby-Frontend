@@ -7,46 +7,50 @@ function AdminLectures() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const admin = location.state.admin;
-    if(admin.role !== "관리자") {
-        window.location.href = "/";
-    };
+    const [lectures, setLectures] = useState([]);
+    const [admin, setAdmin] = useState({});
 
     const classDTO = location.state.classDTO;
 
-    const [lectures, setLectures] = useState([]);
+    useEffect(() => {
+        if(admin.role !== "관리자") {
+            navigate("/");
+            return null;
+        }
+    }, [admin.role, navigate]);
+
+    useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if(response) {
+                setAdmin(response);
+            } else {
+                alert("관리자 정보를 확인하는데 실패했습니다.");
+                navigate("/");
+            }
+        });
+    }, []);
+
     useEffect(() => {
         call("/admin/lectures", "PATCH", classDTO).then((response) => {
-            setLectures(response.data)
+            if(response.data) {
+                setLectures(response.data);
+            } else {
+                alert("강의 정보를 가져오는데 실패했습니다.");
+            }
         });
     }, [classDTO]);
 
     const createLecture = () => {
-        return (
-            navigate("/admin/createLecture", {
-                state: {
-                    admin: admin,
-                    classDTO: classDTO
-                }
-            })
-        );
+        navigate("/admin/createLecture", {state: {classDTO: classDTO}});
     };
 
     const modifyLecture = (lectureDTO) => {
-        return (
-            navigate("/admin/createLecture", {
-                state: {
-                    admin: admin,
-                    classDTO: classDTO,
-                    lectureDTO: lectureDTO
-                }
-            })
-        )
-    }
+        navigate("/admin/createLecture", {state: {classDTO: classDTO, lectureDTO: lectureDTO}});
+    };
 
     const returnToList = () => {
-        navigate("/admin/classes", { state: { admin: admin } })
-    }
+        navigate("/admin/classes");
+    };
 
     return (
         <Container>

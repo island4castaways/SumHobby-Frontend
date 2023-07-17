@@ -1,30 +1,48 @@
 import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function AdminInquiries() {
-    const location = useLocation();
     const navigate = useNavigate();
 
-    const admin = location.state.admin;
-    if(admin.role !== "관리자") {
-        window.location.href = "/";
-    };
-
     const [inquiries, setInquiries] = useState([]);
+    const [admin, setAdmin] = useState({});
+
     useEffect(() => {
-        call("/admin/inquiries", "GET", null).then((response) => (
-            setInquiries(response.data)
-        ));
+        if(admin.role !== "관리자") {
+            navigate("/");
+            return null;
+        }
+    }, [admin.role, navigate]);
+
+    useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if(response) {
+                setAdmin(response);
+            } else {
+                alert("관리자 정보를 확인하는데 실패했습니다.");
+                navigate("/");
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        call("/admin/inquiries", "GET", null).then((response) => {
+            if(response.data) {
+                setInquiries(response.data);
+            } else {
+                alert("문의글 정보를 가져오는데 실패했습니다.");
+            }
+        });
     }, []);
 
     const detail = (inquiry) => {
-        navigate("/admin/inqAnswer", { state: { admin: admin, inquiry: inquiry } })
+        navigate("/admin/inqAnswer", { state: { inquiry: inquiry } });
     }
 
     const returnToList = () => {
-        navigate("/admin/menu", { state: { admin: admin } })
+        navigate("/admin/menu");
     }
 
     return (
