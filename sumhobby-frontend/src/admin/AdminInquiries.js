@@ -10,22 +10,17 @@ function AdminInquiries() {
     const [admin, setAdmin] = useState({});
 
     useEffect(() => {
-        if(admin.role !== "관리자") {
-            navigate("/");
-            return null;
-        }
-    }, [admin.role, navigate]);
-
-    useEffect(() => {
         call("/auth/returnUser", "GET", null).then((response) => {
             if(response) {
                 setAdmin(response);
+                if(admin.role !== "관리자") {
+                    navigate("/");
+                }
             } else {
                 alert("관리자 정보를 확인하는데 실패했습니다.");
-                navigate("/");
             }
         });
-    }, []);
+    }, [admin, navigate]);
 
     useEffect(() => {
         call("/admin/inquiries", "GET", null).then((response) => {
