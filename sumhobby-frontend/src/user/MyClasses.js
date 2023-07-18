@@ -84,10 +84,6 @@ function MyClasses() {
         setClasses(filteredClasses);
     };
 
-    const questions = (classDTO) => {
-        navigate("/", {state: {classDTO: classDTO}});
-    };
-
     const returnToList = () => {
         navigate("/mypage");
     };
@@ -134,7 +130,6 @@ function MyClasses() {
                         {makeTHCell("Price", "classPrice")}
                         {makeTHCell("FirstUploaded", "classSetDate")}
                         {makeTHCell("LastUpdated", "classLastDate")}
-                        <TableCell>질문 보기</TableCell>
                         <TableCell>강의실 가기</TableCell>
                     </TableRow>
                 </TableHead>
@@ -151,9 +146,6 @@ function MyClasses() {
                             <TableCell>{classroom.classPrice}</TableCell>
                             <TableCell>{classroom.classSetDate}</TableCell>
                             <TableCell>{classroom.classLastDate}</TableCell>
-                            <TableCell>
-                                <Button onClick={() => {}}>질문</Button>
-                            </TableCell>
                             <TableCell>
                                 <Button onClick={() => {enterClassroom(classroom)}}>강의실</Button>
                             </TableCell>

@@ -1,15 +1,42 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Typography, Grid, Button, Card, CardActionArea, CardContent } from "@mui/material";
+import { Typography, Grid, Button, Card, CardActionArea, CardContent, Paper } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { call } from "../service/ApiService";
 import "./ClassDetail.css";
+import { Container } from "@mui/system";
 
 const ClassDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [lectures, setLectures] = useState([]);
+  const [inCart, setInCart] = useState(false);
+  const [subscribe, setSubscribe] = useState(false);
+
   const classDTO = location.state.item;
   const item = classDTO;
+
+  useEffect(() => {
+    call("/lecture", "PATCH", classDTO)
+      .then((response) => setLectures(response.data))
+      .catch((error) => console.error(error));
+  }, []);
+
+  useEffect(() => {
+    call("/cart", "PATCH", classDTO).then((response) => {
+      if(response) {
+        setInCart(true);
+      } else {
+        setInCart(false);
+      }
+    });
+  });
+
+  useEffect(() => {
+    call("/payment", "PATCH", classDTO).then((response) => {
+      //payment에 있을 경우
+    });
+  });
 
   const handleClass = () => {
     navigate("/addreview", {
@@ -27,13 +54,6 @@ const ClassDetail = () => {
     });
   };
 
-  const [lectures, setLectures] = useState([]);
-  useEffect(() => {
-    call("/lecture", "PATCH", classDTO)
-      .then((response) => setLectures(response.data))
-      .catch((error) => console.error(error));
-  }, []);
-
   const scrollContainerRef = useRef(null);
 
   const enterLecture = (lectureDTO) => {
@@ -44,6 +64,14 @@ const ClassDetail = () => {
       },
     });
   };
+
+  const addCart = () => {
+    call("/cart", "POST", classDTO).then((response) => {
+      if(window.confirm("장바구니에 담기가 완료되었습니다.\n장바구니로 이동하시겠습니까?")) {
+        navigate("/cart");
+      }
+    })
+  }
 
   return (
     <div className="ClassDetail">
@@ -76,53 +104,40 @@ const ClassDetail = () => {
           리뷰 작성하기
         </Button>
       </div>
+      {(!inCart && !subscribe) && (
       <Grid container spacing={2} justifyContent="center" marginTop="200px">
         <Grid item xs={3}>
-          <Button type="submit" fullWidth variant="contained" color="primary">
+          <Button onClick={() => addCart()} fullWidth variant="contained" color="primary">
             장바구니
           </Button>
         </Grid>
-        <Grid item xs={3}>
-          <Button type="button" fullWidth variant="contained" color="primary">
-            바로구매
-          </Button>
-        </Grid>
       </Grid>
+      )}
 
       {/* lecture */}
-      <div className="lecture-container">
-        <Typography className="lecture-header" component="h5" align="left" marginTop={3}>
+      <div >
+        <Typography className="lecture-header" component="h3" align="center" margin={5} fontSize={30}>
           강의 회차
         </Typography>
-        <div className="lecture-scroll-container" ref={scrollContainerRef}>
-          <div className="lecture-card-container">
+        <Container xs={12} >
+          <div >
+          <Paper>
             {lectures.map((lecture) => (
-              <div className="lecture-card" key={lecture.lectureNum} onClick={() => enterLecture(lecture)}>
-                <Card>
-                  <CardActionArea>
-                    <iframe
+              <Card key={lecture.lectureNum} onClick={() => enterLecture(lecture)} >
+                    <iframe 
                       title="YouTube video player"
-                      width="100%"
-                      height="200"
+                      width="600"
+                      height="300"
                       src={lecture.lecUrl}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
                     ></iframe>
-                    <CardContent>
-                      <Typography gutterBottom variant="subtitle2" component="div">
+                      <Typography marginBottom={5} fontSize={20}  align="center">
                         {lecture.lecTitle}
                       </Typography>
-                      <Typography variant="caption" color="textSecondary">
-                        회차: {lecture.lecNum}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </div>
+              </Card>
             ))}
+            </Paper>
           </div>
-        </div>
+        </Container>
       </div>
     </div>
   );
