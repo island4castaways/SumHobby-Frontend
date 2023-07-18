@@ -1,44 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Grid, Button, Box } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { Typography, Card, CardContent, Divider } from "@mui/material";
+import { useLocation } from "react-router-dom";
 import { call } from "../service/ApiService";
+import StarRating from "./StarRating";
+import "./ShowReview.css";
 
 const ShowReview = () => {
-
   const location = useLocation();
-
-  const [selectedItem, setSelectedItem] = useState([]);
-  const [reviews,setReviews] = useState([]);
-
+  const item = location.state.classDTO;
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    call("/review","GET",null)
-    .then((response) => setReviews(response.data));
-  },[]);
+    call("/review/showreview", "PATCH", item).then((response) => {
+      setReviews(response.data);
+    });
+  }, []);
 
   return (
-    <div>
-      <Typography variant="h4" gutterBottom>
+    <div className="show-review-container">
+      <Typography variant="h4" gutterBottom className="review-title">
         리뷰 보기
       </Typography>
-      <Typography variant="h6" gutterBottom>
-        Title: {reviews.className}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        강사명: {reviews.userId}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        내용: {reviews.revContent}
-      </Typography>
-      <Typography variant="h6" gutterBottom>
-        별점: {reviews.revRate}
-      </Typography>
-      {/* Render the reviews */}
-      <Box mt={2}>
-        <Button component={Link} to="/addreview" variant="contained" color="primary">
-          리뷰 작성하기
-        </Button>
-      </Box>
+      <div className="class-info">
+        <Typography variant="h6" gutterBottom className="info-heading">
+          강의명: {item.className}
+        </Typography>
+        <Typography variant="h6" gutterBottom className="info-heading">
+          강사명: {item.userId}
+        </Typography>
+      </div>
+      <div className="review-list">
+        {reviews.map((review, index) => (
+          <div key={index}>
+            <Card className="review-card">
+              <CardContent>
+                <Typography variant="subtitle1" gutterBottom className="review-author">
+                  작성자: {review.userId}
+                </Typography>
+                <Typography variant="subtitle2" gutterBottom className="review-date">
+                  작성 시간: {review.revDate}
+                </Typography>
+                <Typography variant="body1" gutterBottom className="review-content">
+                  내용: {review.revContent}
+                </Typography>
+                <div className="rating-container">
+                  <Typography variant="body1" gutterBottom className="review-rating">
+                    별점:
+                  </Typography>
+                  <StarRating rating={review.revRate} readOnly />
+                </div>
+              </CardContent>
+            </Card>
+            {index !== reviews.length - 1 && <Divider variant="middle" />}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

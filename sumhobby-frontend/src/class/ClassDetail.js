@@ -1,87 +1,82 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Typography, Grid, Button, Card, CardActionArea, CardContent } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { call } from "../service/ApiService";
 import "./ClassDetail.css";
 
-const ClassDetail = ({ item }) => {
+const ClassDetail = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const classDTO = location.state.item;
+  const item = classDTO;
+
   const handleClass = () => {
     navigate("/addreview", {
       state: {
-        title: item.className,
-        instructorName: item.userId,
-        classRate: item.classRate,
-        classDetail: item.classDetail,
-        classCategory: item.classCategory,
+        classDTO: classDTO,
       },
     });
   };
 
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    setItems(item);
-  }, []);
+  const handleClassView = () => {
+    navigate("/showreview", {
+      state: {
+        classDTO: classDTO,
+      },
+    });
+  };
 
   const [lectures, setLectures] = useState([]);
-
   useEffect(() => {
-    call("/lecture", "GET", null)
+    call("/lecture", "PATCH", classDTO)
       .then((response) => setLectures(response.data))
       .catch((error) => console.error(error));
   }, []);
 
   const scrollContainerRef = useRef(null);
 
-  const handleScrollLeft = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft -= 200;
-    }
-  };
-  const handleScrollRight = () => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollLeft += 200; // Adjust the scroll distance as needed
-    }
+  const enterLecture = (lectureDTO) => {
+    navigate("/lecture", {
+      state: {
+        lectureDTO: lectureDTO,
+        classDTO : classDTO
+      },
+    });
   };
 
   return (
     <div className="ClassDetail">
       <div className="info-container">
-        <img src={item.img} className="class-thumbnail" alt="Thumbnail" width={300} height={150} />
+        <img src={item.classImg} className="class-thumbnail" alt="Thumbnail" width="400px" />
         <div className="info-row">
           <Typography component="span" className="class-name">
-            제목: {items.className}
+            제목: {item.className}
           </Typography>
         </div>
         <div className="info-row">
           <Typography component="span" className="userTk">
-            강사: {items.userId}
+            강사: {item.userId}
           </Typography>
         </div>
         <div className="info-row">
           <Typography component="span" className="rating">
-            별점: {items.classRate}
+            별점: {item.classRate}
           </Typography>
         </div>
         <div className="info-row">
           <Typography component="span" className="class-intro">
-            소개: {items.classDetail}
+            소개: {item.classDetail}
           </Typography>
         </div>
-        <Link
-          to={`/showreview?title=${encodeURIComponent(item.className)}&instructorName=${encodeURIComponent(
-            item.instructorName
-          )}`}
-          variant="body2"
-          className="App-link"
-        >
-          View Review
-        </Link>
+        <Button onClick={handleClassView} variant="body2" className="App-link">
+          view review
+        </Button>
         <Button onClick={handleClass} variant="body2" className="App-link">
           리뷰 작성하기
         </Button>
       </div>
-      <Grid container spacing={2} justifyContent="center" marginTop={3}>
+      <Grid container spacing={2} justifyContent="center" marginTop="200px">
         <Grid item xs={3}>
           <Button type="submit" fullWidth variant="contained" color="primary">
             장바구니
@@ -95,14 +90,14 @@ const ClassDetail = ({ item }) => {
       </Grid>
 
       {/* lecture */}
-      <div className="lecture-container" ref={scrollContainerRef}>
+      <div className="lecture-container">
         <Typography className="lecture-header" component="h5" align="left" marginTop={3}>
           강의 회차
         </Typography>
-        <div className="lecture-scroll-container" ref={scrollContainerRef} >
-          <Grid container spacing={2} justifyContent="flex-start">
-            {lectures.slice(0, 6).map((lecture) => (
-              <Grid item xs={12} sm={4} md={2} key={lecture.lectureNum}>
+        <div className="lecture-scroll-container" ref={scrollContainerRef}>
+          <div className="lecture-card-container">
+            {lectures.map((lecture) => (
+              <div className="lecture-card" key={lecture.lectureNum} onClick={() => enterLecture(lecture)}>
                 <Card>
                   <CardActionArea>
                     <iframe
@@ -124,16 +119,10 @@ const ClassDetail = ({ item }) => {
                     </CardContent>
                   </CardActionArea>
                 </Card>
-              </Grid>
+              </div>
             ))}
-          </Grid>
-        </div>
-        {lectures.length > 6 && (
-          <div className="scroll-buttons">
-            <button onClick={handleScrollLeft}>&lt;</button>
-            <button onClick={handleScrollRight}>&gt;</button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

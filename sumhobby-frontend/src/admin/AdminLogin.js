@@ -1,10 +1,22 @@
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
 import { Button, Container, Table, TableCell, TableRow, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 function AdminLogin() {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if(response) {
+                if(response.role === "관리자") {
+                    navigate("/admin/menu");
+                }
+            } else {
+                alert("관리자 정보를 확인하는데 실패했습니다.");
+            }
+        });
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -15,11 +27,13 @@ function AdminLogin() {
         adminlogin({ userId: userId, password: password });
     };
 
-    function adminlogin(userDTO) {
+    const adminlogin = (userDTO) => {
         return call("/admin/signin", "POST", userDTO).then((response) => {
             if(response.token) {
                 localStorage.setItem("ACCESS_TOKEN", response.token);
-                navigate("/admin/menu", { state: { admin: response } })
+                navigate("/admin/menu");
+            } else {
+                alert("로그인을 실패했습니다.");
             }
         });
     };

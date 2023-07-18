@@ -1,18 +1,28 @@
 import { Button, Container, Paper, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
 import { useLocation, useNavigate } from "react-router-dom";
 
 function AdminInqAnswer() {
     const location = useLocation();
     const navigate = useNavigate();
-
-    const admin = location.state.admin;
-    if(admin.role !== "관리자") {
-        window.location.href = "/";
-    };
     
     const [inquiry, setInquiry] = useState(location.state.inquiry);
+    const [admin, setAdmin] = useState({});
+
+    useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if(response) {
+                if(response.role !== "관리자") {
+                    navigate("/");
+                } else {
+                    setAdmin(response);
+                }
+            } else {
+                alert("관리자 정보를 확인하는데 실패했습니다.");
+            }
+        });
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -31,7 +41,7 @@ function AdminInqAnswer() {
         return call("/admin/inqAnswer", "POST", inquiryDTO).then((response) => {
             if(response) {
                 alert("답변 저장이 완료되었습니다.");
-                getInquiry();
+                getInquiry(response);
             } else {
                 alert("답변 저장을 실패했습니다.");
             }
@@ -42,22 +52,26 @@ function AdminInqAnswer() {
         return call("/admin/deleteInqAnswer", "DELETE", inquiryDTO).then((response) => {
             if(response) {
                 alert("답변 삭제가 완료되었습니다.");
-                getInquiry();
+                getInquiry(response);
             } else {
                 alert("답변 삭제를 실패했습니다.");
             }
-        })
-    }
+        });
+    };
 
     const getInquiry = () => {
         return call("/admin/inquiry", "PATCH", inquiry).then((response) => {
-            setInquiry(response);
-        })
-    }
+            if(response) {
+                setInquiry(response);
+            } else {
+                alert("문의글 정보를 가져오는데 실패했습니다.");
+            }
+        });
+    };
 
     const returnToList = () => {
-        navigate("/admin/inquiries", { state: { admin: admin } })
-    }
+        navigate("/admin/inquiries");
+    };
 
     const inqAnswer = () => {
         if(inquiry.inqAnswer) {

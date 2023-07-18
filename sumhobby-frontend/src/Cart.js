@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -8,43 +8,34 @@ import {
   List,
   ListItem,
   IconButton,
-  ListItemSecondaryAction
+  ListItemSecondaryAction,
+  Avatar
 } from '@mui/material';
 import { DeleteOutlined } from '@mui/icons-material';
+import { call } from './service/ApiService';
+import { Link, useNavigate, useNavigationType } from 'react-router-dom';
+const cartImageBase64 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
+  const [checkItems, setCheckItems] = useState([]);
 
-  const addItem = () => {
-    // 임의의 항목 데이터 생성 (이 부분은 실제 데이터로 대체해야 합니다)
-    const newItem = {
-      add: false,
-      name: '상품명',
-      price: 30000,
-      image: '상품이미지URL'
-    };
 
-    // 장바구니 항목 배열에 추가
-    setCartItems([...cartItems, newItem]);
-  };
+  const navigate = useNavigate();
 
-  const removeItem = () => {
-    // 장바구니 항목 배열에서 마지막 항목 제거
-    setCartItems(cartItems.slice(0, -1));
-  };
+  useEffect(() => {
+    call("/cart","GET",null)
+    .then((response) => setCartItems(response.data));
+
+  }, []);
 
   const deleteItem = (item) => {
-    // 삭제할 아이템을 찾는다.
-    if(item.add){
-      const newTotalPrice = total - item.price;
-      setTotal(newTotalPrice);
-    }
-    const newItems = cartItems.filter((e) => e !== item);
-    // 삭제할 아이템을 제외한 아이템을 다시 배열에 저장한다.
+ 
+    call("/cart","DELETE",item)
+    .then((response) => setCartItems(response.data));
     
-    setCartItems([...newItems]);
-  };
+  }; 
 
   const handleCheckboxChange = (index) => {
     const updatedCartItems = cartItems.map((item, i) => {
@@ -59,13 +50,37 @@ const Cart = () => {
 
     const newTotalPrice = updatedCartItems.reduce((sum, item) => {
       if (item.add) {
-        return sum + item.price;
+        return sum + item.classPrice;
       }
       return sum;
     }, 0);
 
     setCartItems(updatedCartItems);
     setTotal(newTotalPrice);
+  };
+
+  const goCheckout = () => {
+    const checkedItems = cartItems.filter((item) => item.add);
+    setCheckItems(checkedItems);
+
+
+    // checkedItems.map((item, index) =>{
+    //   call("/checkout", "POST", item)
+    // })
+    
+    setTimeout(() => {
+      navigateCheck(checkedItems);
+    }, 0);
+  };
+  
+  const navigateCheck = (items) => {
+    console.log(items);
+    navigate('/checkout', {
+      state: {
+        total: total,
+        checkItems: items,
+      },
+    });
   };
 
   return (
@@ -83,13 +98,13 @@ const Cart = () => {
                 <ListItem key={index}>
                   <Checkbox checked={item.add} onChange={() => handleCheckboxChange(index)} />
                   <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      style={{ width: '50px', height: '50px', marginRight: '10px' }}
+                    <img 
+                      src={"/img/cartimg3.png"}
+                      alt={item.className}
+                      style={{ width: '150px', height: '150px', marginRight: '10px' }}
                     />
-                    <Typography variant="body1">{item.name}</Typography>
-                    <Typography variant="body1">{item.price}</Typography>
+                    <Typography variant="body1">강의명:{item.className}&nbsp;&nbsp;&nbsp;</Typography>
+                    <Typography variant="body1">가격:{item.classPrice}</Typography>
                   </div>
                   <ListItemSecondaryAction>
                     <IconButton aria-label="Delete Todo" onClick={() => deleteItem(item)}>
@@ -103,21 +118,11 @@ const Cart = () => {
         )}
       </div>
       <div style={{ marginTop: '20px' }}>
-        <Button variant="contained" onClick={addItem} style={{ marginRight: '10px' }}>
-          항목 추가
-        </Button>
-        <Button
-          variant="contained"
-          color="error"
-          onClick={removeItem}
-          disabled={cartItems.length === 0}
-        >
-          항목 제거
-        </Button>
+        
       </div>
       <div>
         Total: {total}
-        <Button>결제하기</Button>
+        <Button onClick={goCheckout}>결제하기</Button>
       </div>
     </Container>
   );

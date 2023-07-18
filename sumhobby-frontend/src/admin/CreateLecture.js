@@ -1,5 +1,5 @@
 import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,10 +7,25 @@ function CreateLecture() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const admin = location.state.admin;
+    const [admin, setAdmin] = useState({});
+
     const classDTO = location.state.classDTO;
-    const mode = location.state.lectureDTO ? "modify": "create";
+    const mode = location.state.lectureDTO ? "modify" : "create";
     const lectureDTO = location.state.lectureDTO ? location.state.lectureDTO : null;
+
+    useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if(response) {
+                if(response.role !== "관리자") {
+                    navigate("/");
+                } else {
+                    setAdmin(response);
+                }
+            } else {
+                alert("관리자 정보를 확인하는데 실패했습니다.");
+            }
+        });
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -43,7 +58,7 @@ function CreateLecture() {
         return call("/admin/createLecture", "POST", lectureDTO).then((response) => {
             if(response.data) {
                 alert("강의 추가가 완료되었습니다.");
-                navigate("/admin/lectures", { state: { admin: admin, classDTO: classDTO } });
+                navigate("/admin/lectures", {state: {classDTO: classDTO}});
             } else {
                 alert("강의 추가를 실패했습니다.");
             }
@@ -54,7 +69,7 @@ function CreateLecture() {
         return call("/admin/modifyLecture", "PUT", lectureDTO).then((response) => {
             if(response.data) {
                 alert("강의 수정이 완료되었습니다.");
-                navigate("/admin/lectures", { state: { admin: admin, classDTO: classDTO } });
+                navigate("/admin/lectures", {state: {classDTO: classDTO}});
             } else {
                 alert("강의 수정을 실패했습니다.");
             }
@@ -65,13 +80,13 @@ function CreateLecture() {
         return call("/admin/deleteLecture", "DELETE", lectureDTO).then((response) => {
             if(response.data) {
                 alert("강의 삭제가 완료되었습니다.");
-                navigate("/admin/lectures", { state: { admin: admin, classDTO: classDTO } });
+                navigate("/admin/lectures", {state: {classDTO: classDTO}});
             }
         });
     };
 
     const returnToList = () => {
-        navigate("/admin/lectures", { state: { admin: admin, classDTO: classDTO } })
+        navigate("/admin/lectures", {state: {classDTO: classDTO}});
     };
 
     const textField = (mode, id) => {
@@ -138,7 +153,7 @@ function CreateLecture() {
                                 <TableCell>
                                     <Button onClick={() => {
                                         if(window.confirm("강의를 삭제하겠습니까?")) {
-                                            deleteLecture(lectureDTO)
+                                            deleteLecture(lectureDTO);
                                         }}}>
                                         삭제
                                     </Button>

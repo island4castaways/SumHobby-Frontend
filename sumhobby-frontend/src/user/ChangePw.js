@@ -1,49 +1,42 @@
 import { useState } from "react";
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
-import { modifyUserInfo, call } from "../service/ApiService";
+import React, { useState } from "react";
+import { call, signin } from "../service/ApiService";
 import { Link } from "react-router-dom";
 
 const ChangePw = () => {
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [passwordError, setPasswordError] = useState("");
-
-    const handlePasswordChange = (event) => {
-        setPasswordError("");
-        const { name, value } = event.target;
-        if (name === "currentPassword") {
-            setCurrentPassword(value);
-        } else if (name === "newPassword") {
-            setNewPassword(value);
-        } else if (name === "confirmPassword") {
-            setConfirmPassword(value);
-        }
-    };
-
+    const [passwords, setPasswords] = useState({});
+    
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(passwords);
+        // event.preventDefault();
+        // const data = new FormData(event.target);
 
-        // 유효성 검사
-        if (newPassword !== confirmPassword) {
-            setPasswordError("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.");
-            return;
-        }
-
-        // 서버에 비밀번호 변경 요청 보내기
-        const userDTO = {
-            password: currentPassword,
-            newPassword: newPassword,
-        };
-        modifyUserInfo(userDTO)
-            .then(() => {
-                console.log("비밀번호 변경 성공");
-                alert("비밀번호 변경이 완료되었습니다.");
-            })
-            .catch((error) => {
-                alert("비밀번호 변경에 실패하였습니다.");
-                console.error("Failed to change password:", error);
+        console.log(passwords.newPW)
+        if(passwords.newPW === passwords.newPwOk){
+            call("/auth/modifypw", "PUT", passwords).then((response) => {
+                console.log(response.data)
+                if(response.data =='fail'){
+                    alert("변경에 실패하였습니다.")   
+                }else{
+                    alert("비밀번호 변경 성공")
+                    window.location.href = "/mypage";                    
+                }
             });
+        }else{
+            alert("변경에 실패하였습니다.");
+        }
+        //ApiService의 signin 메서드를 사용해서 로그인..
+    };
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setPasswords((prevState) => ({
+            ...prevState,
+            [name]: value,
+        }));
+        console.log("handleChange", name, value);
     };
 
     return (
@@ -56,18 +49,18 @@ const ChangePw = () => {
                 </Grid>
             </Grid>
             <form noValidate onSubmit={handleSubmit}>
+                {/* submit 버튼을 누르면 handleSubmit이 실행됨 */}
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
                             variant="outlined"
                             required
                             fullWidth
-                            name="currentPassword"
+                            id="originalPW"
                             label="현재 비밀번호"
-                            type="password"
-                            value={currentPassword}
-                            onChange={handlePasswordChange}
-                            id="currentPassword"
+                            name="originalPW"
+                            autoComplete="originalPW"
+                            onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -75,12 +68,11 @@ const ChangePw = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            name="newPassword"
+                            id="newPW"
                             label="새 비밀번호"
-                            type="password"
-                            value={newPassword}
-                            onChange={handlePasswordChange}
-                            id="newPassword"
+                            name="newPW"
+                            autoComplete="newPW"
+                            onChange={handleChange}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -88,12 +80,11 @@ const ChangePw = () => {
                             variant="outlined"
                             required
                             fullWidth
-                            name="confirmPassword"
+                            id="newPwOk"
                             label="새 비밀번호 확인"
-                            type="password"
-                            value={confirmPassword}
-                            onChange={handlePasswordChange}
-                            id="confirmPassword"
+                            name="newPwOk"
+                            autoComplete="newPwOk"
+                            onChange={handleChange}
                         />
                         {passwordError && (
                             <Typography color="error">{passwordError}</Typography>

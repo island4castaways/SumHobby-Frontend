@@ -1,0 +1,30 @@
+.star-rating-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .star-icon-container {
+    cursor: pointer;
+    position: relative;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .full-star-icon,
+  .empty-star-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.5rem;
+    color: orange;
+  }
+  
+  .empty-star-icon {
+    color: gray;
+  }
+  
+  .rating-value {
+    font-size: 1rem;
+  }
+  

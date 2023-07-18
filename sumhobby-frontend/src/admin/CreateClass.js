@@ -1,5 +1,5 @@
 import { Button, Container, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
-import { React } from "react";
+import { React, useEffect, useState } from "react";
 import { call } from "../service/ApiService";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -7,9 +7,24 @@ function CreateClass() {
     const location = useLocation();
     const navigate = useNavigate();
 
-    const admin = location.state.admin;
-    const mode = location.state.classDTO ? "modify" : "create";
-    const classDTO = location.state.classDTO ? location.state.classDTO : null;
+    const [admin, setAdmin] = useState({});
+
+    const mode = location.state ? "modify" : "create";
+    const classDTO = location.state ? location.state.classDTO : null;
+
+    useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if(response) {
+                if(response.role !== "관리자") {
+                    navigate("/");
+                } else {
+                    setAdmin(response);
+                }
+            } else {
+                alert("관리자 정보를 확인하는데 실패했습니다.");
+            }
+        });
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -19,6 +34,7 @@ function CreateClass() {
             const className = data.get("className");
             const userId = data.get("userId");
             const classDetail = data.get("classDetail");
+            const classImg = data.get("classImg");
             const classCategory = data.get("classCategory");
             const classPrice = data.get("classPrice");
             if(mode === "create") {
@@ -26,6 +42,7 @@ function CreateClass() {
                     className: className,
                     userId: userId,
                     classDetail: classDetail,
+                    classImg: classImg,
                     classCategory: classCategory,
                     classPrice: classPrice
                 });    
@@ -35,6 +52,7 @@ function CreateClass() {
                     className: className,
                     userId: userId,
                     classDetail: classDetail,
+                    classImg: classImg,
                     classCategory: classCategory,
                     classPrice: classPrice
                 });
@@ -46,7 +64,7 @@ function CreateClass() {
         return call("/admin/createClass", "POST", classDTO).then((response) => {
             if(response.data) {
                 alert("강의실 저장이 완료되었습니다.");
-                navigate("/admin/classes", { state: { admin: admin } })
+                navigate("/admin/classes");
             } else {
                 alert("강의실 저장을 실패했습니다.");
             }
@@ -57,7 +75,7 @@ function CreateClass() {
         return call("/admin/modifyClass", "PUT", classDTO).then((response) => {
             if(response.data) {
                 alert("강의실 수정이 완료되었습니다.");
-                navigate("/admin/classes", { state: { admin: admin } })
+                navigate("/admin/classes");
             } else {
                 alert("강의실 수정을 실패했습니다.");
             }
@@ -68,7 +86,7 @@ function CreateClass() {
         return call("/admin/deleteClass", "DELETE", classDTO).then((response) => {
             if(response.data) {
                 alert("강의실 삭제가 완료되었습니다.");
-                navigate("/admin/classes", { state: { admin: admin } })                
+                navigate("/admin/classes");                
             } else {
                 alert("강의실 삭제를 실패했습니다.");
             }
@@ -76,7 +94,7 @@ function CreateClass() {
     };
 
     const returnToList = () => {
-        navigate("/admin/classes", { state: { admin: admin } })
+        navigate("/admin/classes");
     };
 
     const textField = (mode, id) => {
@@ -135,6 +153,12 @@ function CreateClass() {
                             <TableCell>classCategory</TableCell>
                             <TableCell>
                                 {textField(mode, "classCategory")}
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>classImg</TableCell>
+                            <TableCell>
+                                {textField(mode, "classImg")}
                             </TableCell>
                         </TableRow>
                         <TableRow>

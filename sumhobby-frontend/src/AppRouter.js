@@ -31,6 +31,13 @@ import AddReview from "./class/AddReview";
 import ShowReview from "./class/ShowReview";
 import WriteInquiry from './user/WriteInquiry';
 import Profiles from "./user/Profiles";
+import LectureDetail from "./class/LectureDetail";
+import AdminPayments from "./admin/AdminPayments";
+import AdminReviews from "./admin/AdminReviews";
+import StarRating from "./class/StarRating";
+import Checkout from "./pages/Checkout.tsx";
+import { SuccessPage } from "./pages/Success.tsx";
+import { FailPage } from "./pages/Fail.tsx";
 
 
 function Copyright() {
@@ -60,6 +67,8 @@ function AppRouter() {
                     <Route path="admin/createLecture" element={<CreateLecture />} />
                     <Route path="admin/inquiries" element={<AdminInquiries />} />
                     <Route path="admin/inqAnswer" element={<AdminInqAnswer />} />
+                    <Route path="admin/payments" element={<AdminPayments />} />
+                    <Route path="admin/reviews" element={<AdminReviews />} />
                     <Route path="cart" element={<Cart />} />
                     <Route path="login" element={<Login />} />
                     <Route path="signup" element={<SignUp />} />
@@ -71,13 +80,19 @@ function AppRouter() {
                     <Route path="qna" element={<QnA />} />
                     <Route path="profiles" element={<Profiles />} />
                     <Route path="inquiryboard" element={<InquiryBoardList />} />
-                    <Route path="purchase" element={<PurchaseList />} />
-                    <Route path="/home" element={<Home />} />
-                    <Route path="/class" element={<Class />} />
-                    <Route path="/class/:title" element={<ClassDetail />} />
-                    <Route path="/addreview" element={<AddReview />} />
-                    <Route path="/showreview" element={<ShowReview />} />
+                    <Route path="purchase" element={<PurchaseList />} />                                
+                    <Route path="/class/:title" element={<ClassDetail />} />                        
                     <Route path="/write" element={<WriteInquiry/>} />
+                    <Route path="home" element={<Home />} />
+                    <Route path="class" element={<Class />} />
+                    <Route path="classdetail" element={<ClassDetail />} />
+                    <Route path="addreview" element={<AddReview />} />
+                    <Route path="showreview" element={<ShowReview />} />
+                    <Route path="lecture" element={<LectureDetail />} />
+                    <Route path="star" element={<StarRating />} />
+                    <Route path="checkout" element={<Checkout/>}/>
+                    <Route path="success" element={<SuccessPage/>}/>
+                    <Route path="fail" element={<FailPage/>}/>
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>
