@@ -44,7 +44,7 @@ const PurchaseList = () => {
                         {purchases.map((purchase) => (
                             <TableRow key={purchase.orderNum}>
                                 <TableCell>{purchase.orderid}</TableCell>
-                                {/* <TableCell>{purchase.userRef}</TableCell> */}
+                                <TableCell>{purchase.userRef}</TableCell>
                                 <TableCell>{purchase.orderPrice}</TableCell>
                                 <TableCell>{purchase.orderDate}</TableCell>
                             </TableRow>
