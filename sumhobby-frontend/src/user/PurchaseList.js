@@ -1,21 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-// import { getPurchases } from '../service/ApiService';
+import { call } from '../service/ApiService';
 
 const PurchaseList = () => {
     const [purchases, setPurchases] = useState([]);
+    const [userDTO, setUserDTO] = useState({});
 
-    // useEffect(() => {
-    //     // 구매 목록을 불러와서 purchases 상태에 저장
-    //     getPurchases()
-    //         .then((data) => {
-    //             setPurchases(data);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Failed to get purchases:', error);
-    //         });
-    // }, []);
+    useEffect(() => {
+        call("/auth/returnUser", "GET", null).then((response) => {
+            if (response) {
+                if (response) {
+                    setUserDTO(response);
+                } else {
+                    alert("사용자 정보를 확인하는데 실패했습니다.");
+                }
+            }
+        });
+    }, []);
 
+    useEffect(() => {
+        call("/auth/pay", "PATCH", userDTO).then((response) => {
+            if (response.data) {
+                setPurchases(response.data);
+            } else {
+                alert("구매 리스트를 가져오는데 실패했습니다.");
+            }
+        });
+    }, [userDTO]);
     return (
         <div>
             <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;강의 구매 목록</h1>
@@ -32,10 +43,10 @@ const PurchaseList = () => {
                     <TableBody>
                         {purchases.map((purchase) => (
                             <TableRow key={purchase.orderNum}>
-                                <TableCell>{purchase.id}</TableCell>
-                                <TableCell>{purchase.userRef}</TableCell>
+                                <TableCell>{purchase.orderid}</TableCell>
+                                {/* <TableCell>{purchase.userRef}</TableCell> */}
                                 <TableCell>{purchase.orderPrice}</TableCell>
-                                <TableCell>{purchase.orderDate}</TableCell>                            
+                                <TableCell>{purchase.orderDate}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
