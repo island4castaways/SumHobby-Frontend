@@ -30,13 +30,18 @@ const ClassDetail = () => {
         setInCart(false);
       }
     });
-  });
+  }, []);
 
   useEffect(() => {
-    call("/payment", "PATCH", classDTO).then((response) => {
-      //payment에 있을 경우
+    call("/checkout", "PATCH", classDTO).then((response) => {
+      console.log(response)
+      if(response) {
+        setSubscribe(true);
+      } else {
+        setSubscribe(false);
+      }
     });
-  });
+  }, []);
 
   const handleClass = () => {
     navigate("/addreview", {
@@ -116,7 +121,7 @@ const ClassDetail = () => {
 
       {/* lecture */}
       <div >
-        <Typography className="lecture-header" component="h3" align="center" margin={5} fontSize={30}>
+        <Typography className="lecture-header" component="h3" align="center" margin={5} fontSize={30} marginTop={10}>
           강의 회차
         </Typography>
         <Container xs={12} >
