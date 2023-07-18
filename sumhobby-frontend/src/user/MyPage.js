@@ -79,7 +79,7 @@ const MyPage = () => {
             </TableRow>
             <TableRow>
               <TableCell align="left" sx={{ borderBottom: "1px solid", borderRight: "1px solid", width: "50%" }}>
-                <Link to="/purchase">구매 내역     {<FaAngleRight />}</Link>
+                <Link to="/purchase" state={{userDTO: userInfo}}>결제 내역     {<FaAngleRight />}</Link>
               </TableCell>
               <TableCell align="left" sx={{ borderBottom: "1px solid", width: "50%" }}>
                 <Link to="/faq">문의하기     {<FaAngleRight />}</Link>
