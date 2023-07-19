@@ -60,17 +60,22 @@ const Cart = () => {
   };
 
   const goCheckout = () => {
-    const checkedItems = cartItems.filter((item) => item.add);
+    if(total == 0){
+      alert("0원은 결제할 수 없습니다.")
+    }else{
+      const checkedItems = cartItems.filter((item) => item.add);
     setCheckItems(checkedItems);
-
-
-    // checkedItems.map((item, index) =>{
-    //   call("/checkout", "POST", item)
-    // })
     
     setTimeout(() => {
       navigateCheck(checkedItems);
     }, 0);
+    }
+    // const checkedItems = cartItems.filter((item) => item.add);
+    // setCheckItems(checkedItems);
+    
+    // setTimeout(() => {
+    //   navigateCheck(checkedItems);
+    // }, 0);
   };
   
   const navigateCheck = (items) => {
