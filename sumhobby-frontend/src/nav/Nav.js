@@ -36,7 +36,7 @@ const Nav = () => {
                         </a>
                         &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a className="Navs" href="/class">
-                            내 강의실
+                            강의실
                         </a>
                         &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a className="Navs" href="/mypage">
