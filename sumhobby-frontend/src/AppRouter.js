@@ -29,7 +29,6 @@ import ClassDetail from "./class/ClassDetail";
 import AddReview from "./class/AddReview";
 import ShowReview from "./class/ShowReview";
 import WriteInquiry from './user/WriteInquiry';
-import Profiles from "./user/Profiles";
 import LectureDetail from "./class/LectureDetail";
 import AdminPayments from "./admin/AdminPayments";
 import AdminReviews from "./admin/AdminReviews";
@@ -38,7 +37,6 @@ import Checkout from "./pages/Checkout.tsx";
 import { SuccessPage } from "./pages/Success.tsx";
 import { FailPage } from "./pages/Fail.tsx";
 import MyClasses from "./user/MyClasses";
-import WriteInquiry from "./user/WriteInquiry";
 
 
 function Copyright() {

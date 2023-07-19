@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { call, signin } from "../service/ApiService";
 import { Link } from "react-router-dom";
 
+//수정 필요함 
 const ChangePw = () => {
     const [passwords, setPasswords] = useState({});
     
@@ -40,10 +40,11 @@ const ChangePw = () => {
     };
 
     return (
+        // <p> 아이디 찾기 페이지 </p>
         <Container component="main" maxWidth="xs" style={{ marginTop: "8%" }}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <Typography marginBottom="15px"component="h1" variant="h5">
+                    <Typography component="h1" variant="h5">
                         비밀번호 변경
                     </Typography>
                 </Grid>
@@ -86,17 +87,14 @@ const ChangePw = () => {
                             autoComplete="newPwOk"
                             onChange={handleChange}
                         />
-                        {passwordError && (
-                            <Typography color="error">{passwordError}</Typography>
-                        )}
                     </Grid>
                     <Grid item xs={12}>
                         <Button type="submit" fullWidth variant="contained" color="primary">
                             변경
                         </Button>
                     </Grid>
-                    <Grid item>
-                        <Grid>
+                    <Grid item >
+                        <Grid >
                             <Grid item>
                                 <Link to="/Findpw" variant="body2">
                                     비밀번호를 잊으셨나요?
@@ -108,6 +106,7 @@ const ChangePw = () => {
             </form>
         </Container>
     );
-};
+}
+
 
 export default ChangePw;
