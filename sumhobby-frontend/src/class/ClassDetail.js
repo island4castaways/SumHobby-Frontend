@@ -68,7 +68,7 @@ const ClassDetail = () => {
   };
 
   const handleReview = () => {
-    navigate("/addreview", {state: {classDTO: classDTO, reviewDTO: myReview}})
+    navigate("/addreview", { state: { classDTO: classDTO, reviewDTO: myReview } })
   }
 
   const handleClassView = () => {
@@ -139,20 +139,18 @@ const ClassDetail = () => {
             리뷰 작성하기
           </Button>
         )}
-      </div>
-      {(!inCart && !subscribe) && (
-        <Grid container spacing={2} justifyContent="center" marginTop="200px">
-          <Grid item xs={3}>
-            <Button onClick={() => addCart()} fullWidth variant="contained" color="primary">
-              장바구니
-            </Button>
+        {(!inCart && !subscribe) && (
+          <Grid container spacing={2} justifyContent="center" margin={1}>
+              <Button onClick={() => addCart()} fullWidth variant="contained" color="primary">
+                장바구니
+              </Button>
           </Grid>
-        </Grid>
-      )}
+        )}
+        </div>
 
       {/* lecture */}
-      <div >
-        <Typography className="lecture-header" component="h3" align="center" margin={5} fontSize={30} marginTop={10}>
+      <div className="lectureList">
+        <Typography className="lecture-header" component="h3" align="center" margin={5} fontSize={30} marginTop={12}>
           강의 회차
         </Typography>
         <Container xs={12} >

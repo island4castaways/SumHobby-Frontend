@@ -6,14 +6,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 function AdminInqAnswer() {
     const location = useLocation();
     const navigate = useNavigate();
-    
+
     const [inquiry, setInquiry] = useState(location.state.inquiry);
     const [admin, setAdmin] = useState({});
 
     useEffect(() => {
         call("/auth/returnUser", "GET", null).then((response) => {
-            if(response) {
-                if(response.role !== "관리자") {
+            if (response) {
+                if (response.role !== "관리자") {
                     navigate("/");
                 } else {
                     setAdmin(response);
@@ -27,7 +27,7 @@ function AdminInqAnswer() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const confirm = window.confirm("답변 내용을 저장하겠습니까?");
-        if(confirm) {
+        if (confirm) {
             const data = new FormData(event.target);
             const inqAnswer = data.get("inqAnswer");
             saveInqAnswer({
@@ -39,7 +39,7 @@ function AdminInqAnswer() {
 
     const saveInqAnswer = (inquiryDTO) => {
         return call("/admin/inqAnswer", "POST", inquiryDTO).then((response) => {
-            if(response) {
+            if (response) {
                 alert("답변 저장이 완료되었습니다.");
                 getInquiry(response);
             } else {
@@ -50,7 +50,7 @@ function AdminInqAnswer() {
 
     const deleteInqAnswer = (inquiryDTO) => {
         return call("/admin/deleteInqAnswer", "DELETE", inquiryDTO).then((response) => {
-            if(response) {
+            if (response) {
                 alert("답변 삭제가 완료되었습니다.");
                 getInquiry(response);
             } else {
@@ -61,7 +61,7 @@ function AdminInqAnswer() {
 
     const getInquiry = () => {
         return call("/admin/inquiry", "PATCH", inquiry).then((response) => {
-            if(response) {
+            if (response) {
                 setInquiry(response);
             } else {
                 alert("문의글 정보를 가져오는데 실패했습니다.");
@@ -74,7 +74,7 @@ function AdminInqAnswer() {
     };
 
     const inqAnswer = () => {
-        if(inquiry.inqAnswer) {
+        if (inquiry.inqAnswer) {
             return (
                 <Table>
                     <TableHead>
@@ -92,6 +92,9 @@ function AdminInqAnswer() {
                         <TableRow>
                             <TableCell>
                                 <TextField
+                                    style={{ width: 500 }}
+                                    multiline
+                                    minRows={10}
                                     id="inqAnswer"
                                     label="inqAnswer"
                                     name="inqAnswer"
@@ -102,9 +105,10 @@ function AdminInqAnswer() {
                             <TableCell>
                                 <Button type="submit">수정</Button>
                                 <Button onClick={() => {
-                                    if(window.confirm("답변을 삭제하겠습니까?")) {
+                                    if (window.confirm("답변을 삭제하겠습니까?")) {
                                         deleteInqAnswer(inquiry);
-                                    }}}>
+                                    }
+                                }}>
                                     삭제
                                 </Button>
                             </TableCell>
@@ -124,6 +128,9 @@ function AdminInqAnswer() {
                         <TableRow>
                             <TableCell>
                                 <TextField
+                                    style={{ width: 500 }}
+                                    multiline
+                                    minRows={10}
                                     id="inqAnswer"
                                     label="inqAnswer"
                                     name="inqAnswer" />
@@ -144,7 +151,7 @@ function AdminInqAnswer() {
         <Container>
             <h2>{inquiry.inqNum}, {inquiry.userId} 문의글 Detail</h2>
             <h4>{admin.userName} 로그인</h4>
-            <Button onClick={() => {returnToList()}}>이전 목록</Button>
+            <Button onClick={() => { returnToList() }}>이전 목록</Button>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -158,7 +165,7 @@ function AdminInqAnswer() {
                     </TableRow>
                     <TableRow>
                         <TableCell>
-                            <Paper>{inquiry.inqContent}</Paper>
+                            <Paper><h3>{inquiry.inqContent}</h3></Paper>
                         </TableCell>
                     </TableRow>
                 </TableBody>

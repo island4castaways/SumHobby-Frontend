@@ -116,6 +116,31 @@ function CreateClass() {
         }
     };
 
+    const detailField = (mode, id) => {
+        if(mode === "create") {
+            return (
+                <TextField
+                    style={{width: 500}}
+                    multiline
+                    minRow={10}
+                    id={id}
+                    label={id}
+                    name={id} />
+            );
+        } else if(mode === "modify") {
+            return (
+                <TextField
+                    style={{width: 500}}
+                    multiline
+                    minRows={10}
+                    id={id}
+                    label={id}
+                    name={id}
+                    defaultValue={classDTO[id]} />
+            );
+        }        
+    }
+
     return (
         <Container>
             {classDTO ? (<h2>{classDTO.classNum}, {classDTO.className} 수정 중</h2>) : (<h2>새 강의실</h2>)}
@@ -146,7 +171,7 @@ function CreateClass() {
                         <TableRow>
                             <TableCell>classDetail</TableCell>
                             <TableCell>
-                                {textField(mode, "classDetail")}
+                                {detailField(mode, "classDetail")}
                             </TableCell>
                         </TableRow>
                         <TableRow>

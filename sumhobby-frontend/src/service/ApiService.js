@@ -39,12 +39,14 @@ export function signin(userDTO) {
         localStorage.removeItem("ACCESS_TOKEN");
     }
     return call("/auth/signin","POST", userDTO).then((response) => {
-        if(response.token){
+        if(response.token) {
             //로컬 스토리리지에 토큰 저장
             localStorage.setItem("ACCESS_TOKEN", response.token);
             //token이 존재하는 경우 리다이렉트 나중에 홈으로 변경
             window.location.href = "/mypage";
         }
+    }).catch((error) => {
+        alert("로그인을 실패했습니다.\n회원 정보를 다시 확인해주세요.")
     });
 };
 

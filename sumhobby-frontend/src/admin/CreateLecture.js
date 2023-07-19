@@ -108,6 +108,31 @@ function CreateLecture() {
         }
     };
 
+    const detailField = (mode, id) => {
+        if(mode === "create") {
+            return (
+                <TextField
+                    style={{width: 500}}
+                    multiline
+                    minRow={10}
+                    id={id}
+                    label={id}
+                    name={id} />
+            );
+        } else if(mode === "modify") {
+            return (
+                <TextField
+                    style={{width: 500}}
+                    multiline
+                    minRows={10}
+                    id={id}
+                    label={id}
+                    name={id}
+                    defaultValue={classDTO[id]} />
+            );
+        }        
+    }
+
     return (
         <Container>
             {lectureDTO ? (<h2>
@@ -136,7 +161,7 @@ function CreateLecture() {
                         <TableRow>
                             <TableCell>lecDetail</TableCell>
                             <TableCell>
-                                {textField(mode, "lecDetail")}
+                                {detailField(mode, "lecDetail")}
                             </TableCell>
                         </TableRow>
                         <TableRow>

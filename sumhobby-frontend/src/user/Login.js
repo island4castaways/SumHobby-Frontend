@@ -14,7 +14,7 @@ function Login(_userDTO) {
         signin({
             userId: userId,
             password: password
-        })
+        }).catch();
     };
 
 
@@ -30,7 +30,7 @@ function Login(_userDTO) {
             <form noValidate onSubmit={handleSubmit}>
                 {" "}
                 {/* submit 버튼을 누르면 handleSubmit이 실행됨 */}
-                <Grid container spacing={2}  alignItems="center">
+                <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12}>
                         <TextField
                             variant="outlined"
@@ -115,7 +115,7 @@ function Login(_userDTO) {
                             variant="contained"
                             color="primary"
                             startIcon={<CenterFocusStrong />}
-                        >            
+                        >
                             네이버
                         </Button>
                     </Grid>
