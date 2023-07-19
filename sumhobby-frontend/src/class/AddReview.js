@@ -20,17 +20,37 @@ const AddReview = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const data = new FormData(event.target);
-
+  
     const reviewData = {
       classNum: item.classNum,
       userId: userDTO.userId,
       revContent: data.get("revContent"),
       revRate: rating,
     };
-    createReview(reviewData);
-    
+  
+    try {
+      const response = await call("/review/addreview", "POST", reviewData);
+  
+      if (response.data) {
+          navigate("/showreview", {
+            state: {
+              classDTO: item,
+            },
+          });
+        } else {
+      alert("리뷰 저장 실패");
+      }
+    } catch (error) {
+      //백엔드에서 badrequest로 보내서
+      if (error.response && error.response.status === 400) {
+        alert("이미 작성한 리뷰가 있습니다.");
+      } 
+  else {
+        alert("API 요청 중 오류가 발생했습니다.");
+      }
+    }
   };
 
   const createReview = (reviewDTO) => {

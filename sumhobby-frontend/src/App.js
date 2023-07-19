@@ -1,22 +1,25 @@
-import React, { useState } from "react";
-import Home from "./Home"; // 추가
+import './App.css';
+import { call } from "./service/ApiService"
+import { useEffect, useState } from 'react';
 
-const App = () => {
-  const [item,setItem] = useState([]);
+function App() {
+  const [item, setItem] = useState([]);
 
-  useEffect(() => {
-    call("/cart/testcart","GET",null)
-    .then((response) => setItem(response.data));
-  }, []);
+  // useEffect(() => {
+  //   call("/cart/testcart", "GET", null)
+  //   .then((response) => setItem(response.data));
+  // }, []);
   
-  const addItem = (item) => {
-    call("/update","POST", item)
-    .then((Response)=> setItem(Response.data))
-  }
+  // const addItem = (item) => {
+  //   call("/update","POST", item)
+  //   .then((Response)=> setItem(Response.data))
+  // }
 
   return (
     <div className="App">
-      <Home />
+      <header className="App-header">
+          {Home}
+      </header>
     </div>
   );
 };
