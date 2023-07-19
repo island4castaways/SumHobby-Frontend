@@ -6,10 +6,9 @@ import { call } from "../service/ApiService";
 
 const LectureDetail = () => {
   const location = useLocation();
-  const lectureDTO = location.state.lectureDTO;
-  const classDTO = location.state.classDTO;
+  const lectureDTO = location.state.lectureDTO
+  const classDTO = location.state.classDTO
 
-  const [replyQuestion, setReplyQuestion] = useState([]);
   const [userDTO, setUserDTO] = useState({});
   const [questions, setQuestions] = useState([]);
 
@@ -29,29 +28,13 @@ const LectureDetail = () => {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    if (data.get("quesContent")) {
-      const questionDTO = {
-        quesContent: data.get("quesContent"),
-        userId: userDTO.userId,
-        userTk: userDTO.userTk,
-        lecNum: lectureDTO.lecNum,
-        classNum: classDTO.classNum,
-      };
-
-      createQuestion(questionDTO);
-
-    } else if (data.get("quesAnswer")) {
-      
-      const replyDTO = {
-        quesAnswer: data.get("quesAnswer"),
-        userId: userDTO.userId,
-        userTk: userDTO.userTk,
-        lecNum: lectureDTO.lecNum,
-        classNum: classDTO.classNum,
-      };
-
-      createReply(replyDTO);
-    }
+    const questionDTO = {
+      quesContent: data.get("quesContent"),
+      userId: userDTO.userId,
+      lecNum: lectureDTO.lecNum,
+      classNum: classDTO.classNum,
+    };
+    createQuestion(questionDTO);
   };
 
   const createQuestion = (questionDTO) => {
@@ -64,11 +47,25 @@ const LectureDetail = () => {
     });
   };
 
-  const createReply = ( replyDTO) => {
-    call("/question/addreply", "POST", replyDTO).then(
+  const replysubmit = async (event) => {
+    event.preventDefault();
+    const data = new FormData(event.target);
+    const replyDTO = {
+      quesNum: data.get("quesNum"),
+      quesAnswer: data.get("quesAnswer"),
+      userId: userDTO.userId,
+      userTk: userDTO.userTk,
+      lecNum: lectureDTO.lecNum,
+      classNum: classDTO.classNum,
+    };
+    createReply(replyDTO);
+  };
+
+  const createReply = (questionDTO) => {
+    call("/question/addreply", "POST", questionDTO).then(
       (response) => {
         if (response.data) {
-          setReplyQuestion(response.data);
+          setQuestions(response.data);
         } else {
           alert("답글 저장 실패");
         }
@@ -101,8 +98,8 @@ const LectureDetail = () => {
         <Typography variant="subtitle1" gutterBottom marginTop={3}>
           Q&A
         </Typography>
-        <form onSubmit={handleSubmit}>
           <div className="question-section">
+          <form onSubmit={handleSubmit}>
             <TextField
               label="댓글 작성"
               multiline
@@ -119,6 +116,7 @@ const LectureDetail = () => {
             >
               댓글 작성
             </Button>
+            </form>
           </div>
           {questions.map((question) => (
             <Card key={question.id} className="question-card">
@@ -132,7 +130,15 @@ const LectureDetail = () => {
                 <Typography variant="body1" gutterBottom>
                   {question.quesContent}
                 </Typography>
-                <div className="reply-section">
+                {question.quesAnswer && (
+                  <div>
+                    <Typography variant="body1" gutterBottom>답글: {question.quesAnswer}</Typography>
+                  </div>                
+                )}
+
+                  {!question.quesAnswer && userDTO.userId === classDTO.userId && ( //현재 로그인된 userId와 userTk같을때 가능
+                  <div className="reply-section">
+                  <form onSubmit={replysubmit}>
                   <TextField
                     label="답글 작성"
                     multiline
@@ -141,7 +147,9 @@ const LectureDetail = () => {
                     name="quesAnswer"
                     fullWidth
                   />
-                  {userDTO.userId === classDTO.userTk && ( //현재 로그인된 userId와 userTk같을때 가능
+                  <div hidden="true">
+                    <TextField id="quesNum" name="quesNum" value={question.quesNum} />
+                  </div>
                   <Button
                     type="submit"
                     variant="contained"
@@ -151,8 +159,9 @@ const LectureDetail = () => {
                   >
                     답글 작성
                   </Button>
+                  </form>
+                  </div>
                   )}
-                </div>
                 {question.replies && question.replies.map((reply) => (
                   <Card key={reply.id} className="reply-card">
                     <CardContent>
@@ -171,7 +180,6 @@ const LectureDetail = () => {
               </CardContent>
             </Card>
           ))}
-        </form>
       </div>
     </div>
   );

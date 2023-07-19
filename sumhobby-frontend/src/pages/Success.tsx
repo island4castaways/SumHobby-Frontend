@@ -10,7 +10,14 @@ export function SuccessPage() {
   useEffect(() => {
     call("/checkout/result", "POST", {orderId: searchParams.get("orderId")})
     .then((response) => setPayment(response.data));
+    deleteCart();
   }, []);
+
+  const deleteCart=() =>{
+    payment.map((item) => {
+      call("/cart/pay","DELETE",{classNum : item.classNum})
+    })
+  }
 
   return (
     <div>
