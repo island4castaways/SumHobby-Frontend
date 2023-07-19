@@ -20,7 +20,6 @@ import FindPw from "./user/FindPw";
 import MyPage from "./user/MyPage";
 import ChangePw from "./user/ChangePw";
 import ChangeInfo from "./user/ChangeInfo";
-import FAQ from "./user/FAQ";
 import PurchaseList from "./user/PurchaseList";
 import InquiryBoardList from "./user/inquiryBoardList";
 import Class from "./class/Class";
@@ -37,6 +36,7 @@ import Checkout from "./pages/Checkout.tsx";
 import { SuccessPage } from "./pages/Success.tsx";
 import { FailPage } from "./pages/Fail.tsx";
 import MyClasses from "./user/MyClasses";
+import WriteInquiry from "./user/WriteInquiry";
 
 
 function Copyright() {
@@ -56,7 +56,7 @@ function AppRouter() {
             </Box>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<App />}/>
+                    <Route path="/" element={<App />} />
                     <Route path="admin" element={<AdminLogin />} />
                     <Route path="admin/menu" element={<AdminMenu />} />
                     <Route path="admin/users" element={<AdminUsers />} />
@@ -76,10 +76,11 @@ function AppRouter() {
                     <Route path="mypage" element={<MyPage />} />
                     <Route path="changepw" element={<ChangePw />} />
                     <Route path="changeinfo" element={<ChangeInfo />} />
-                    <Route path="faq" element={<FAQ />} />
                     <Route path="inquiryboard" element={<InquiryBoardList />} />
                     <Route path="purchase" element={<PurchaseList />} />
                     <Route path="myclasses" element={<MyClasses />} />
+                    <Route path="inquiryboard" element={<InquiryBoardList />} />
+                    <Route path="/write" element={<WriteInquiry />} />
                     <Route path="home" element={<Home />} />
                     <Route path="class" element={<Class />} />
                     <Route path="classdetail" element={<ClassDetail />} />
@@ -87,9 +88,9 @@ function AppRouter() {
                     <Route path="showreview" element={<ShowReview />} />
                     <Route path="lecture" element={<LectureDetail />} />
                     <Route path="star" element={<StarRating />} />
-                    <Route path="checkout" element={<Checkout/>}/>
-                    <Route path="success" element={<SuccessPage/>}/>
-                    <Route path="fail" element={<FailPage/>}/>
+                    <Route path="checkout" element={<Checkout />} />
+                    <Route path="success" element={<SuccessPage />} />
+                    <Route path="fail" element={<FailPage />} />
                 </Routes>
             </BrowserRouter>
             <Box mt={5}>

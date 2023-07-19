@@ -1,99 +1,84 @@
-import Header from './Header';
-import React, { useEffect, useState } from "react";
-import CategoryFilter from "./CategoryFilter";
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Fab } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { call } from '../service/ApiService';
 
-import "./FAQ.css";
+const InquiryBoard = () => {
+  const [inquiries, setInquiries] = useState([]);
+  const [userDTO, setUserDTO] = useState({});
 
+  const [expandedInquiry, setExpandedInquiry] = useState(null);
 
-const qnaList = [
-    {
-        category: "category1",
-        question: "테스트입니다",
-        answer: "답변입니다.",
-    },
-    {
-        category: "category2",
-        question: "what is that ? 2",
-        answer: "this is react. 2",
-    },
-    {
-        category: "category3",
-        question: "what is that ? 3",
-        answer: "this is react. 3",
-    },
-    {
-        category: "category1",
-        question: "what is that ? 4",
-        answer: "this is react. 4",
-    },
-    {
-        category: "category2",
-        question: "what is that ? 5",
-        answer: "this is react. 5",
-    },
-    {
-        category: "category3",
-        question: "what is that ? 6",
-        answer: "this is react. 6",
-    },
-];
+  const handleInquiryClick = (inqNum) => {
+    setExpandedInquiry((prevExpanded) => (prevExpanded === inqNum ? null : inqNum));
+  };
 
-const BoardList = () => {
-    const [category, setCatecory] = useState("all");
-    const [cardOnOff, setCardOnOff] = useState(qnaList);
-    const [showList, setShowList] = useState(qnaList);
+  useEffect(() => {
+    call("/auth/returnUser", "GET", null).then((response) => {
+      if (response) {
+        if (response) {
+          setUserDTO(response);
+        } else {
+          alert("사용자 정보를 확인하는데 실패했습니다.");
+        }
+      }
+    });
+  }, []);
 
-    const getQnACard = (item, index) => {
-        return (
-            <div className="faq-card" key={index}>
-                <div
-                    className="faq-card-title"
-                    onClick={() => {
-                        let tempCard = cardOnOff;
-                        tempCard[index].show = !tempCard[index].show;
-                        setCardOnOff([...tempCard]);
-                    }}
-                >
-                    <span className="question-mark">Q.</span>
-                    <span>{item.question}</span>
-                </div>
-                <div
-                    className={
-                        qnaList[index].show
-                            ? "faq-card-answer"
-                            : "faq-card-answer faq-card-none"
-                    }
-                >
-                    <span className="answer-mark">A.</span>
-                    <span className="FAQ-card-answer">{item.answer}</span>
-                </div>
-            </div>
-        );
-    };
+  useEffect(() => {
+    call("/auth/inquiry", "PATCH", userDTO).then((response) => {
+      if (response.data) {
+        setInquiries(response.data);
+      } else {
+        alert("문의글 정보를 가져오는데 실패했습니다.");
+      }
+    });
+  }, [userDTO]);
 
-    useEffect(() => {
-        setShowList(
-            qnaList.filter((item) => {
-                if (category === "all") return true;
-                if (category === item.category) return true;
-                return false;
-            })
-        );
-    }, [category]);
+  return (
+    <div style={{ position: 'relative' }}>
+      <h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;문의함</h1>
+      <TableContainer component={Paper} sx={{ maxWidth: 900, margin: '0 auto' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>번호</TableCell>
+              <TableCell sx={{ minWidth: 200 }}>내 QnA</TableCell>
+              <TableCell>작성일</TableCell>
+            </TableRow>
+          </TableHead>
 
-    return (
+          <TableBody>
+            {inquiries.map((inquiry) => (
+              <React.Fragment key={inquiry.inqNum}>
+                <TableRow key={inquiry.inqNum} onClick={() => handleInquiryClick(inquiry.inqNum)} style={{ cursor: 'pointer' }}>
+                  <TableCell>{inquiry.inqNum}</TableCell>
+                  <TableCell>{inquiry.inqContent}</TableCell>
+                  <TableCell>{inquiry.inqDate}</TableCell>
+                </TableRow>
+                {expandedInquiry === inquiry.inqNum && (
+                  <TableRow>
+                    <TableCell colSpan={3}>{inquiry.inqAnswer}</TableCell>
+                  </TableRow>
+                )}
+              </React.Fragment>
+            ))}
+          </TableBody>
 
-        <div>
-            <Header />
-            <h1>FAQ</h1>
-            <div className="fqa-parent">
-                <div className="faq-list">
-                    {showList.map((item, index) => getQnACard(item, index))}
-                </div>
-            </div>
-        </div>
-
-    );
+        </Table>
+      </TableContainer>
+      <Fab
+        color="primary"
+        aria-label="add"
+        style={{ position: 'absolute', bottom: '30px', right: '30px' }}
+        component={Link}
+        to="/write"
+      >
+        <AddIcon />
+      </Fab>
+    </div>
+  );
 };
 
-export default BoardList;
+export default InquiryBoard;

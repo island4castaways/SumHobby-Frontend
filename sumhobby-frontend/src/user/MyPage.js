@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { FaAngleRight } from "react-icons/fa";
 import { call, signout } from '../service/ApiService';
-import { useParams } from "react-router-dom";
 
 const MyPage = () => {
   const [userInfo, setUserInfo] = useState({});
@@ -82,7 +81,7 @@ const MyPage = () => {
                 <Link to="/purchase" state={{userDTO: userInfo}}>결제 내역     {<FaAngleRight />}</Link>
               </TableCell>
               <TableCell align="left" sx={{ borderBottom: "1px solid", width: "50%" }}>
-                <Link to="/faq">문의하기     {<FaAngleRight />}</Link>
+                <Link to="/inquiryboard">문의하기     {<FaAngleRight />}</Link>
               </TableCell>
             </TableRow>
             <TableRow>
