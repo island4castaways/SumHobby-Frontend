@@ -20,7 +20,7 @@ const ClassDetail = () => {
     call("/lecture", "PATCH", classDTO)
       .then((response) => setLectures(response.data))
       .catch((error) => console.error(error));
-  }, []);
+  }, [classDTO]);
 
   useEffect(() => {
     call("/cart", "PATCH", classDTO).then((response) => {
@@ -30,7 +30,7 @@ const ClassDetail = () => {
         setInCart(false);
       }
     });
-  }, []);
+  }, [classDTO]);
 
   useEffect(() => {
     call("/checkout", "PATCH", classDTO).then((response) => {
@@ -41,7 +41,7 @@ const ClassDetail = () => {
         setSubscribe(false);
       }
     });
-  }, []);
+  }, [classDTO]);
 
   const handleClass = () => {
     navigate("/addreview", {
@@ -59,15 +59,19 @@ const ClassDetail = () => {
     });
   };
 
-  const scrollContainerRef = useRef(null);
-
   const enterLecture = (lectureDTO) => {
-    navigate("/lecture", {
-      state: {
-        lectureDTO: lectureDTO,
-        classDTO : classDTO
-      },
-    });
+    if(subscribe) {
+      navigate("/lecture", {
+        state: {
+          lectureDTO: lectureDTO,
+          classDTO : classDTO
+        },
+      });  
+    } else {
+      if(window.confirm("강의를 구매한 후에 강의 내용을 볼 수 있습니다.\n강의를 장바구니에 담으시겠습니까?")) {
+        addCart();    
+      }
+    }
   };
 
   const addCart = () => {
