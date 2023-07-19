@@ -81,7 +81,7 @@ function AppRouter() {
                     <Route path="purchase" element={<PurchaseList />} />
                     <Route path="myclasses" element={<MyClasses />} />
                     <Route path="inquiryboard" element={<InquiryBoardList />} />
-                    <Route path="/write" element={<WriteInquiry />} />
+                    <Route path="write" element={<WriteInquiry />} />
                     <Route path="home" element={<Home />} />
                     <Route path="class" element={<Class />} />
                     <Route path="classdetail" element={<ClassDetail />} />
