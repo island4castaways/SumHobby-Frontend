@@ -8,16 +8,26 @@ export function SuccessPage() {
   const [payment, setPayment] = useState<any[]>([]);
 
   useEffect(() => {
-    call("/checkout/result", "POST", {orderId: searchParams.get("orderId")})
-    .then((response) => setPayment(response.data));
-    deleteCart();
+    call("/checkout/result", "POST", { orderId: searchParams.get("orderId") })
+      .then((response) => {
+        setPayment(response.data);
+      });
   }, []);
-
-  const deleteCart=() =>{
+  
+  useEffect(() => {
+    console.log(payment)
+    if (payment.length > 0) {
+      deleteCart();
+    }
+  }, [payment]);
+  
+  const deleteCart = () => {
     payment.map((item) => {
-      call("/cart/pay","DELETE",{classNum : item.classNum})
-    })
-  }
+      call("/cart/pay", "DELETE", { classNum: item.classNum }).then((response) =>
+        console.log(response)
+      );
+    });
+  };
 
   return (
     <div>

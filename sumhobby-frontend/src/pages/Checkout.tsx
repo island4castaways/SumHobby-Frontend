@@ -115,7 +115,9 @@ export default function Checkout() {
         onClick={async () =>{
           const paymentWidget = paymentWidgetRef.current
           try{
-            call("/checkout","POST", { orderId: orderId, classNum: items[0].classNum})
+            items.map((item) => {
+              call("/checkout","POST", { orderId: orderId, classNum: item.classNum})
+            });
             await paymentWidget?.requestPayment({
             orderId: orderId,
             orderName: items[0].userTk,

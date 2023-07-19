@@ -9,8 +9,9 @@ const AddReview = () => {
   const location = useLocation();
   const item = location.state.classDTO;
 
-  const [rating, setRating] = useState(0);
-  const [userDTO, setUserDTO] = useState(null);
+  const [reviewDTO, setReviewDTO] = useState(location.state.reviewDTO ? location.state.reviewDTO : {});
+  const [rating, setRating] = useState(location.state.reviewDTO ? reviewDTO.revRate : 0);
+  const [userDTO, setUserDTO] = useState({});
   
   useEffect(() => {
     call("/auth/returnUser", "GET", null).then((response) => {
@@ -20,17 +21,36 @@ const AddReview = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const data = new FormData(event.target);
 
-    const reviewData = {
-      classNum: item.classNum,
-      userId: userDTO.userId,
-      revContent: data.get("revContent"),
-      revRate: rating,
-    };
-    createReview(reviewData);
-    
+    if(location.state.reviewDTO) {
+      const reviewData = {
+        revNum: reviewDTO.revNum,
+        classNum: item.classNum,
+        revContent: data.get("revContent"),
+        revRate: rating
+      };
+      modifyReview(reviewData);
+    } else {
+      const reviewData = {
+        classNum: item.classNum,
+        userId: userDTO.userId,
+        revContent: data.get("revContent"),
+        revRate: rating
+      };
+      createReview(reviewData);  
+    }
+  };
+
+  const modifyReview = (reviewDTO) => {
+    call("/review/modifyReview", "POST", reviewDTO).then((response) => {
+      if(response) {
+        alert("리뷰 저장이 완료되었습니다.");
+        setReviewDTO(response);
+      } else {
+        alert("리뷰 저장에 실패했습니다.");
+      }
+    });
   };
 
   const createReview = (reviewDTO) => {
@@ -81,7 +101,7 @@ const AddReview = () => {
               id="revContent"
               label="리뷰"
               name="revContent"
-              autoComplete="review"
+              defaultValue={reviewDTO.revContent}
             />
           </Grid>
         </Grid>
@@ -94,7 +114,7 @@ const AddReview = () => {
         <Grid container spacing={2} marginTop={2}>
           <Grid item xs={12}>
             <Button type="submit" fullWidth variant="contained" color="primary">
-              작성 완료
+              {reviewDTO ? "저장" : "수정"}
             </Button>
           </Grid>
         </Grid>

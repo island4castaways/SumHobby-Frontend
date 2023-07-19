@@ -12,6 +12,8 @@ const ClassDetail = () => {
   const [lectures, setLectures] = useState([]);
   const [inCart, setInCart] = useState(false);
   const [subscribe, setSubscribe] = useState(false);
+  const [hasReview, setHasReview] = useState(false);
+  const [myReview, setMyReview] = useState({});
 
   const classDTO = location.state.item;
   const item = classDTO;
@@ -24,7 +26,7 @@ const ClassDetail = () => {
 
   useEffect(() => {
     call("/cart", "PATCH", classDTO).then((response) => {
-      if(response) {
+      if (response) {
         setInCart(true);
       } else {
         setInCart(false);
@@ -34,8 +36,7 @@ const ClassDetail = () => {
 
   useEffect(() => {
     call("/checkout", "PATCH", classDTO).then((response) => {
-      console.log(response)
-      if(response) {
+      if (response) {
         setSubscribe(true);
       } else {
         setSubscribe(false);
@@ -43,13 +44,32 @@ const ClassDetail = () => {
     });
   }, [classDTO]);
 
-  const handleClass = () => {
-    navigate("/addreview", {
-      state: {
-        classDTO: classDTO,
-      },
+  useEffect(() => {
+    call("/review/checkReview", "PATCH", classDTO).then((response) => {
+      if (response) {
+        setHasReview(true);
+        setMyReview(response);
+      } else {
+        setHasReview(false);
+      }
     });
+  }, [classDTO]);
+
+  const handleClass = () => {
+    if (subscribe) {
+      navigate("/addreview", {
+        state: {
+          classDTO: classDTO,
+        },
+      });
+    } else {
+      alert("구매한 강의만 리뷰 작성이 가능합니다.");
+    }
   };
+
+  const handleReview = () => {
+    navigate("/addreview", {state: {classDTO: classDTO, reviewDTO: myReview}})
+  }
 
   const handleClassView = () => {
     navigate("/showreview", {
@@ -60,23 +80,23 @@ const ClassDetail = () => {
   };
 
   const enterLecture = (lectureDTO) => {
-    if(subscribe) {
+    if (subscribe) {
       navigate("/lecture", {
         state: {
           lectureDTO: lectureDTO,
-          classDTO : classDTO
+          classDTO: classDTO
         },
-      });  
+      });
     } else {
-      if(window.confirm("강의를 구매한 후에 강의 내용을 볼 수 있습니다.\n강의를 장바구니에 담으시겠습니까?")) {
-        addCart();    
+      if (window.confirm("강의를 구매한 후에 강의 내용을 볼 수 있습니다.\n강의를 장바구니에 담으시겠습니까?")) {
+        addCart();
       }
     }
   };
 
   const addCart = () => {
     call("/cart", "POST", classDTO).then((response) => {
-      if(window.confirm("장바구니에 담기가 완료되었습니다.\n장바구니로 이동하시겠습니까?")) {
+      if (window.confirm("장바구니에 담기가 완료되었습니다.\n장바구니로 이동하시겠습니까?")) {
         navigate("/cart");
       }
     })
@@ -109,18 +129,25 @@ const ClassDetail = () => {
         <Button onClick={handleClassView} variant="body2" className="App-link">
           view review
         </Button>
-        <Button onClick={handleClass} variant="body2" className="App-link">
-          리뷰 작성하기
-        </Button>
+        {hasReview && (
+          <Button onClick={handleReview} variant="body2" className="App-link">
+            작성한 리뷰 보기
+          </Button>
+        )}
+        {(!hasReview && subscribe) && (
+          <Button onClick={handleClass} variant="body2" className="App-link">
+            리뷰 작성하기
+          </Button>
+        )}
       </div>
       {(!inCart && !subscribe) && (
-      <Grid container spacing={2} justifyContent="center" marginTop="200px">
-        <Grid item xs={3}>
-          <Button onClick={() => addCart()} fullWidth variant="contained" color="primary">
-            장바구니
-          </Button>
+        <Grid container spacing={2} justifyContent="center" marginTop="200px">
+          <Grid item xs={3}>
+            <Button onClick={() => addCart()} fullWidth variant="contained" color="primary">
+              장바구니
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
       )}
 
       {/* lecture */}
@@ -130,20 +157,20 @@ const ClassDetail = () => {
         </Typography>
         <Container xs={12} >
           <div >
-          <Paper>
-            {lectures.map((lecture) => (
-              <Card key={lecture.lectureNum} onClick={() => enterLecture(lecture)} >
-                    <iframe 
-                      title="YouTube video player"
-                      width="600"
-                      height="300"
-                      src={lecture.lecUrl}
-                    ></iframe>
-                      <Typography marginBottom={5} fontSize={20}  align="center">
-                        {lecture.lecTitle}
-                      </Typography>
-              </Card>
-            ))}
+            <Paper>
+              {lectures.map((lecture, index) => (
+                <Card key={lecture.lectureNum} onClick={() => enterLecture(lecture)} >
+                  <iframe
+                    title="YouTube video player"
+                    width="600"
+                    height="300"
+                    src={lecture.lecUrl}
+                  ></iframe>
+                  <Typography marginBottom={5} fontSize={20} align="center">
+                    {index + 1}. {lecture.lecTitle}
+                  </Typography>
+                </Card>
+              ))}
             </Paper>
           </div>
         </Container>
