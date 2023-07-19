@@ -37,6 +37,7 @@ import { SuccessPage } from "./pages/Success.tsx";
 import { FailPage } from "./pages/Fail.tsx";
 import MyClasses from "./user/MyClasses";
 import WriteInquiry from "./user/WriteInquiry";
+import AllClasses from "./class/AllClasses";
 
 
 function Copyright() {
@@ -84,6 +85,7 @@ function AppRouter() {
                     <Route path="home" element={<Home />} />
                     <Route path="class" element={<Class />} />
                     <Route path="classdetail" element={<ClassDetail />} />
+                    <Route path="allclasses" element={<AllClasses />} />
                     <Route path="addreview" element={<AddReview />} />
                     <Route path="showreview" element={<ShowReview />} />
                     <Route path="lecture" element={<LectureDetail />} />

@@ -16,7 +16,7 @@ const Class = () => {
   useEffect(() => {
     const fetchClassData = async () => {
       try {
-        const response = await call("/class/category", "GET", null);
+        const response = await call("/class/myclasses", "GET", null);
         if (response && response.data) {
           setClassData(response.data);
           const uniqueCategories = [...new Set(response.data.map((item) => item.classCategory))];

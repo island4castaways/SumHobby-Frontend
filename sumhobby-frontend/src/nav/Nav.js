@@ -1,14 +1,14 @@
+import React from "react";
 import { AiOutlineZoomIn } from "react-icons/ai";
 import "./Nav.css";
+import { TextField } from "@mui/material";
 
 const Nav = () => {
-    // const [searchText, setSearchText] = useState(""); // 검색어 상태 추가
-
-    const handleSearch = () => {
-        // 검색 기능 구현
-        // 검색어 사용 예시: searchText
-        // console.log("검색어:", searchText);
-        // 검색 결과를 처리하는 로직을 추가하세요.
+    const handleSearch = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        const searchKey = data.get("searchKey");
+        window.location.href = `${window.location.origin}/allclasses?search=${searchKey}`;
     };
 
     return (
@@ -18,16 +18,19 @@ const Nav = () => {
                     <span className="Nav_title">∑Hobby</span>
                     <div className="Navi">
 
-                    <AiOutlineZoomIn /> &nbsp;
+                        <AiOutlineZoomIn /> &nbsp;
                         <div className="Search">
-                            <input
-                                type="text"
-                                placeholder="검색어를 입력하세요"
-                                // value={searchText}
-                                // onChange={(e) => setSearchText(e.target.value)}
-                            />
-                            <button onClick={handleSearch}>
-                            </button>
+                            <form onSubmit={handleSearch}>
+                                <TextField
+                                    type="text"
+                                    id="searchKey"
+                                    name="searchKey"
+                                    placeholder="검색어를 입력하세요"
+                                />
+                                <button type="submit">
+                                </button>
+
+                            </form>
                         </div>
 
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -45,8 +48,8 @@ const Nav = () => {
                         &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a className="Navs" href="/cart">
                             장바구니
-                        </a>  
-                        &nbsp;&nbsp;&nbsp;              
+                        </a>
+                        &nbsp;&nbsp;&nbsp;
                     </div>
                 </nav>
             </header>
