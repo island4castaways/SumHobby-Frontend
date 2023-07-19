@@ -1,6 +1,6 @@
 .Nav {
-    width: 100vw;
-    height: 50px;
+    width: 100%;
+    height: 70px;
     position: flex;
     background-color: rgb(63, 74, 180);
     display: flex;
@@ -9,7 +9,7 @@
 }
 
 .Nav_title {
-    margin-left: 10px;
+    margin-left: 20px;
     color: white;
     font-family: "Jalnan";
 }
@@ -25,4 +25,31 @@
     color: white;
     font-family: "Jalnan";
     text-decoration: none;
+    margin: 20px;
 }
+
+.Search {
+    display: flex;
+    align-items: center; 
+    margin-left: 40px;
+  }
+  
+  .Search input {
+    flex: 1; 
+    padding: 8px;
+    width: 400px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px; 
+  }
+  
+  .Search button {
+    margin-left: 8px;
+    width: 40px;
+    height: 17px;
+    padding: 8px;
+    background-color: #4b68da;
+    color: #ffffff;
+    border: none;
+    border-radius: 0 5px 5px 0; 
+    cursor: pointer;
+  }

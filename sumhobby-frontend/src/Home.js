@@ -43,6 +43,11 @@ const Home = () => {
           </Typography>
         </Grid>
       </Grid>
+      <Box mt={2} textAlign="center" >
+        <Link to="/allclasses" variant="body2" className='view'>
+          View more →
+        </Link>
+      </Box>
       {Object.keys(classData).map((category) => (
         <React.Fragment key={category}>
           <Typography variant="h5" component="h2" style={{ marginTop: '25px', textDecorationLine:'blink',textEmphasis:'CaptionText' }}>
@@ -71,11 +76,6 @@ const Home = () => {
           </Grid>
         </React.Fragment>
       ))}
-      <Box mt={2} textAlign="center" >
-        <Link to="/class" variant="body2" className='view'>
-          View more →
-        </Link>
-      </Box>
     </Container>
   );
 };
