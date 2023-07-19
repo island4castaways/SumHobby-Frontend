@@ -57,7 +57,8 @@ function AppRouter() {
             </Box>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<App />} />
+                    
+                    <Route path="/" element={<Home />} />
                     <Route path="admin" element={<AdminLogin />} />
                     <Route path="admin/menu" element={<AdminMenu />} />
                     <Route path="admin/users" element={<AdminUsers />} />
