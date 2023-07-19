@@ -6,7 +6,7 @@ export function call(api, method, request) {
     });
 
     const accessToken = localStorage.getItem("ACCESS_TOKEN");
-    if(accessToken && accessToken !== null) {
+    if (accessToken && accessToken !== null) {
         headers.append("Authorization", "Bearer " + accessToken);
     }
 
@@ -16,17 +16,17 @@ export function call(api, method, request) {
         method: method,
     };
 
-    if(request) {
+    if (request) {
         options.body = JSON.stringify(request);
     }
 
     return fetch(options.url, options).then((response) => {
-        if(response.status === 200) {
+        if (response.status === 200) {
             return response.json();
-        } else if(response.status === 403) {
+        } else if (response.status === 403) {
             window.location.href = "/";
         } else {
-            throw Error(response);
+            throw response;
         }
     }).catch((error) => {
         console.log("http error");
@@ -43,7 +43,7 @@ export function signin(userDTO) {
             //로컬 스토리리지에 토큰 저장
             localStorage.setItem("ACCESS_TOKEN", response.token);
             //token이 존재하는 경우 리다이렉트 나중에 홈으로 변경
-            window.location.href = "/mypage";   
+            window.location.href = "/mypage";
         }
     });
 };
@@ -62,9 +62,18 @@ export function findId(userDTO) {
 }
 
 export function getUserInfo() {
-    return call("/auth/userinfo", "GET", null); 
+    return call("/auth/userinfo", "GET", null);
 }
 
 export function modifyUserInfo(userDTO) {
     return call("/auth/modifyuser", "PUT", userDTO);
 }
+
+
+export function postInquiry(inquiry) {
+    return call('/inquiry/list', 'GET', inquiry);
+}
+
+export const getInquiries = () => {
+    return call('/inquiry/list', 'GET', null);
+};

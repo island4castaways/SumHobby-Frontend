@@ -1,4 +1,3 @@
-import { AiOutlineZoomIn } from "react-icons/ai";
 import "./Nav.css";
 
 const Nav = () => {
@@ -15,38 +14,36 @@ const Nav = () => {
         <div>
             <header>
                 <nav className="Nav">
-                    <span className="Nav_title">∑Hobby</span>
+                    <span className="Nav_title"><h1><a className="Navs" href="/home">∑Hobby</a></h1></span>
+
+
+                    <div className="Search">
+                        <input
+                            type="text"
+                            placeholder="검색어를 입력하세요"
+                        // value={searchText}
+                        // onChange={(e) => setSearchText(e.target.value)}
+                        />
+                        <button
+                            fullWidth
+                            onClick={handleSearch}> 검색
+                        </button>
+
+                    </div>
                     <div className="Navi">
-
-                    <AiOutlineZoomIn /> &nbsp;
-                        <div className="Search">
-                            <input
-                                type="text"
-                                placeholder="검색어를 입력하세요"
-                                // value={searchText}
-                                // onChange={(e) => setSearchText(e.target.value)}
-                            />
-                            <button onClick={handleSearch}>
-                            </button>
-                        </div>
-
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a className="Navs" href="/home">
-                            홈
-                        </a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                            <a className="Navs" href="/home">
+                                홈
+                            </a>
                         <a className="Navs" href="/class">
                             강의실
                         </a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a className="Navs" href="/mypage">
                             마이페이지
                         </a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a className="Navs" href="/cart">
                             장바구니
-                        </a>  
-                        &nbsp;&nbsp;&nbsp;              
+                        </a>
+                        &nbsp;&nbsp;&nbsp;
                     </div>
                 </nav>
             </header>
