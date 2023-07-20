@@ -21,13 +21,12 @@
     "styled-components": "^6.0.1",
     "web-vitals": "^2.1.4"
   },
-  "proxy ": "http://localhost:5000",
-  "scripts": {
+   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm ci && npm run build && npm start"
+    "deploy": "npm ci&&npm run build&&npm start"
   },
   "eslintConfig": {
     "extends": [
