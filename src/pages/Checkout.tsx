@@ -102,15 +102,6 @@ export default function Checkout() {
     <div>
       <h1>주문서</h1>
       <div id="payment-widget" />
-      <div>
-        <input
-          type="checkbox"
-          onChange={(event) => {
-            setPrice(event.target.checked ? price - 5_000 : price + 5_000)
-          }}
-        />
-        <label>5,000원 할인 쿠폰 적용</label>
-      </div>
       <button
         onClick={async () =>{
           const paymentWidget = paymentWidgetRef.current
