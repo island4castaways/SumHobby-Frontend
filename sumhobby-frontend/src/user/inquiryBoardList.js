@@ -19,10 +19,10 @@ const InquiryBoard = () => {
       if (response) {
         if (response) {
           setUserDTO(response);
-        } else {
-          alert("사용자 정보를 확인하는데 실패했습니다.");
         }
       }
+    }).catch((error) => {
+      alert("사용자 정보를 확인하는데 실패했습니다.");
     });
   }, []);
 
@@ -30,9 +30,9 @@ const InquiryBoard = () => {
     call("/auth/inquiry", "PATCH", userDTO).then((response) => {
       if (response.data) {
         setInquiries(response.data);
-      } else {
-        alert("문의글 정보를 가져오는데 실패했습니다.");
       }
+    }).catch((error) => {
+      alert("문의글 정보를 가져오는데 실패했습니다.");
     });
   }, [userDTO]);
 

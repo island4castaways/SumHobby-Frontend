@@ -13,6 +13,8 @@ function AdminLogin() {
                     navigate("/admin/menu");
                 }
             }
+        }).catch((error) => {
+            alert("사용자 정보를 확인하는데 실패했습니다.");
         });
     }, []);
 
@@ -30,9 +32,9 @@ function AdminLogin() {
             if(response.token) {
                 localStorage.setItem("ACCESS_TOKEN", response.token);
                 navigate("/admin/menu");
-            } else {
-                alert("로그인을 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("로그인을 실패했습니다.")
         });
     };
 

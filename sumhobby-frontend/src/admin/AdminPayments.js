@@ -22,9 +22,9 @@ function AdminPayments() {
                 } else {
                     setAdmin(response);
                 }
-            } else {
-                alert("관리자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("관리자 정보를 확인하는데 실패했습니다.");
         });
     }, []);
 
@@ -35,9 +35,9 @@ function AdminPayments() {
                 setOriginal(response.data);
                 setSortKey("payDate");
                 setSortMethod("desc");
-            } else {
-                alert("강의실 정보를 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의실 정보를 가져오는데 실패했습니다.");
         });
     }, []);
 
@@ -86,9 +86,9 @@ function AdminPayments() {
         setPayments(filteredPayments);
     };
 
-    const paymentDetail = (paymentDTO) => {
-        navigate("/admin/paymentDetail", {state: {paymentDTO: paymentDTO}});
-    }
+    // const paymentDetail = (paymentDTO) => {
+    //     navigate("/admin/paymentDetail", {state: {paymentDTO: paymentDTO}});
+    // }
 
     const returnToList = () => {
         navigate("/admin/menu");
@@ -132,7 +132,7 @@ function AdminPayments() {
                         {makeTHCell("ClassName", "className")}
                         {makeTHCell("OrderId", "orderId")}
                         {makeTHCell("Date", "payDate")}
-                        <TableCell>결제 관리</TableCell>
+                        {/* <TableCell>결제 관리</TableCell> */}
                     </TableRow>
                 </TableHead>
 
@@ -145,9 +145,9 @@ function AdminPayments() {
                             <TableCell>{payment.className}</TableCell>
                             <TableCell>{payment.orderId}</TableCell>
                             <TableCell>{payment.payDate}</TableCell>
-                            <TableCell>
+                            {/* <TableCell>
                                 <Button onClick={() => {paymentDetail(payment)}}>관리</Button>
-                            </TableCell>
+                            </TableCell> */}
                         </TableRow>
                     ))}
                 </TableBody>

@@ -15,7 +15,11 @@ const AddReview = () => {
   
   useEffect(() => {
     call("/auth/returnUser", "GET", null).then((response) => {
-      setUserDTO(response);
+      if(response) {
+        setUserDTO(response);
+      }
+    }).catch((error) => {
+      alert("사용자 정보를 확인하는데 실패했습니다.");
     });
   }, []);
 
@@ -47,9 +51,9 @@ const AddReview = () => {
       if(response) {
         alert("리뷰 저장이 완료되었습니다.");
         setReviewDTO(response);
-      } else {
-        alert("리뷰 저장에 실패했습니다.");
       }
+    }).catch((error) => {
+      alert("리뷰 저장을 실패했습니다.");
     });
   };
 
@@ -61,9 +65,9 @@ const AddReview = () => {
             classDTO: item,
           },
         });
-      } else {
-        alert("리뷰 저장 실패");
       }
+    }).catch((error) => {
+      alert("리뷰 저장을 실패했습니다.");
     });
   };
 

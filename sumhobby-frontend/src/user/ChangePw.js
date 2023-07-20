@@ -23,9 +23,9 @@ const ChangePw = () => {
                     alert("비밀번호 변경 성공")
                     window.location.href = "/mypage";                    
                 }
+            }).catch((error) => {
+                alert("변경에 실패하였습니다.");
             });
-        }else{
-            alert("변경에 실패하였습니다.");
         }
         //ApiService의 signin 메서드를 사용해서 로그인..
     };

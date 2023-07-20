@@ -14,13 +14,21 @@ const LectureDetail = () => {
 
   useEffect(() => {
     call("/auth/returnUser", "GET", null).then((response) => {
-      setUserDTO(response);
+      if(response) {
+        setUserDTO(response);
+      }
+    }).catch((error) => {
+      console.error(error);
     });
   }, []);
 
   useEffect(() => {
     call("/question", "PATCH", lectureDTO).then((response) => {
-      setQuestions(response.data);
+      if(response.data) {
+        setQuestions(response.data);
+      }
+    }).catch((error) => {
+      console.error(error);
     });
   }, [lectureDTO]);
 
@@ -41,9 +49,10 @@ const LectureDetail = () => {
     call("/question/addcomment", "POST", questionDTO).then((response) => {
       if (response.data) {
         setQuestions(response.data);
-      } else {
-        alert("댓글 저장 실패");
       }
+    }).catch((error) => {
+      console.error(error);
+      alert("댓글을 저장하는데 실패했습니다.");
     });
   };
 
@@ -66,11 +75,11 @@ const LectureDetail = () => {
       (response) => {
         if (response.data) {
           setQuestions(response.data);
-        } else {
-          alert("답글 저장 실패");
         }
-      }
-    );
+    }).catch((error) => {
+      console.log(error);
+      alert("답변을 저장하는데 실패했습니다.");
+    });
   };
 
   return (

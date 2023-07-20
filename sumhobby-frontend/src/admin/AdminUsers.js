@@ -22,9 +22,9 @@ function AdminUsers() {
                 } else {
                     setAdmin(response);
                 }
-            } else {
-                alert("관리자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("관리자 정보를 확인하는데 실패했습니다.")
         });
     }, []);
 
@@ -35,9 +35,9 @@ function AdminUsers() {
                 setOriginal(response.data);
                 setSortKey("role");
                 setSortMethod("asc")
-            } else {
-                alert("사용자 데이터를 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("사용자 데이터를 가져오는데 실패했습니다.");
         });
     }, []);
 
@@ -93,9 +93,9 @@ function AdminUsers() {
                 setOriginal(response.data);
                 setSortKey("role");
                 setSortMethod("asc")
-            } else {
-                alert("사용자 데이터를 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("사용자 데이터를 가져오는데 실패했습니다.");
         });
     };
 

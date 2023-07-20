@@ -20,9 +20,9 @@ function CreateClass() {
                 } else {
                     setAdmin(response);
                 }
-            } else {
-                alert("관리자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("관리자 정보를 확인하는데 실패했습니다.")
         });
     }, []);
 
@@ -65,9 +65,9 @@ function CreateClass() {
             if(response.data) {
                 alert("강의실 저장이 완료되었습니다.");
                 navigate("/admin/classes");
-            } else {
-                alert("강의실 저장을 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의실 저장을 실패했습니다.");
         });
     };
 
@@ -76,9 +76,9 @@ function CreateClass() {
             if(response.data) {
                 alert("강의실 수정이 완료되었습니다.");
                 navigate("/admin/classes");
-            } else {
-                alert("강의실 수정을 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의실 수정을 실패했습니다.");
         });
     };
 
@@ -87,9 +87,9 @@ function CreateClass() {
             if(response.data) {
                 alert("강의실 삭제가 완료되었습니다.");
                 navigate("/admin/classes");                
-            } else {
-                alert("강의실 삭제를 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의실 삭제를 실패했습니다.");
         });
     };
 

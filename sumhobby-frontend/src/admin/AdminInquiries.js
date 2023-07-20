@@ -22,9 +22,9 @@ function AdminInquiries() {
                 } else {
                     setAdmin(response);
                 }
-            } else {
-                alert("관리자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("관리자 정보를 확인하는데 실패했습니다.")
         });
     }, []);
 
@@ -35,9 +35,9 @@ function AdminInquiries() {
                 setOriginal(response.data);
                 setSortKey("inqAnswer");
                 setSortMethod("desc");
-            } else {
-                alert("문의글 정보를 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("문의글 정보를 가져오는데 실패했습니다.")
         });
     }, []);
 

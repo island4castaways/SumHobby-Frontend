@@ -25,9 +25,9 @@ function AdminReviews() {
                 } else {
                     setAdmin(response);
                 }
-            } else {
-                alert("관리자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("관리자 정보를 확인하는데 실패했습니다.")
         });
     }, []);
 
@@ -38,9 +38,9 @@ function AdminReviews() {
                 setOriginal(response.data);
                 setSortKey("revDate");
                 setSortMethod("desc");
-            } else {
-                alert("리뷰를 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("리뷰를 가져오는데 실패했습니다.")
         });
     }, [classDTO]);
 
@@ -96,9 +96,9 @@ function AdminReviews() {
                 setOriginal(response.data);
                 setSortKey("revDate");
                 setSortMethod("desc");
-            } else {
-                alert("리뷰를 삭제하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("리뷰를 삭제하는데 실패했습니다.");
         });
     };
 

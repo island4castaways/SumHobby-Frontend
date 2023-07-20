@@ -7,11 +7,19 @@ import { useNavigate } from "react-router-dom";
 
 const Class = () => {
   const navigate = useNavigate();
+  const accessToken = localStorage.getItem("ACCESS_TOKEN");
 
   const [activeMenu, setActiveMenu] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [classData, setClassData] = useState([]);
   const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    if(!accessToken){
+      alert("로그인이 필요합니다.");
+      window.location.href = "/login";
+    }
+  }, [accessToken]);
 
   useEffect(() => {
     const fetchClassData = async () => {

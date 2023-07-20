@@ -5,7 +5,6 @@ import AdminLogin from "./admin/AdminLogin";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AdminMenu from "./admin/AdminMenu";
 import Cart from './Cart';
-import App from './App';
 import AdminUsers from "./admin/AdminUsers";
 import AdminClasses from "./admin/AdminClasses";
 import CreateClass from "./admin/CreateClass";
@@ -57,7 +56,6 @@ function AppRouter() {
             </Box>
             <BrowserRouter>
                 <Routes>
-                    
                     <Route path="/" element={<Home />} />
                     <Route path="admin" element={<AdminLogin />} />
                     <Route path="admin/menu" element={<AdminMenu />} />

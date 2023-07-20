@@ -22,9 +22,9 @@ function AdminClasses() {
                 } else {
                     setAdmin(response);
                 }
-            } else {
-                alert("관리자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("관리자 정보를 확인하는데 실패했습니다.")
         });
     }, []);
 
@@ -35,9 +35,9 @@ function AdminClasses() {
                 setOriginal(response.data);
                 setSortKey("classLastDate");
                 setSortMethod("desc");
-            } else {
-                alert("강의실 정보를 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의실 정보를 가져오는데 실패했습니다.")
         });
     }, []);
 

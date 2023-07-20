@@ -2,9 +2,8 @@ import React from "react";
 import { signin } from "../service/ApiService";
 import { Button, Container, Grid, TextField, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { CenterFocusStrong } from "@mui/icons-material";
 
-function Login(_userDTO) {
+function Login() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.target);
@@ -14,7 +13,10 @@ function Login(_userDTO) {
         signin({
             userId: userId,
             password: password
-        }).catch();
+        }).catch((error) => {
+            console.log(error);
+            alert("로그인을 실패했습니다.\n회원 정보를 확인해주세요.");
+        });
     };
 
 
@@ -62,62 +64,11 @@ function Login(_userDTO) {
                     <Grid item xs={12} sm={11} style={{ textAlign: "center" }}>
                         <Grid container spacing={1} justifyContent="center">
                             <Grid item>
-                                <Link to="/Findpw" variant="body2">
-                                    비밀번호 찾기
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <span>|</span>
-                            </Grid>
-                            <Grid item>
-                                <Link to="/Findid" variant="body2">
-                                    아이디 찾기
-                                </Link>
-                            </Grid>
-                            <Grid item>
-                                <span>|</span>
-                            </Grid>
-                            <Grid item>
                                 <Link to="/signup" variant="body2">
                                     회원가입
                                 </Link>
                             </Grid>
-                            {/* <Grid item>
-                                <Link to="/mypage" variant="body2">
-                                    마이페이지 지울거임 테스트용
-                                </Link>
-                            </Grid> */}
                         </Grid>
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            startIcon={<CenterFocusStrong />}
-                        >
-                            구글
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            startIcon={<CenterFocusStrong />}
-                        >
-                            카카오
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            startIcon={<CenterFocusStrong />}
-                        >
-                            네이버
-                        </Button>
                     </Grid>
                 </Grid>
             </form>

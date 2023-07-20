@@ -16,8 +16,11 @@ const MyPage = () => {
         if (response) {
           setUserInfo(response);
         }
+      }).catch((error) => {
+        console.log(error);
       });
-    }else{
+    } else {
+      alert("로그인이 필요합니다.");
       window.location.href = "/login";
     }
   }, []);
@@ -27,6 +30,8 @@ const MyPage = () => {
       if(response) {
         setUserInfo(response);
       }
+    }).catch((error) => {
+      console.log(error);
     });
   };
 

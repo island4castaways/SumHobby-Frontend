@@ -20,9 +20,11 @@ function MyClasses() {
             if(response) {
                 setUserDTO(response);
             } else {
-                alert("사용자 정보를 가져오는데 실패했습니다.");
+                alert("로그인을 해주세요.");
                 navigate("/");
             }
+        }).catch((error) => {
+            alert("사용자 정보를 가져오는데 실패했습니다.");
         });
     }, []);
 
@@ -33,9 +35,9 @@ function MyClasses() {
                 setOriginal(response.data);
                 setSortKey("classLastDate");
                 setSortMethod("desc");
-            } else {
-                alert("강의실 정보를 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의실 정보를 가져오는데 실패했습니다.");
         });
     }, [userDTO]);
 

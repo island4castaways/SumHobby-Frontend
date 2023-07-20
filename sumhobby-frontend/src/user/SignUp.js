@@ -18,11 +18,11 @@ function SignUp() {
                 if(response) {
                     //계정 생성 성공시 login 페이지로 리다이렉트
                     window.location.href = "/login";
-                } else {
-                    alert("회원가입을 실패했습니다.");
                 }
             }
-        );
+        ).catch((error) => {
+            alert("회원가입을 실패했습니다.");
+        });
     };
 
     return (

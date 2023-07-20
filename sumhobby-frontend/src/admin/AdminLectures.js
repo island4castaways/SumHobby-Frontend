@@ -20,9 +20,9 @@ function AdminLectures() {
                 } else {
                     setAdmin(response);
                 }
-            } else {
-                alert("관리자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("관리자 정보를 확인하는데 실패했습니다.")
         });
     }, []);
 
@@ -30,9 +30,9 @@ function AdminLectures() {
         call("/admin/lectures", "PATCH", classDTO).then((response) => {
             if(response.data) {
                 setLectures(response.data);
-            } else {
-                alert("강의 정보를 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의 정보를 가져오는데 실패했습니다.")
         });
     }, [classDTO]);
 

@@ -11,10 +11,11 @@ const WriteInquiry = () => {
       if (response) {
         if (response) {
           setUserDTO(response);
-        } else {
-          alert("사용자 정보를 확인하는데 실패했습니다.");
         }
       }
+    }).catch((error) => {
+      console.log(error);
+      alert("사용자 정보를 확인하는데 실패했습니다.");
     });
   }, []);
 
@@ -37,9 +38,9 @@ const WriteInquiry = () => {
         alert("문의글 저장이 완료되었습니다.");
         window.location.href = "/inquiryboard";
         getInquiry();
-      } else {
-        alert("문의글 저장에 실패하였습니다.");
       }
+    }).catch((error) => {
+      alert("문의글 저장에 실패하였습니다.");
     });
   };
 

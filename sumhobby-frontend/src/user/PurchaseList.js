@@ -19,9 +19,9 @@ const PurchaseList = () => {
         call("/auth/returnUser", "GET", null).then((response) => {
             if (response) {
                 setUserDTO(response);
-            } else {
-                alert("사용자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("사용자 정보를 확인하는데 실패했습니다.");
         });
     }, []);
 
@@ -32,9 +32,9 @@ const PurchaseList = () => {
                 setOriginal(response.data);
                 setSortKey("payDate");
                 setSortMethod("desc");
-            } else {
-                alert("결제 내역을 가져오는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("결제 내역을 가져오는데 실패했습니다.");
         });
     }, [userDTO]);
 

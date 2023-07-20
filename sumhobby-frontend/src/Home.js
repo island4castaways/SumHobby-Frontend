@@ -7,13 +7,13 @@ import "./Home.css";
 const Home = () => {
   const [classData, setClassData] = useState([]);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     call('/class/top-rated', 'GET', null)
       .then((response) => {
         const categorizedClasses = categorizeClasses(response.data);
         setClassData(categorizedClasses);
+      }).catch((error) => {
+        console.log(error);
       })
   }, []);
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Typography, Grid, Button, Card, CardActionArea, CardContent, Paper } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Typography, Grid, Button, Card, Paper } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { call } from "../service/ApiService";
 import "./ClassDetail.css";
@@ -21,7 +21,10 @@ const ClassDetail = () => {
   useEffect(() => {
     call("/lecture", "PATCH", classDTO)
       .then((response) => setLectures(response.data))
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        alert("강의를 불러오는데 실패했습니다.");
+      });
   }, [classDTO]);
 
   useEffect(() => {
@@ -31,6 +34,8 @@ const ClassDetail = () => {
       } else {
         setInCart(false);
       }
+    }).catch((error) => {
+      console.error(error);
     });
   }, [classDTO]);
 
@@ -41,6 +46,8 @@ const ClassDetail = () => {
       } else {
         setSubscribe(false);
       }
+    }).catch((error) => {
+      console.error(error);
     });
   }, [classDTO]);
 
@@ -52,6 +59,8 @@ const ClassDetail = () => {
       } else {
         setHasReview(false);
       }
+    }).catch((error) => {
+      console.error(error);
     });
   }, [classDTO]);
 
@@ -99,6 +108,8 @@ const ClassDetail = () => {
       if (window.confirm("장바구니에 담기가 완료되었습니다.\n장바구니로 이동하시겠습니까?")) {
         navigate("/cart");
       }
+    }).catch((error) => {
+      console.error(error);
     })
   }
 
@@ -139,7 +150,7 @@ const ClassDetail = () => {
             리뷰 작성하기
           </Button>
         )}
-        {(!inCart && !subscribe) && (
+        {(localStorage.getItem("ACCESS_TOKEN") && !inCart && !subscribe) && (
           <Grid container spacing={2} justifyContent="center" margin={1}>
               <Button onClick={() => addCart()} fullWidth variant="contained" color="primary">
                 장바구니

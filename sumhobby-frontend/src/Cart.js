@@ -9,20 +9,26 @@ import {
   ListItem,
   IconButton,
   ListItemSecondaryAction,
-  Avatar
 } from '@mui/material';
 import { DeleteOutlined } from '@mui/icons-material';
 import { call } from './service/ApiService';
-import { Link, useNavigate, useNavigationType } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const cartImageBase64 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...';
 
 const Cart = () => {
+  const navigate = useNavigate();
+
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [checkItems, setCheckItems] = useState([]);
 
-
-  const navigate = useNavigate();
+  useEffect(() => {
+    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    if(!accessToken) {
+      alert("로그인이 필요합니다.");
+      window.location.href = "/login";
+    }
+  }, []);
 
   useEffect(() => {
     call("/cart","GET",null)
@@ -31,10 +37,8 @@ const Cart = () => {
   }, []);
 
   const deleteItem = (item) => {
- 
     call("/cart","DELETE",item)
     .then((response) => setCartItems(response.data));
-    
   }; 
 
   const handleCheckboxChange = (index) => {

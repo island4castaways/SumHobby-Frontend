@@ -35,9 +35,13 @@ const AllClasses = () => {
 
     const callForClasses = (searchKey) => {
         if(searchKey) {
-            return call("/class/search", "PATCH", {searchKey : searchKey});
+            return call("/class/search", "PATCH", {searchKey : searchKey}).catch((error) => {
+                alert("강의실 검색을 실패했습니다.");
+            });
         } else {
-            return call("/class/category", "GET", null);
+            return call("/class/category", "GET", null).catch((error) => {
+                alert("강의실을 불러오는데 실패했습니다.");
+            });
         }
     }
 

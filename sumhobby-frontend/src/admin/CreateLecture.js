@@ -21,9 +21,9 @@ function CreateLecture() {
                 } else {
                     setAdmin(response);
                 }
-            } else {
-                alert("관리자 정보를 확인하는데 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("관리자 정보를 확인하는데 실패했습니다.");
         });
     }, []);
 
@@ -59,9 +59,9 @@ function CreateLecture() {
             if(response.data) {
                 alert("강의 추가가 완료되었습니다.");
                 navigate("/admin/lectures", {state: {classDTO: classDTO}});
-            } else {
-                alert("강의 추가를 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의 추가를 실패했습니다.");
         });
     };
 
@@ -70,9 +70,9 @@ function CreateLecture() {
             if(response.data) {
                 alert("강의 수정이 완료되었습니다.");
                 navigate("/admin/lectures", {state: {classDTO: classDTO}});
-            } else {
-                alert("강의 수정을 실패했습니다.");
             }
+        }).catch((error) => {
+            alert("강의 수정을 실패했습니다.");
         });
     };
 
@@ -82,6 +82,8 @@ function CreateLecture() {
                 alert("강의 삭제가 완료되었습니다.");
                 navigate("/admin/lectures", {state: {classDTO: classDTO}});
             }
+        }).catch((error) => {
+            alert("강의 삭제를 실패했습니다.")
         });
     };
 

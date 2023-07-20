@@ -1,52 +1,43 @@
-import { AiOutlineZoomIn } from "react-icons/ai";
+import { TextField } from "@mui/material";
 import "./Nav.css";
 
 const Nav = () => {
-    // const [searchText, setSearchText] = useState(""); // 검색어 상태 추가
-
-    const handleSearch = () => {
-        // 검색 기능 구현
-        // 검색어 사용 예시: searchText
-        // console.log("검색어:", searchText);
-        // 검색 결과를 처리하는 로직을 추가하세요.
+    const handleSearch = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        const searchKey = data.get("searchKey");
+        window.location.href = `${window.location.origin}/allclasses?search=${searchKey}`;
     };
 
     return (
         <div>
             <header>
                 <nav className="Nav">
-                    <span className="Nav_title">∑Hobby</span>
-                    <div className="Navi">
-
-                    <AiOutlineZoomIn /> &nbsp;
-                        <div className="Search">
+                    <span className="Nav_title"><h1><a className="Navs" href="/home">∑Hobby</a></h1></span>
+                    <div className="Search">
+                        <form onSubmit={handleSearch}>
                             <input
                                 type="text"
+                                id="searchKey"
+                                name="searchKey"
                                 placeholder="검색어를 입력하세요"
-                                // value={searchText}
-                                // onChange={(e) => setSearchText(e.target.value)}
                             />
-                            <button onClick={handleSearch}>
-                            </button>
-                        </div>
-
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button type="submit">검색</button>
+                        </form>
+                    </div>
+                    <div className="Navi">
                         <a className="Navs" href="/home">
                             홈
                         </a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a className="Navs" href="/class">
                             강의실
                         </a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a className="Navs" href="/mypage">
                             마이페이지
                         </a>
-                        &nbsp;&nbsp;|&nbsp;&nbsp;
                         <a className="Navs" href="/cart">
                             장바구니
-                        </a>  
-                        &nbsp;&nbsp;&nbsp;              
+                        </a>
                     </div>
                 </nav>
             </header>

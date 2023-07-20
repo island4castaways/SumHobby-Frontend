@@ -13,6 +13,8 @@ const ShowReview = () => {
   useEffect(() => {
     call("/review/showreview", "PATCH", item).then((response) => {
       setReviews(response.data);
+    }).catch((error) => {
+      console.log(error);
     });
   }, []);
 
