@@ -30,7 +30,7 @@ const Nav = () => {
                             홈
                         </a>
                         <a className="Navs" href="/class">
-                            강의실
+                            내 강의실
                         </a>
                         <a className="Navs" href="/mypage">
                             마이페이지
