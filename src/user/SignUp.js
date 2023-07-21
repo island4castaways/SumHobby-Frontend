@@ -16,6 +16,7 @@ function SignUp() {
         signup({ userId: userId, password: password, userName: userName, email: email, phone: phone }).then(
             (response) => {
                 if(response) {
+                    alert("회원가입을 성공했습니다.")
                     //계정 생성 성공시 login 페이지로 리다이렉트
                     window.location.href = "/login";
                 }

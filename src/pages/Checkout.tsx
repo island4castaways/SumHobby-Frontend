@@ -114,8 +114,8 @@ export default function Checkout() {
             orderName: items[0].userTk,
             customerName: items[0].userTk,
             customerEmail: items[0].userEmail,
-            successUrl: `http://localhost:1010/checkout/success`,
-            failUrl: `http://localhost:1010/checkout/fail`,
+            successUrl: `https://api.sumhobby.com/checkout/success`,
+            failUrl: `https://api.sumhobby.com/checkout/fail`,
             })
           }catch(err){
             console.log(err)
