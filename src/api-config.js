@@ -5,7 +5,7 @@ if(hostname === "localhost") {
     backendHost = "http://localhost:5000"
 } else {
     // backendHost = "http://sumhobby-backend-env.eba-ytrmxek5.ap-northeast-2.elasticbeanstalk.com"
-    backendHost = "http://api.sumhobby.com"
+    backendHost = "https://api.sumhobby.com"
 }
 
 export const API_BASE_URL = `${backendHost}`;
